@@ -101,3 +101,9 @@ UPDATE: PORTAL LOGINS (many users, daily batches) AND CLASS-WISE RESULTS
 - Each child's marks appear only in that child's Student portal and Parent portal. Parent sessions now match guardian name AND WhatsApp number.
 - Students form has a new optional field: Class roll no.
 - Note: teacher saving marks works in local mode. Cloud (Supabase) employee portals are still read-only.
+
+
+DEFAULT LOGINS (when Supabase is not set up yet, data is saved only in that browser)
+- ESMOS Admin (#owner-login): username owner / password esmos123
+- Demo school: school code demo > Admin Portal > admin / admin123
+- Schools you add in the ESMOS Admin only exist in the browser where you added them. For real use on all devices, add Supabase.

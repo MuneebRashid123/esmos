@@ -817,3 +817,21 @@ body{background:#eef3fc}
 .abn span{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 }
 body{font:14px Arial;margin:14px}.s{display:inline-block;width:46%;border:1px dashed #666;padding:10px;margin:6px;vertical-align:top;page-break-inside:avoid}
+/* clearer, sharper background image on sign-in screens */
+.lgp::before,#pl:has(.lf)::before{
+position:fixed;inset:0;
+opacity:1;
+-webkit-mask-image:none;mask-image:none;
+background:linear-gradient(180deg,rgba(255,255,255,.78) 0%,rgba(255,255,255,.35) 38%,rgba(255,255,255,0) 70%),var(--schoolimg) center 40%/cover no-repeat;
+image-rendering:auto;
+}
+.lgp::before{z-index:-1}
+@media(max-width:700px){
+.lgp::before,#pl:has(.lf)::before{background-position:center,56% 40%}
+}
+.lgs{color:#2a3d68;font-weight:500;text-shadow:0 1px 8px rgba(255,255,255,.9)}
+.lgp h1{text-shadow:0 1px 10px rgba(255,255,255,.85)}
+
+/* light mode only: stop phone/browser forced dark mode */
+:root{color-scheme:only light}
+html,body{color-scheme:only light}
