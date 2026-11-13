@@ -410,7 +410,7 @@ lsv(k,id,b){const r=lgRows(k).find(x=>x.id==id),v=(b.closest('tr').querySelector
 lone(k,id){const r=lgRows(k).find(x=>x.id==id);if(!r)return;const p=lgGen(k);lgSetPw(k,r,p);lg('Password generated');try{save()}catch(e){}toast('New password: '+p);draw()},
 lbulk(k){const n=Math.max(1,Math.min(500,+(document.getElementById('lgbn')||{}).value||+FL.lgn||50)),todo=lgFilt(k).filter(r=>r.need).slice(0,n);if(!todo.length){toast('Everyone here already has a password');return}todo.forEach(r=>lgSetPw(k,r,lgGen(k)));lg('Bulk passwords: '+todo.length);try{save()}catch(e){}toast(todo.length+' passwords created');FL.lgs='unsent';FL.lgp=1;draw()},
 lcsv(k){const rows=lgFilt(k),q=v=>'"'+String(v==null?'':v).replace(/"/g,'""')+'"',csv=['Name,Detail,Username,Password'].concat(rows.map(r=>[r.name,r.sub,r.user,r.need?'':r.pw].map(q).join(','))).join('\n'),a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='portal-logins-'+k+'.csv';document.body.appendChild(a);a.click();a.remove()},
-lprn(k){const rows=lgFilt(k).filter(r=>!r.need),role=k=='emp'?'employee':k=='par'?'parent':'student',w=window.open('','_blank');if(!w){toast('Allow pop-ups to print');return}w.document.write('<title>Login slips</title><h3>'+esc(S.set.name)+' - '+role+' logins</h3>'+rows.map(r=>'<div class="s"><b>'+esc(r.name)+'</b><br>'+esc(r.sub)+'<br>Link: '+esc(LBASE())+'#'+role+'-login<br>Username: <b>'+esc(r.user)+'</b><br>Password: <b>'+esc(r.pw)+'</b></div>').join('')+'<script>setTimeout(function(){print()},300)<\/script>');w.document.close()},
+lprn(k){const rows=lgFilt(k).filter(r=>!r.need),role=k=='emp'?'employee':k=='par'?'parent':'student',w=window.open('','_blank');if(!w){toast('Allow pop-ups to print');return}w.document.write('<title>Login slips</title><style>body{font:14px Arial;margin:14px}.s{display:inline-block;width:46%;border:1px dashed #666;padding:10px;margin:6px;vertical-align:top;page-break-inside:avoid}</style><h3>'+esc(S.set.name)+' - '+role+' logins</h3>'+rows.map(r=>'<div class="s"><b>'+esc(r.name)+'</b><br>'+esc(r.sub)+'<br>Link: '+esc(LBASE())+'#'+role+'-login<br>Username: <b>'+esc(r.user)+'</b><br>Password: <b>'+esc(r.pw)+'</b></div>').join('')+'<script>setTimeout(function(){print()},300)<\/script>');w.document.close()},
 rsave(){const c=rsCfg(),sub=String(c.subject||'').trim(),tot=+c.total;if(!sub){toast('Type the subject');return}if(!(tot>0)){toast('Total marks must be more than 0');return}
 const rows=[...document.querySelectorAll('.rsr')];let bad='';
 const seen={};rows.forEach(r=>{const v=r.querySelector('.rr').value.trim().toLowerCase();if(!v)return;if(seen[v])bad=v;seen[v]=1});S.students.filter(x=>x.cls==c.cls&&x.roll&&!rows.some(r=>+r.dataset.id==x.id)).forEach(x=>{if(seen[String(x.roll).trim().toLowerCase()])bad=x.roll});
@@ -474,4 +474,50 @@ first={h:h.innerHTML,p:p.textContent,img:getComputedStyle(el).getPropertyValue('
 var d=document.createElement('div');d.className='phd';d.setAttribute('aria-label','Hero slides');for(var k=0;k<2;k++){(function(k){var b=document.createElement('button');b.type='button';b.setAttribute('aria-label','Slide '+(k+1));if(!k)b.className='on';b.onclick=function(){go(k)};d.appendChild(b)})(k)}
 el.appendChild(d);return el}
 setInterval(function(){var el=ensure();if(!el||document.hidden||!el.offsetParent)return;if(Date.now()-last>6500)go(idx?0:1)},600);
+})();
+
+/* ---- app-style bottom tab bar for the home page (phones only) ---- */
+(function(){
+  var IC={
+    home:'<path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/>',
+    feat:'<rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/>',
+    how:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+    wa:'<path d="M20 12a8 8 0 0 1-11.8 7L4 20l1.1-4.1A8 8 0 1 1 20 12z"/><path d="M9 9.5c.3 2 2.5 4.2 4.5 4.5l1.3-1.2-1.8-1-.8.7c-.8-.4-1.5-1.1-1.9-1.9l.7-.8-1-1.8z"/>',
+    login:'<circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/>'
+  };
+  function svg(k){return '<svg viewBox="0 0 24 24" aria-hidden="true">'+IC[k]+'</svg>';}
+  function waHref(){var a=document.querySelector('a[href*="wa.me"]');return a?a.getAttribute('href'):'https://wa.me/';}
+  function build(){
+    var d=document.createElement('div');d.className='lbn';d.id='lbn';d.setAttribute('role','navigation');
+    d.innerHTML='<a href="#" data-k="home">'+svg('home')+'<span>Home</span></a>'+
+      '<a href="#features" data-k="features">'+svg('feat')+'<span>Features</span></a>'+
+      '<a href="#how" data-k="how">'+svg('how')+'<span>How it works</span></a>'+
+      '<a href="'+waHref()+'" target="_blank" rel="noopener" data-k="wa" class="wa">'+svg('wa')+'<span>WhatsApp</span></a>'+
+      '<a href="#signin" data-k="signin">'+svg('login')+'<span>Login</span></a>';
+    d.addEventListener('click',function(e){
+      var a=e.target.closest('a');if(!a)return;var k=a.getAttribute('data-k');
+      if(k=='home'){e.preventDefault();window.scrollTo({top:0,behavior:'smooth'});}
+      else if(k=='features'||k=='how'){e.preventDefault();try{NAVG(k)}catch(x){var el=document.getElementById(k);el&&el.scrollIntoView({behavior:'smooth'})}}
+      else if(k=='signin'){e.preventDefault();try{GO('signin')}catch(x){location.hash='#signin'}}
+    });
+    return d;
+  }
+  function onHome(){return !!document.querySelector('nav a.l[href="#features"]');}
+  function sync(){
+    var bar=document.getElementById('lbn'),home=onHome();
+    if(home&&!bar){document.body.appendChild(build());document.body.classList.add('has-lbn');}
+    else if(!home&&bar){bar.remove();document.body.classList.remove('has-lbn');}
+    if(home&&bar)active();
+  }
+  function active(){
+    var bar=document.getElementById('lbn');if(!bar)return;
+    var y=window.scrollY+window.innerHeight*0.4,k='home';
+    ['features','how'].forEach(function(id){var el=document.getElementById(id);if(el&&el.getBoundingClientRect().top+window.scrollY<=y)k=id;});
+    [].forEach.call(bar.querySelectorAll('a'),function(a){a.classList.toggle('on',a.getAttribute('data-k')==k);});
+  }
+  var t=0;
+  new MutationObserver(function(){cancelAnimationFrame(t);t=requestAnimationFrame(sync);}).observe(document.body,{childList:true,subtree:true});
+  window.addEventListener('scroll',function(){cancelAnimationFrame(t);t=requestAnimationFrame(active);},{passive:true});
+  window.addEventListener('hashchange',sync);
+  setTimeout(sync,300);
 })();
