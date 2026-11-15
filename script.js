@@ -88,7 +88,7 @@ LAND(p,h)}
 function LOGINP(p){const I=k=>ic((MOD.find(m=>m[0]==k)||[0,'cap'])[1]);
 p.innerHTML=`<div class="lgp"><a class="lgb" href="#" onclick="return GO('')">&#8249; Back to home</a><img class="lgl" src="${LOGO}" alt="ESMOS"><h1>Welcome back</h1><p class="lgs">Choose how you want to sign in</p>
 <div class="lgc"><a class="lgk" href="#find" onclick="return GO('find')"><span class="lgi">${I('students')}</span><h3>School Login</h3><p>For school admins, teachers, parents and students. Enter your school code to continue.</p><span class="lgg">Continue as school &rarr;</span></a>
-<a class="lgk lgk2" href="#owner-login" onclick="return GO('owner-login')"><span class="lgi">${I('roles')}</span><h3>Admin Login</h3><p>For the ESMOS platform owner. Manage schools, plans, payments and requests.</p><span class="lgg">Continue as admin &rarr;</span></a></div>
+</div>
 <p class="lgf">Just exploring? <button class="lgd" data-p="demo">Try the live demo</button></p></div>`}
 
 /* home page news ticker */
