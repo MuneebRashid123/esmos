@@ -50,7 +50,7 @@ const DET=[
 ['Salary slips this month',[['Ms Sara \u00b7 Teacher','Slip printed','Rs 62,000','g'],['Mr Imran \u00b7 Teacher','Slip printed','Rs 58,000','g'],['Ms Hina \u00b7 Teacher','Pending','Rs 60,000','a'],['Mr Aslam \u00b7 Accountant','Slip printed','Rs 55,000','g']]],
 ['Recent messages',[['Fee due reminder','To Mr Malik','Sent','g'],['Absence alert','To Mrs Shah','Sent','g'],['Fee receipt','To Mr Raza','Queued','a'],['Result shared','To Class 8 parents','Sent','g']]],
 ['This month',[['Fee income','Collected so far','Rs 1,689,200','g'],['Expenses','Salaries, utilities, other','Rs 1,020,000','r'],['Balance','Income minus expenses','Rs 669,200','b']]],
-['Who sees what',[['Admin','All modules and reports','Full','b'],['Employee','Own classes and salary slip','Own','g'],['Parent','Own child: fees, attendance, results','Child','g'],['Student','Own timetable and results','Own','g']]]
+['Who sees what',[['Admin','All modules and reports','Full','b'],['Employee','Own classes, attendance and salary slip','Own','g'],['Parent','Own child: fees, attendance, results','Child','g'],['Student','Own timetable and results','Own','g']]]
 ],GLN=[['23 absentees','Parents alerted on WhatsApp','Done','g'],['74 fee reminders','Ready to send in one tap','Pending','a'],['24 new admissions','Applications this month','New','b']],
 DLI=(h,a)=>'<h5 class="mkh">'+h+'</h5><div class="mkli">'+a.map(r=>'<div class="mkit"><b>'+r[0]+'</b><em class="'+r[3]+'">'+r[2]+'</em><small>'+r[1]+'</small></div>').join('')+'</div>';
 const SL=['Students','Attendance','Fees','Exams','Timetable','Payroll','WhatsApp','Finance','Portals'],IK=x=>{const n=(MOD.find(m=>m[0]==x[0])||[0,'cap'])[1];return ic(n)};
@@ -67,7 +67,7 @@ HL=[[['Online admission forms','Capture applicant details in one clean form'],['
 [['Staff salaries','Basic pay, allowances and deductions'],['Salary slips','A printable slip for every month'],['Payment status','Track which slips are done or pending'],['Employee portal','Staff see their own slip online']],
 [['Fee reminders','A ready message for each parent'],['Absence alerts','Let parents know the same day'],['Receipts','Send payment receipts in one tap'],['Result updates','Tell parents when results are out']],
 [['Income tracking','Fee collection updated as payments are recorded'],['Expense tracking','Salaries, utilities and other costs'],['Live balance','Income minus expenses, always current'],['Monthly view','See this month at a glance']],
-[['Admin portal','Full control of every module'],['Employee portal','Own classes, timetable and salary slip'],['Parent portal','Own child: fees, attendance and results'],['Student portal','Own timetable and results']]],
+[['Admin portal','Full control of every module'],['Employee portal','Own classes, timetable, attendance and salary slip'],['Parent portal','Own child: fees, attendance and results'],['Student portal','Own timetable and results']]],
 MLI=(x,i,c)=>`<a class="mkl${c?' on':''}" id="ml${i}" style="${AS(i)}" href="#app-${i}" onclick="return GO('app-${i}')"><span class="ic2 c-b">${IK(x)}</span><span><b>${x[1]}</b><small>${x[2]}</small></span><i class="mn">0${i+1}</i><i class="ar">&#8250;</i></a>`;
 function APPF(){return `<div class="mkw nph"><div class="mkc"><div class="mkls rv-g" style="margin-top:22px">${FT.map((x,i)=>MLI(x,i)).join('')}</div></div></div>`}
 function APPPG(p,i){const x=FT[i];if(!x){GO('features');return}
@@ -371,6 +371,7 @@ const ex=sum(S.exp.filter(e=>e.date>=a&&e.date<=b),e=>e.amount)+(RV.m=='day'?0:s
 const cur=N(a,b),cnt=rg(a,b).length;
 return{cur,prev:N(pa,pb),cnt,lb,y,yr:N(y+'-01-01',y+'-12-31'),ex,net:cur-ex,avg:cnt?cur/cnt:0,pend:sum(S.fees,bal)}};
 const IN=n=>(n<0?'-':'')+Math.round(Math.abs(n)).toLocaleString('en-IN')+'.00';
+const clsCard=()=>{const ac=S.students.filter(s=>s.status=='Active'),ex=[...new Set(ac.map(s=>s.cls).filter(c=>c&&!CL.includes(c)))],ls=CL.concat(ex),rows=ls.map(c=>[c,ac.filter(s=>s.cls==c).length]),mx=Math.max(1,...rows.map(r=>r[1])),used=rows.filter(r=>r[1]).length;return`<div class="card cls"><div class="rc-h"><h3>Students by class</h3><a href="#students">View all</a></div><div class="cls-s"><b>${ac.length}</b> active students &middot; ${used} of ${ls.length} classes have students</div><div class="cls-g">${rows.map(r=>`<div class="cls-r${r[1]?'':' z'}"><span class="cls-n">${esc(r[0])}</span><span class="cls-b"><i style="width:${Math.round(r[1]/mx*100)}%"></i></span><b class="cls-c">${r[1]}</b></div>`).join('')}</div></div>`};
 const revHero=()=>{const r=revSel(),ch=r.prev>0?(r.cur-r.prev)/r.prev*100:null,pill=ch==null?(r.cur>0?'No revenue in previous period':'No revenue yet'):(ch>=0?'+':'')+ch.toFixed(2)+'% vs previous period (PKR '+IN(r.prev)+')',mo=RV.mo||mm(),d=RV.d||today(),o=(v,t)=>`<option value="${v}"${RV.m==v?' selected':''}>${t}</option>`,
 tl=(l,v,c='')=>`<div class="rvh-t ${c}"><i>${l}</i><b>${/^PKR /.test(String(v))?'<small>PKR</small><span>'+String(v).slice(4).replace(/^(.*?)(\.\d+)$/,'$1<em>$2</em>')+'</span>':v}</b></div>`;
 return`<div class="card rvh"><div class="rvh-top"><div><div class="rvh-l">Revenue &middot; ${r.lb} &middot; PKR</div><div class="rvh-n">PKR ${IN(r.cur)}</div></div><span class="rvh-p${ch!=null&&ch<0?' rvh-down':''}">${pill}</span></div>
@@ -394,6 +395,7 @@ nsH=S.students.slice(-5).reverse().map((s,i)=>`<a class="rc-i" href="#students">
 qa=[['#attendance','att','Attendance','qa0'],['#fees','fee','Collect fee','qa1'],['#logins','rol','Logins','qa2'],['#whatsapp','wai','Reminders','qa3']].map(x=>`<a class="qa-i ${x[3]}" href="${x[0]}"><span>${ic(x[1])}</span><b>${x[2]}</b></a>`).join('');
 return`<div class="dsh"><div class="hm"><div class="hm-t"><span class="hm-av">${esc(ini(me0.name||S.set.name))}</span><div><small>${gr} \ud83d\udc4b</small><h2>${esc(me0.name||'Admin')}</h2><p>${esc(S.set.name)} \u00b7 Session ${esc(S.set.session)}</p></div></div><div class="qa">${qa}</div></div>
 ${revHero()}<div class="g4">${stat('stu','Total students',S.students.length,a.length+' active','c-b')}${stat('tea','Total teachers',S.staff.filter(s=>s.role=='Teacher'&&s.status=='Active').length,'Active teachers','c-b')}${stat('cap','Total classes',CL.length,CL.filter(c=>S.students.some(s=>s.cls==c&&s.status=='Active')).length+' with students','c-b')}${stat('att','Present today',marked?pr:'-',marked?'Absent: '+ab:'Not marked yet','c-g')}${stat('fee','Collected today',money(col),'Pending '+money(F.pend),'c-b')}</div>
+${clsCard()}
 <div class="two rcw"><div class="card rc"><div class="rc-h"><h3>Recent payments</h3><a href="#fees">View all</a></div>${rpH}</div><div class="card rc"><div class="rc-h"><h3>New students</h3><a href="#students">View all</a></div>${nsH}</div></div>
 <div class="two"><div class="card"><h3>Fee status</h3>${donut([[fs.filter(x=>x=='Paid').length,'#2563eb','Paid'],[fs.filter(x=>x=='Partial'||x=='Unpaid').length,'#93c5fd','Unpaid / partial'],[fs.filter(x=>x=='Overdue').length,'#fb7185','Overdue']])}</div><div class="card"><h3>Attendance, last 5 days (%)</h3>${line(days)}</div></div></div>`}
 const tg=a=>a=='def'?act().filter(s=>S.fees.some(f=>f.sid==s.id&&fst(f)=='Overdue')):a=='abs'?act().filter(s=>(S.att[today()]||{})[s.id]=='A'):act();
@@ -1157,3 +1159,474 @@ if(typeof lgin=='function'){const _l=lgin;lgin=function(){const r=_l.apply(this,
 })();
 
 ;(function(){let q=0;const run=()=>{q=0;try{document.querySelectorAll('td.ac').forEach(td=>{const n=td.querySelectorAll(':scope>.bt').length,ib=!!td.querySelector(':scope>.ib');td.classList.toggle('ac4',n>=4&&!ib)});document.querySelectorAll('[data-a="lpg"]').forEach(b=>{const p=b.parentNode;if(p&&!p.classList.contains('pgr'))p.classList.add('pgr')})}catch(e){}};new MutationObserver(()=>{if(!q)q=requestAnimationFrame(run)}).observe(document.documentElement,{childList:true,subtree:true});run()})();
+
+/* ESMOS table export: CSV, Excel (.xlsx) and Print buttons for every data table */
+;(function(root){
+'use strict';
+
+/* ---------- pure helpers (testable in node) ---------- */
+var enc=function(s){return new TextEncoder().encode(s)};
+
+var CRC=(function(){var t=new Uint32Array(256);for(var n=0;n<256;n++){var c=n;for(var k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0}return t})();
+function crc32(u8){var c=0xFFFFFFFF;for(var i=0;i<u8.length;i++)c=CRC[(c^u8[i])&255]^(c>>>8);return(c^0xFFFFFFFF)>>>0}
+
+function zipStore(files){ // files: [{name, data:Uint8Array}] -> Uint8Array (no compression)
+  var parts=[],cd=[],off=0,now=new Date();
+  var dt=((now.getFullYear()-1980)<<9)|((now.getMonth()+1)<<5)|now.getDate();
+  var tm=(now.getHours()<<11)|(now.getMinutes()<<5)|(now.getSeconds()>>1);
+  files.forEach(function(f){
+    var nm=enc(f.name),crc=crc32(f.data),sz=f.data.length;
+    var lh=new DataView(new ArrayBuffer(30));
+    lh.setUint32(0,0x04034b50,true);lh.setUint16(4,20,true);lh.setUint16(6,0x0800,true);lh.setUint16(8,0,true);
+    lh.setUint16(10,tm,true);lh.setUint16(12,dt,true);lh.setUint32(14,crc,true);lh.setUint32(18,sz,true);lh.setUint32(22,sz,true);
+    lh.setUint16(26,nm.length,true);lh.setUint16(28,0,true);
+    parts.push(new Uint8Array(lh.buffer),nm,f.data);
+    var ch=new DataView(new ArrayBuffer(46));
+    ch.setUint32(0,0x02014b50,true);ch.setUint16(4,20,true);ch.setUint16(6,20,true);ch.setUint16(8,0x0800,true);ch.setUint16(10,0,true);
+    ch.setUint16(12,tm,true);ch.setUint16(14,dt,true);ch.setUint32(16,crc,true);ch.setUint32(20,sz,true);ch.setUint32(24,sz,true);
+    ch.setUint16(28,nm.length,true);ch.setUint16(30,0,true);ch.setUint16(32,0,true);ch.setUint16(34,0,true);ch.setUint16(36,0,true);
+    ch.setUint32(38,0,true);ch.setUint32(42,off,true);
+    cd.push(new Uint8Array(ch.buffer),nm);
+    off+=30+nm.length+sz;
+  });
+  var cdSize=0;cd.forEach(function(p){cdSize+=p.length});
+  var e=new DataView(new ArrayBuffer(22));
+  e.setUint32(0,0x06054b50,true);e.setUint16(4,0,true);e.setUint16(6,0,true);
+  e.setUint16(8,files.length,true);e.setUint16(10,files.length,true);e.setUint32(12,cdSize,true);e.setUint32(16,off,true);e.setUint16(20,0,true);
+  var all=parts.concat(cd,[new Uint8Array(e.buffer)]),len=0;all.forEach(function(p){len+=p.length});
+  var out=new Uint8Array(len),pos=0;all.forEach(function(p){out.set(p,pos);pos+=p.length});
+  return out;
+}
+
+function xmlEsc(s){return String(s).replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\uFFFE\uFFFF]/g,'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function colName(i){var s='';i++;while(i>0){var m=(i-1)%26;s=String.fromCharCode(65+m)+s;i=Math.floor((i-1)/26)}return s}
+
+/* decide whether a displayed value is safely a number (so Excel can sum it); otherwise keep text exactly as shown */
+function typed(v){
+  var m=/^(-\s*)?(?:Rs\.?\s*)?(-\s*)?(\d{1,3}(?:,\d{3})+|\d+)(\.\d+)?\s*(%)?$/i.exec(v);
+  if(!m)return{t:'s',v:v};
+  var neg=!!(m[1]||m[2]),intp=m[3],dec=m[4]||'',pct=!!m[5],hasComma=intp.indexOf(',')>-1,hasRs=/^(-\s*)?Rs/i.test(v);
+  var digits=intp.replace(/,/g,'');
+  if(!dec&&!hasComma&&!hasRs&&!pct){ if(digits.length>1&&digits[0]==='0')return{t:'s',v:v}; if(digits.length>=11)return{t:'s',v:v}; }
+  if(dec&&digits.length>1&&digits[0]==='0')return{t:'s',v:v};
+  if(digits.length>15)return{t:'s',v:v};
+  var n=parseFloat(digits+dec);if(!isFinite(n))return{t:'s',v:v};
+  if(neg)n=-n;
+  if(pct)return{t:'n',v:n/100,s:dec?3:2};
+  if(hasComma||hasRs)return{t:'n',v:n,s:dec?5:4};
+  return{t:'n',v:n,s:0};
+}
+
+function toCSV(rows){ // rows[0] = headers
+  var q=function(v){return'"'+String(v==null?'':v).replace(/"/g,'""')+'"'};
+  return'\uFEFF'+rows.map(function(r){return r.map(q).join(',')}).join('\r\n')+'\r\n';
+}
+
+function sheetName(s){var n=String(s||'Data').replace(/[\[\]:*?\/\\]/g,' ').replace(/\s+/g,' ').trim().slice(0,31);return n||'Data'}
+
+function toXLSX(rows,name){ // returns Uint8Array
+  var ncol=0;rows.forEach(function(r){if(r.length>ncol)ncol=r.length});
+  var widths=[];for(var c=0;c<ncol;c++){var w=8;rows.forEach(function(r){var l=String(r[c]==null?'':r[c]).length;if(l>w)w=l});widths.push(Math.min(50,w+2))}
+  var sd=rows.map(function(r,ri){
+    var cells='';
+    for(var c=0;c<ncol;c++){
+      var v=r[c]==null?'':String(r[c]),ref=colName(c)+(ri+1);
+      if(v==='')continue;
+      if(ri===0){cells+='<c r="'+ref+'" t="inlineStr" s="1"><is><t xml:space="preserve">'+xmlEsc(v)+'</t></is></c>';continue}
+      var t=typed(v);
+      if(t.t==='n')cells+='<c r="'+ref+'"'+(t.s?' s="'+t.s+'"':'')+'><v>'+t.v+'</v></c>';
+      else cells+='<c r="'+ref+'" t="inlineStr"><is><t xml:space="preserve">'+xmlEsc(v)+'</t></is></c>';
+    }
+    return'<row r="'+(ri+1)+'">'+cells+'</row>';
+  }).join('');
+  var last=colName(Math.max(ncol,1)-1)+Math.max(rows.length,1);
+  var X='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n';
+  var sheet=X+'<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><dimension ref="A1:'+last+'"/>'+
+    '<sheetViews><sheetView workbookViewId="0"><pane ySplit="1" topLeftCell="A2" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews>'+
+    '<sheetFormatPr defaultRowHeight="15"/><cols>'+widths.map(function(w,i){return'<col min="'+(i+1)+'" max="'+(i+1)+'" width="'+w+'" customWidth="1"/>'}).join('')+'</cols>'+
+    '<sheetData>'+sd+'</sheetData><autoFilter ref="A1:'+last+'"/></worksheet>';
+  var styles=X+'<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">'+
+    '<fonts count="2"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><name val="Calibri"/></font></fonts>'+
+    '<fills count="3"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FFE8EEF9"/><bgColor indexed="64"/></patternFill></fill></fills>'+
+    '<borders count="2"><border><left/><right/><top/><bottom/><diagonal/></border><border><left/><right/><top/><bottom style="thin"><color rgb="FF9AA8C4"/></bottom><diagonal/></border></borders>'+
+    '<cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs>'+
+    '<cellXfs count="6"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/>'+
+    '<xf numFmtId="0" fontId="1" fillId="2" borderId="1" xfId="0" applyFont="1" applyFill="1" applyBorder="1"/>'+
+    '<xf numFmtId="9" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/>'+
+    '<xf numFmtId="10" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/>'+
+    '<xf numFmtId="3" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/>'+
+    '<xf numFmtId="4" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/></cellXfs>'+
+    '<cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>';
+  var wb=X+'<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="'+xmlEsc(sheetName(name))+'" sheetId="1" r:id="rId1"/></sheets></workbook>';
+  var wbRels=X+'<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>';
+  var rels=X+'<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>';
+  var ct=X+'<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/>'+
+    '<Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>'+
+    '<Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>'+
+    '<Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>';
+  return zipStore([
+    {name:'[Content_Types].xml',data:enc(ct)},
+    {name:'_rels/.rels',data:enc(rels)},
+    {name:'xl/workbook.xml',data:enc(wb)},
+    {name:'xl/_rels/workbook.xml.rels',data:enc(wbRels)},
+    {name:'xl/styles.xml',data:enc(styles)},
+    {name:'xl/worksheets/sheet1.xml',data:enc(sheet)}
+  ]);
+}
+
+var U={toCSV:toCSV,toXLSX:toXLSX,typed:typed,crc32:crc32,sheetName:sheetName};
+if(typeof module!=='undefined'&&module.exports)module.exports=U;
+if(typeof document==='undefined')return;
+
+/* ---------- browser part ---------- */
+var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
+var say=function(m){try{if(typeof toast==='function'){toast(m);return}}catch(e){}alert(m)};
+var norm=function(s){return String(s).replace(/\s+/g,' ').trim()};
+
+function cellText(td){
+  var c=td.cloneNode(true);
+  var oi=td.querySelectorAll('input,select,textarea'),ci=c.querySelectorAll('input,select,textarea');
+  for(var i=0;i<ci.length;i++){
+    var o=oi[i],e=ci[i],v='',tp=(o.type||'').toLowerCase();
+    if(o.tagName==='SELECT')v=o.selectedIndex>=0?o.options[o.selectedIndex].text:'';
+    else if(tp==='checkbox'||tp==='radio')v=o.checked?'Yes':'No';
+    else if(tp==='hidden'||tp==='button'||tp==='submit')v='';
+    else v=o.value;
+    e.parentNode.replaceChild(document.createTextNode(' '+v+' '),e);
+  }
+  var ob=td.querySelectorAll('button'),cb=c.querySelectorAll('button');
+  for(var j=0;j<cb.length;j++){
+    var b=ob[j],on=/(^|\s)(on|act|active|sel|selected|chk|checked)(\s|$)/.test(b.className)||b.getAttribute('aria-pressed')==='true';
+    if(on&&b.textContent.trim()&&!b.classList.contains('ib'))cb[j].parentNode.replaceChild(document.createTextNode(' '+b.textContent+' '),cb[j]);
+    else cb[j].parentNode.removeChild(cb[j]);
+  }
+  c.querySelectorAll('svg,img,style,script,.xp-skip').forEach(function(n){n.parentNode.removeChild(n)});
+  c.querySelectorAll('br,div,p,li,small,h1,h2,h3,h4,h5,h6').forEach(function(n){n.parentNode.insertBefore(document.createTextNode(' '),n);if(n.nextSibling)n.parentNode.insertBefore(document.createTextNode(' '),n.nextSibling);else n.parentNode.appendChild(document.createTextNode(' '))});
+  return norm(c.textContent);
+}
+
+function rowCells(tr){
+  var out=[];
+  Array.prototype.forEach.call(tr.children,function(c){
+    if(c.tagName!=='TD'&&c.tagName!=='TH')return;
+    var span=Math.max(1,parseInt(c.getAttribute('colspan')||'1',10)||1),t=cellText(c);
+    out.push(t);for(var k=1;k<span;k++)out.push('');
+  });
+  return out;
+}
+
+function visible(tr){try{return getComputedStyle(tr).display!=='none'}catch(e){return true}}
+
+function getData(table){
+  var hr=table.tHead&&table.tHead.rows.length?table.tHead.rows[table.tHead.rows.length-1]:table.rows[0];
+  if(!hr)return null;
+  var head=rowCells(hr),keep=[];
+  head.forEach(function(h,i){if(h!=='')keep.push(i)});
+  if(!keep.length)return null;
+  var body=[];
+  if(table.tHead&&table.tHead.rows.length){
+    Array.prototype.forEach.call(table.tBodies,function(b){Array.prototype.forEach.call(b.rows,function(r){body.push(r)})});
+    if(table.tFoot)Array.prototype.forEach.call(table.tFoot.rows,function(r){body.push(r)});
+  }else{Array.prototype.forEach.call(table.rows,function(r,i){if(i>0)body.push(r)})}
+  var rows=[];
+  body.forEach(function(tr){
+    if(!visible(tr))return;
+    var cells=rowCells(tr);
+    if(tr.children.length===1&&/(^|\s)em(\s|$)/.test(tr.children[0].className||''))return;
+    if(tr.children.length===1&&/^(nothing here|no data|no records|no .* yet|nothing to show)/i.test(cells[0]||''))return;
+    var line=keep.map(function(i){return cells[i]==null?'':cells[i]});
+    if(line.every(function(x){return x===''}))return;
+    rows.push(line);
+  });
+  return{rows:[keep.map(function(i){return head[i]})].concat(rows),count:rows.length};
+}
+
+function schoolName(){
+  try{var d=document.querySelector('#sb .lg > div');if(d&&d.firstChild&&d.firstChild.nodeType===3&&d.firstChild.textContent.trim())return d.firstChild.textContent.trim()}catch(e){}
+  return'';
+}
+function tableTitle(table){
+  var card=table.closest('.card,.mb'),h=card&&card.querySelector('h3'),t=h?norm(h.textContent):'';
+  if(!t){var ti=document.getElementById('ti');t=ti?norm(ti.textContent):''}
+  return t||'Data';
+}
+function pad(n){return n<10?'0'+n:''+n}
+function stamp(){var d=new Date();return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())}
+function fileBase(table){
+  var s=(schoolName()+' '+tableTitle(table)).trim().replace(/&/g,' and ').replace(/[\\\/:*?"<>|]+/g,' ').replace(/\s+/g,'-').replace(/-+/g,'-').replace(/^-|-$/g,'').slice(0,90);
+  return(s||'export')+'-'+stamp();
+}
+
+function download(name,blob){
+  var a=document.createElement('a'),u=URL.createObjectURL(blob);
+  a.href=u;a.download=name;a.style.display='none';document.body.appendChild(a);a.click();
+  setTimeout(function(){URL.revokeObjectURL(u);a.remove()},1500);
+}
+
+function printRows(table,data){
+  var title=tableTitle(table),school=schoolName(),r=data.rows,wide=r[0].length>8;
+  var html='<!DOCTYPE html><html><head><meta charset="utf-8"><title>'+esc((school?school+' - ':'')+title)+'</title><style>'+
+    '@page{size:'+(wide?'landscape':'portrait')+';margin:12mm}*{box-sizing:border-box}body{font:12px/1.4 Arial,Helvetica,sans-serif;color:#111;margin:0}'+
+    'h2{margin:0 0 2px;font-size:18px}h3{margin:0 0 4px;font-size:14px;font-weight:600}p{margin:0 0 10px;color:#555}'+
+    'table{border-collapse:collapse;width:100%}th,td{border:1px solid #888;padding:5px 7px;text-align:left;vertical-align:top;word-break:break-word}'+
+    'th{background:#e8eef9;font-weight:700}thead{display:table-header-group}tr{page-break-inside:avoid}</style></head><body>'+
+    (school?'<h2>'+esc(school)+'</h2><h3>'+esc(title)+'</h3>':'<h2>'+esc(title)+'</h2>')+
+    '<p>Printed on '+esc(new Date().toLocaleString('en',{day:'numeric',month:'short',year:'numeric',hour:'numeric',minute:'2-digit'}))+' &middot; '+data.count+' record'+(data.count==1?'':'s')+'</p>'+
+    '<table><thead><tr>'+r[0].map(function(h){return'<th>'+esc(h)+'</th>'}).join('')+'</tr></thead><tbody>'+
+    r.slice(1).map(function(row){return'<tr>'+row.map(function(v){return'<td>'+esc(v)+'</td>'}).join('')+'</tr>'}).join('')+'</tbody></table></body></html>';
+  var f=document.createElement('iframe');
+  f.setAttribute('aria-hidden','true');f.style.cssText='position:fixed;right:0;bottom:0;width:0;height:0;border:0;visibility:hidden';
+  document.body.appendChild(f);
+  var d=f.contentWindow.document;d.open();d.write(html);d.close();
+  var done=false,go=function(){if(done)return;done=true;try{f.contentWindow.focus();f.contentWindow.print()}catch(e){say('Print could not start in this browser')}setTimeout(function(){f.remove()},60000)};
+  f.onload=function(){setTimeout(go,150)};setTimeout(go,700);
+}
+
+function run(kind,table){
+  var data=getData(table);
+  if(!data||!data.count){say('No data to export');return}
+  var base=fileBase(table);
+  try{
+    if(kind==='csv')download(base+'.csv',new Blob([toCSV(data.rows)],{type:'text/csv;charset=utf-8'}));
+    else if(kind==='xlsx')download(base+'.xlsx',new Blob([toXLSX(data.rows,tableTitle(table))],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}));
+    else if(kind==='print')printRows(table,data);
+    if(kind!=='print')say(data.count+' row'+(data.count==1?'':'s')+' exported');
+  }catch(e){say('Export failed: '+(e&&e.message||e))}
+}
+
+var css='.xpb{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;align-items:center;margin:0 0 8px}'+
+  '.xpb .xpl{font-size:12px;opacity:.65;margin-right:2px}.xpb .bt{margin:0}@media print{.xpb{display:none!important}}';
+var st=document.createElement('style');st.textContent=css;document.head.appendChild(st);
+
+function skip(t){
+  if(t.classList.contains('tt'))return true;               // timetable grids have their own print
+  var card=t.closest('.card');
+  if(card&&card.querySelector('[data-a="savea"]'))return true; // attendance marking form
+  if(t.closest('[data-noxp]'))return true;
+  return false;
+}
+function scan(){
+  document.querySelectorAll('table').forEach(function(t){
+    if(skip(t))return;
+    var w=t.closest('.tw')||t;
+    if(!w.parentNode)return;
+    var p=w.previousElementSibling;
+    if(p&&p.classList&&p.classList.contains('xpb'))return;
+    var bar=document.createElement('div');bar.className='xpb';
+    bar.innerHTML='<span class="xpl">Export</span>'+
+      '<button type="button" class="bt o sm" data-xp="csv" title="Download as CSV">CSV</button>'+
+      '<button type="button" class="bt o sm" data-xp="xlsx" title="Download as Excel">Excel</button>'+
+      '<button type="button" class="bt o sm" data-xp="print" title="Print this table">Print</button>';
+    w.parentNode.insertBefore(bar,w);
+  });
+}
+document.addEventListener('click',function(e){
+  var b=e.target.closest&&e.target.closest('[data-xp]');
+  if(!b||!b.parentNode.classList.contains('xpb'))return;
+  e.preventDefault();e.stopPropagation();
+  var w=b.parentNode.nextElementSibling;if(!w)return;
+  var t=w.tagName==='TABLE'?w:w.querySelector('table');
+  if(t)run(b.dataset.xp,t);
+},true);
+var q=0;
+new MutationObserver(function(){if(!q)q=requestAnimationFrame(function(){q=0;try{scan()}catch(e){}})}).observe(document.documentElement,{childList:true,subtree:true});
+try{scan()}catch(e){}
+})(typeof window!=='undefined'?window:this);
+/* ESMOS: Employee attendance (self check-in with automatic date/time, admin review, edit and filters) */
+(function(){
+if(window.__ESMOS_EATT)return;window.__ESMOS_EATT=1;
+var LB={P:'Present',A:'Absent',L:'Leave',T:'Late'},TC={P:'g',A:'r',L:'a',T:'b'},
+MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
+var pad=function(n){return String(n).padStart(2,'0')};
+var tag=function(v){return v?'<span class="tg '+(TC[v]||'b')+'" style="display:inline-block;margin:0">'+(LB[v]||esc(v))+'</span>':'<span class="mu">-</span>'};
+var wk=function(d){try{return new Date(d+'T00:00:00').toLocaleDateString('en',{weekday:'short'})}catch(e){return''}};
+function ld(){var d=new Date();return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())}
+function lt(){return new Date().toLocaleTimeString('en',{hour:'2-digit',minute:'2-digit'})}
+function isDemo(){try{return !DT||!!(TNT()||{}).demo}catch(e){return false}}
+function EA(){
+  if(!S.eatt){
+    S.eatt={};S.emeta=S.emeta||{};
+    if(isDemo()&&S.staff&&S.staff.length&&S.att&&Object.keys(S.att).length){
+      for(var k=0;k<5;k++){
+        var d=new Date(Date.now()-k*864e5);d=d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+        S.eatt[d]={};S.emeta[d]={};
+        S.staff.forEach(function(s,i){
+          var x=(i*3+k)%9,v=x==0?'A':x==4?'L':(i+k)%5==0?'T':'P';S.eatt[d][s.id]=v;
+          if(v=='P'||v=='T')S.emeta[d][s.id]={t:pad(7+(v=='T'?1:0))+':'+pad(5+((i*7+k*11)%45))+' AM',by:'self'};
+        });
+      }
+    }
+  }
+  S.emeta=S.emeta||{};
+  return S.eatt;
+}
+function EM(){EA();return S.emeta}
+function meta(d,id){return(EM()[d]||{})[id]||{}}
+function setMark(d,id,v,by){
+  var E=EA(),M=EM();E[d]=E[d]||{};M[d]=M[d]||{};
+  if(v){E[d][id]=v;M[d][id]={by:by||'admin'}}else{delete E[d][id];delete M[d][id]}
+}
+function staffList(){return(S.staff||[]).filter(function(s){return s.status=='Active'})}
+function staffBy(id){return(S.staff||[]).find(function(x){return x.id==id})}
+function years(){
+  var y={};y[String(new Date().getFullYear())]=1;y[String(new Date().getFullYear()-1)]=1;
+  Object.keys(EA()).forEach(function(d){y[d.slice(0,4)]=1});
+  return Object.keys(y).sort().reverse();
+}
+function prefix(y,m){return y+(m?'-'+m:'')}
+function cnt(id,pre){
+  var E=EA(),r={P:0,A:0,L:0,T:0,t:0,pc:0};
+  Object.keys(E).forEach(function(d){
+    if(pre&&d.indexOf(pre)!=0)return;
+    var v=E[d][id];if(v&&r[v]!==undefined){r[v]++;r.t++}
+  });
+  r.pc=r.t?Math.round((r.P+r.T)/r.t*100):0;
+  return r;
+}
+function opts(list,sel){return list.map(function(x){return'<option value="'+esc(x[0])+'"'+(String(x[0])==String(sel)?' selected':'')+'>'+esc(x[1])+'</option>'}).join('')}
+function yOpts(sel){return opts(years().map(function(y){return[y,y]}),sel)}
+function mOpts(sel,all){return opts((all?[['','All months']]:[]).concat(MN.map(function(n,i){return[pad(i+1),n]})),sel)}
+function src(m){return m.by=='self'?'<span class="tg g" style="display:inline-block;margin:0">Self</span>':m.by=='admin'?'<span class="tg a" style="display:inline-block;margin:0">Admin</span>':'<span class="mu">-</span>'}
+function periodLabel(y,m){return m?MN[+m-1]+' '+y:'Year '+y}
+
+/* ---------- Admin: Attendance page gets Students / Employees tabs ---------- */
+function adminEmp(){
+  var d=A.d,day=EA()[d]||{},L=staffList(),
+  y=FL.efy||String(new Date().getFullYear()),m=FL.efm===undefined?pad(new Date().getMonth()+1):FL.efm,e=FL.efe||'',fd=FL.efd||'',
+  pre=prefix(y,m),
+  n=function(x){return L.filter(function(s){return day[s.id]==x}).length},
+  mk=function(s,x,l){return'<button class="ap '+(day[s.id]==x?'on '+x:'')+'" data-a="emk" data-k="'+s.id+'" data-id="'+x+'">'+l+'</button>'};
+  var recs=[];
+  Object.keys(EA()).forEach(function(dt){
+    if(fd?dt!=fd:dt.indexOf(pre)!=0)return;
+    Object.keys(S.eatt[dt]).forEach(function(id){
+      var s=staffBy(id);if(!s||(e&&String(s.id)!=String(e)))return;
+      recs.push({d:dt,s:s,v:S.eatt[dt][id],m:meta(dt,id)});
+    });
+  });
+  recs.sort(function(a,b){return b.d.localeCompare(a.d)||String(a.s.name).localeCompare(b.s.name)});
+  var shown=recs.slice(0,200),editMo=fd?fd.slice(0,7):(m?pre:(y+'-'+(d.slice(0,4)==y?d.slice(5,7):'01'))),
+  sumList=e?L.filter(function(s){return String(s.id)==String(e)}):L,
+  label=fd?'Date '+fd:periodLabel(y,m);
+  return'<div class="g4">'+stat('chk','Present',n('P'),'Staff present on '+d,'c-g')+stat('del','Absent',n('A'),'Marked absent','c-r')+stat('tim','Late',n('T'),'Marked late','c-b')+stat('rep','On leave',n('L'),'Approved leave','c-b')+'</div>'+
+  '<div class="card" style="margin-bottom:18px"><div class="tb"><label style="margin:0">Date<input type="date" value="'+d+'" data-c="ad"></label>'+
+  '<button class="bt gh" data-a="eallp" style="margin-left:auto">Mark remaining present</button><button class="bt" data-a="esavea" style="margin-left:0">'+ic('send')+'Save employee attendance</button></div>'+
+  '<div class="tw"><table><thead><tr><th>Employee ID</th><th>Employee</th><th>Role</th><th>Mark</th><th>Time</th><th>Marked by</th></tr></thead><tbody>'+
+  (L.map(function(s){var mt=meta(d,s.id);return'<tr><td>'+esc(s.user||'')+'</td><td>'+esc(s.name)+'</td><td>'+esc(s.role||'')+'</td><td>'+mk(s,'P','Present')+mk(s,'A','Absent')+mk(s,'L','Leave')+mk(s,'T','Late')+'</td><td>'+(mt.t?'<b>'+esc(mt.t)+'</b>':'<span class="mu">-</span>')+'</td><td>'+(day[s.id]?src(mt):'<span class="mu">-</span>')+'</td></tr>'}).join('')||'<tr><td colspan="6" class="em">No active employees. Add staff from Teachers &amp; Staff.</td></tr>')+
+  '</tbody></table></div><p class="mu" style="margin-top:10px">Employees mark their own attendance from the Employee portal. The time is recorded automatically and they cannot change it. You can correct any record here: tap a mark to change it, tap it again to clear it.</p></div>'+
+  '<div class="card" style="margin-bottom:18px"><h3>Attendance records</h3><div class="tb" style="gap:10px;flex-wrap:wrap">'+
+  '<label style="margin:0">Year<select data-c="efy">'+yOpts(y)+'</select></label>'+
+  '<label style="margin:0">Month<select data-c="efm">'+mOpts(m,true)+'</select></label>'+
+  '<label style="margin:0">Employee<select data-c="efe">'+opts([['','All employees']].concat(L.map(function(s){return[s.id,s.name]})),e)+'</select></label>'+
+  '<label style="margin:0">Exact date (optional)<input type="date" value="'+fd+'" data-c="efd"></label></div>'+
+  '<h3 style="margin-top:16px">Summary: '+esc(label)+'</h3><div class="tw"><table><thead><tr><th>Employee</th><th>Role</th><th>Present</th><th>Absent</th><th>Leave</th><th>Late</th><th>Attendance</th><th></th></tr></thead><tbody>'+
+  (sumList.map(function(s){var c=cnt(s.id,fd||pre);return'<tr><td>'+esc(s.name)+'</td><td>'+esc(s.role||'')+'</td><td>'+c.P+'</td><td>'+c.A+'</td><td>'+c.L+'</td><td>'+c.T+'</td><td><b>'+c.pc+'%</b> <span class="mu">of '+c.t+' days</span></td><td><button class="bt gh sm" data-a="eedit" data-k="'+s.id+'" data-id="'+editMo+'">Edit</button></td></tr>'}).join('')||'<tr><td colspan="8" class="em">No employees yet.</td></tr>')+
+  '</tbody></table></div>'+
+  '<h3 style="margin-top:16px">Records: '+esc(label)+' <span class="mu" style="font-weight:400">('+recs.length+')</span></h3><div class="tw"><table><thead><tr><th>Date</th><th>Day</th><th>Employee</th><th>Mark</th><th>Time</th><th>Marked by</th><th></th></tr></thead><tbody>'+
+  (shown.map(function(r){return'<tr><td>'+r.d+'</td><td>'+wk(r.d)+'</td><td>'+esc(r.s.name)+'</td><td>'+tag(r.v)+'</td><td>'+(r.m.t?'<b>'+esc(r.m.t)+'</b>':'<span class="mu">-</span>')+'</td><td>'+src(r.m)+'</td><td><button class="bt gh sm" data-a="eedit" data-k="'+r.s.id+'" data-id="'+r.d.slice(0,7)+'">Edit</button></td></tr>'}).join('')||'<tr><td colspan="7" class="em">No attendance records for this selection.</td></tr>')+
+  '</tbody></table></div>'+(recs.length>shown.length?'<p class="mu" style="margin-top:8px">Showing the latest 200 records. Narrow the filters to see more.</p>':'')+'</div>';
+}
+var _attP=PG.attendance;
+PG.attendance=function(){
+  var u=SES();
+  if(u.role!='admin')return _attP();
+  FL.atab=FL.atab||'stu';
+  var tabs='<div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap"><button class="bt'+(FL.atab=='stu'?'':' gh')+'" data-a="atab" data-k="stu">Students</button><button class="bt'+(FL.atab=='emp'?'':' gh')+'" data-a="atab" data-k="emp">Employees</button></div>';
+  return tabs+(FL.atab=='emp'?adminEmp():_attP());
+};
+H.atab=function(k){FL.atab=k;draw()};
+H.emk=function(k,id){
+  var cur=(EA()[A.d]||{})[k];
+  setMark(A.d,k,cur==id?'':id,'admin');
+  save();draw();
+};
+H.eallp=function(){
+  var E=EA();E[A.d]=E[A.d]||{};
+  staffList().forEach(function(s){if(!E[A.d][s.id])setMark(A.d,s.id,'P','admin')});
+  save();draw();
+};
+H.esavea=function(){
+  lg('Employee attendance saved: '+A.d);save();toast('Employee attendance saved');draw();
+};
+CH.efy=function(v){FL.efy=v;draw()};
+CH.efm=function(v){FL.efm=v;draw()};
+CH.efe=function(v){FL.efe=v;draw()};
+CH.efd=function(v){FL.efd=v;draw()};
+
+/* Edit any day of a month for one employee */
+H.eedit=function(k,mo){
+  var s=staffBy(k);if(!s)return;
+  mo=/^\d{4}-\d{2}$/.test(mo||'')?mo:A.d.slice(0,7);
+  var Y=+mo.slice(0,4),M=+mo.slice(5,7),nd=new Date(Y,M,0).getDate(),E=EA(),rows='';
+  for(var i=1;i<=nd;i++){
+    var ds=mo+'-'+pad(i),v=(E[ds]||{})[s.id]||'',mt=meta(ds,s.id);
+    rows+='<div class="cb" style="gap:8px;flex-wrap:wrap"><span style="min-width:104px"><b>'+ds+'</b> <span class="mu">'+wk(ds)+'</span></span><select name="d'+ds+'" style="flex:1;min-width:120px"><option value="">Not marked</option>'+
+    ['P','A','L','T'].map(function(x){return'<option value="'+x+'"'+(v==x?' selected':'')+'>'+LB[x]+'</option>'}).join('')+'</select><span class="mu" style="min-width:68px;text-align:right">'+(mt.t?esc(mt.t):'')+'</span></div>';
+  }
+  var m=$('#md');m.hidden=false;
+  m.innerHTML='<form class="mb"><h3>Edit attendance: '+esc(s.name)+'</h3><p class="mu">'+esc(s.role||'')+' &middot; change any day, then save. Changed days lose the self-marked time and show as Admin.</p>'+
+  '<label>Month<input type="month" name="mo" value="'+mo+'"></label>'+
+  '<div style="max-height:50vh;overflow:auto;margin:8px 0">'+rows+'</div>'+
+  '<div class="ra"><button type="button" class="bt gh" data-a="close">Cancel</button><button class="bt">Save changes</button></div></form>';
+  var f=m.querySelector('form');
+  f.querySelector('[name=mo]').onchange=function(e){if(e.target.value)H.eedit(k,e.target.value)};
+  f.onsubmit=function(e){
+    e.preventDefault();
+    var fd=new FormData(f),E2=EA(),ch=0;
+    for(var i=1;i<=nd;i++){
+      var ds=mo+'-'+pad(i),v=fd.get('d'+ds)||'',old=(E2[ds]||{})[s.id]||'';
+      if(v==old)continue;ch++;setMark(ds,s.id,v,'admin');
+    }
+    m.hidden=true;
+    if(ch){lg('Employee attendance edited: '+s.name);save()}
+    toast(ch?'Attendance updated ('+ch+' day'+(ch>1?'s':'')+')':'No changes');draw();
+  };
+};
+
+/* ---------- Employee portal: mark own attendance (date and time are automatic) ---------- */
+function mine(){var u=SES();return(S.staff||[]).find(function(x){return x.id==u.id})||null}
+H.eself=function(){
+  var s=mine();if(!s)return;
+  var d=ld(),E=EA();
+  if(E[d]&&E[d][s.id]){toast('Today\'s attendance is already marked');draw();return}
+  var t=lt();setMark(d,s.id,'P','self');EM()[d][s.id].t=t;
+  lg('Attendance marked by '+s.name+' at '+t);save();toast('Attendance marked at '+t);draw();
+};
+function myCard(s,pre,label){
+  var all=cnt(s.id,pre);
+  return'<div class="card"><h3>Attendance</h3><div class="pb"><div style="width:'+all.pc+'%"></div></div><b>'+all.pc+'%</b> over '+all.t+' days'+
+  '<p class="mu" style="margin-top:8px">'+esc(label)+': '+all.P+' present, '+all.A+' absent, '+all.L+' leave, '+all.T+' late</p></div>';
+}
+CH.efmy=function(v){FL.emy=v;draw()};
+CH.efmm=function(v){FL.emm=v;draw()};
+PG.myatt=function(){
+  var s=mine();if(!s)return'<div class="card em">Account not found.</div>';
+  var E=EA(),td=ld(),now=E[td]&&E[td][s.id],mt=meta(td,s.id),
+  y=FL.emy||td.slice(0,4),m=FL.emm===undefined?td.slice(5,7):FL.emm,pre=prefix(y,m),c=cnt(s.id,pre),
+  recs=Object.keys(E).filter(function(d){return d.indexOf(pre)==0&&E[d][s.id]}).sort().reverse().slice(0,200),
+  dl=new Date().toLocaleDateString('en',{weekday:'long',day:'numeric',month:'long',year:'numeric'}),
+  tdh=now?'<p style="margin:8px 0">Today: '+tag(now)+(mt.t?' at <b>'+esc(mt.t)+'</b>':'')+'</p><p class="mu">Your attendance for today is recorded and sent to the admin.</p>':
+  '<p class="mu" style="margin:6px 0 12px">The date and time are set automatically when you press the button. You cannot change them. Your record goes to the admin.</p><button class="bt" data-a="eself">'+ic('chk')+'Mark my attendance now</button>';
+  return'<div class="hero"><div><h2>My attendance</h2><p>'+esc(s.name)+' - '+esc(s.role||'')+'</p></div></div>'+
+  '<div class="card" style="margin-bottom:14px"><h3>Mark today\'s attendance</h3><p style="margin-top:4px"><b>'+esc(dl)+'</b> &middot; <b id="eclk">'+lt()+'</b></p>'+tdh+'</div>'+
+  '<div class="g4">'+stat('chk','Present',c.P,periodLabel(y,m),'c-g')+stat('del','Absent',c.A,periodLabel(y,m),'c-r')+stat('tim','Late',c.T,periodLabel(y,m),'c-b')+stat('rep','On leave',c.L,periodLabel(y,m),'c-b')+'</div>'+
+  '<div class="two">'+myCard(s,pre,periodLabel(y,m))+'<div class="card"><h3>My records</h3><div class="tb" style="gap:10px;flex-wrap:wrap;margin-bottom:8px"><label style="margin:0">Year<select data-c="efmy">'+yOpts(y)+'</select></label><label style="margin:0">Month<select data-c="efmm">'+mOpts(m,true)+'</select></label></div>'+
+  (recs.map(function(d){var q=meta(d,s.id);return'<div class="cb"><span>'+d+' <span class="mu">'+wk(d)+'</span>'+(q.t?' <span class="mu">&middot; '+esc(q.t)+'</span>':'')+'</span><span style="margin-left:auto">'+tag(E[d][s.id])+'</span></div>'}).join('')||'<p class="em">No attendance records for this selection.</p>')+
+  '</div></div>';
+};
+setInterval(function(){var c=document.getElementById('eclk');if(c)c.textContent=lt()},15000);
+var _me=PG.me;
+PG.me=function(){
+  var h=_me(),s=mine();
+  if(!s||typeof h!='string')return h;
+  var td=ld(),now=(EA()[td]||{})[s.id];
+  return h+'<div style="margin-top:12px">'+myCard(s,td.slice(0,7),'This month')+(now?'':'<div style="margin-top:12px"><a class="bt" href="#myatt">Mark my attendance</a></div>')+'</div>';
+};
+var _E=EXE;
+EXE=function(r){
+  var a=_E(r);
+  if(!a.some(function(x){return x[0]=='myatt'}))a.splice(1,0,['myatt','att','My Attendance','Mark and view your attendance']);
+  return a;
+};
+try{if(SES()&&SES().role)draw()}catch(e){}
+})();

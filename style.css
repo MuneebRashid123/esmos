@@ -2897,3 +2897,24 @@ body.stp-open{overflow:hidden}
 .abn .abp a{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
 .abn .abp a svg{flex:none;margin:0}
 .abn .abp a span{display:block;width:100%;text-align:center;line-height:1.1}
+
+/* ===== Admin dashboard: Students by class ===== */
+.cls{margin-bottom:14px}
+.cls .rc-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.cls .rc-h h3{margin:0}
+.cls-s{font-size:13px;color:var(--mu);margin:0 0 14px}
+.cls-s b{color:var(--tx);font-weight:700}
+.cls-g{display:grid;grid-template-columns:1fr;gap:10px 28px}
+.cls-r{display:grid;grid-template-columns:72px minmax(0,1fr) 34px;align-items:center;gap:12px;min-height:28px}
+.cls-n{font-size:13.5px;font-weight:500;color:var(--tx);white-space:nowrap;text-align:left}
+.cls-b{display:block;height:8px;border-radius:99px;background:color-mix(in srgb,var(--b) 10%,#fff);overflow:hidden}
+.cls-b i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#5ea5ff,var(--b));min-width:0}
+.cls-c{font-size:14px;font-weight:600;color:var(--tx);text-align:right;font-variant-numeric:tabular-nums}
+.cls-r.z .cls-n,.cls-r.z .cls-c{color:var(--mu);font-weight:400}
+.cls-r.z .cls-b i{width:0!important}
+@media(min-width:700px){.cls-g{grid-template-columns:1fr 1fr}}
+
+/* ESMOS mobile fix: long button labels wrap instead of running off the card */
+.app .bt,.ow .bt,.mb .bt{max-width:100%;white-space:normal;text-align:center;justify-content:center;line-height:1.3}
+.app .tb .bt,.app .hero .bt{white-space:normal}
+.app #v .card,.app #v .tw{max-width:100%}
