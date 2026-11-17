@@ -2829,3 +2829,71 @@ body.stp-open{overflow:hidden}
   .app .bt.sm{min-height:34px;padding:6px 14px}
   .app .bt:hover,.app .bt.gh:hover{transform:none;filter:none}
 }
+
+/* ===== Chart value bubbles: the old ".pc" card class was leaking into chart numbers ===== */
+.cnt.pc,.ac .pc,.ac-val.pc{background:none!important;padding:0!important;border-radius:0!important;box-shadow:none!important;transition:none;min-height:0!important}
+.cnt.pc:hover,.ac .pc:hover{transform:none!important;box-shadow:none!important}
+.ac-c b.cnt.pc,.ac-ph b.cnt.pc,.ac-val.cnt.pc{display:block}
+.ac-c b u.cnt.pc{display:inline;margin-left:4px}
+.ac-ph b.cnt.pc{display:inline-block}
+.ac-val{line-height:1.2;white-space:nowrap}
+.ac-sc{padding-bottom:12px;scrollbar-width:thin}
+.ac-w{padding-right:10px}
+@media(max-width:600px){
+  .ac-val{font-size:12px!important;font-weight:700!important}
+  .ac-c{padding:10px 12px!important}
+  .ac-c b{font-size:18px!important;font-weight:600!important}
+}
+
+/* ===== WhatsApp Send pill: icon was green on green (invisible) -> white, tidy size ===== */
+.wab{min-height:34px;padding:0 14px!important;font-size:13px!important;font-weight:600!important;gap:7px!important;border-radius:999px!important;line-height:1;box-shadow:0 2px 6px rgba(37,211,102,.3)}
+.wab .i{filter:brightness(0) invert(1);width:16px!important;height:16px!important;flex:none}
+.wab:hover{transform:none;box-shadow:0 2px 6px rgba(37,211,102,.3)}
+
+/* ===== Card action buttons: equal width (Salary slip = Pay) ===== */
+@media(max-width:820px){
+  .app table.rt td.ac .bt,.app table.rt td.ac .bt.sm{flex:1 1 0!important;min-width:max-content}
+}
+
+/* ===== Global button system (mobile): one size, one radius, one weight for every variant ===== */
+@media(max-width:820px){
+  .app .bt,.app .bt.blue,.app .bt.wa,.app .bt.o,.app .bt.gh{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    min-height:42px;padding:0 18px;border-radius:12px;
+    font-size:14px;font-weight:600;letter-spacing:0;line-height:1.1;
+    white-space:nowrap;text-align:center}
+  .app .bt.sm,.app .bt.gh.sm,.app .bt.o.sm{min-height:36px;padding:0 14px;font-size:13px;border-radius:12px}
+  .app .bt svg,.app .bt .i{width:17px;height:17px;flex:none}
+  .app .bt.dg{background:rgba(225,29,72,.08);color:var(--r);box-shadow:none}
+  .app .bt:disabled,.app .bt[disabled]{opacity:.45;box-shadow:none!important;cursor:not-allowed;filter:none}
+  .app .wab{border-radius:12px!important;min-height:36px}
+  /* modal / form button rows: Cancel + Save share the width equally */
+  .app .ra{display:flex;gap:10px;justify-content:stretch}
+  .app .ra .bt{flex:1 1 0;min-width:0}
+  /* buttons that sit alone inside a card or form span the full width */
+  .app .card>.bt:only-child,.app form>.bt{width:100%}
+  /* Previous / Page x of y / Next */
+  .app div:has(>.bt[data-a="lpg"]){display:grid!important;grid-template-columns:minmax(88px,auto) 1fr minmax(88px,auto);gap:10px!important;align-items:center;justify-content:stretch!important}
+  .app div:has(>.bt[data-a="lpg"])>.bt{width:100%;min-height:38px}
+  .app div:has(>.bt[data-a="lpg"])>span{text-align:center;font-size:12.5px;line-height:1.3;color:var(--mu)}
+  .app .bt.o:disabled{border-color:var(--ln);color:var(--mu);background:#fff}
+  /* card header: "Class 1" style tags never wrap */
+  .app table.rt td.stt{white-space:nowrap}
+  /* 4+ buttons in a card (Save, Generate, WhatsApp, Copy): tidy 2 x 2 grid */
+  .app table.rt td.ac:has(>.bt:nth-child(4)):not(:has(.ib)){display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px!important}
+  .app table.rt td.ac:has(>.bt:nth-child(4)):not(:has(.ib))>.bt{width:100%;min-width:0}
+}
+
+/* ===== Button groups: equal columns, equal heights (no :has needed, works on every browser) ===== */
+@media(max-width:820px){
+  .app td.ac.ac4{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px!important;align-items:stretch}
+  .app td.ac.ac4>.bt{width:100%!important;min-width:0!important;margin:0!important;min-height:40px!important;padding:0 10px!important;justify-content:center;text-align:center}
+  .app .pgr{display:grid!important;grid-template-columns:minmax(88px,auto) 1fr minmax(88px,auto);gap:10px!important;align-items:center;justify-content:stretch!important}
+  .app .pgr>.bt{width:100%;min-height:38px}
+  .app .pgr>span{text-align:center;font-size:12.5px;line-height:1.3;color:var(--mu)}
+}
+
+/* ===== Bottom nav: icon + label always centred and on the same line across all tabs ===== */
+.abn .abp a{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.abn .abp a svg{flex:none;margin:0}
+.abn .abp a span{display:block;width:100%;text-align:center;line-height:1.1}

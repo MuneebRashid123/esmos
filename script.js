@@ -545,7 +545,7 @@ $('#sb').innerHTML=`<div class="lg"><i>${ic('cap')}</i><div>${esc(S.set.name)}<s
 $('#ti').textContent=m[2];$('#su').textContent=m[3];$('#dt').textContent=new Date().toLocaleDateString('en',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
 $('#v').innerHTML=PG[m[0]]?PG[m[0]]():crud(k);if($('#v').classList.contains('fx'))countUp();try{ABN(L,m)}catch(e){}}
 function ABN(L,m){let n=document.getElementById('abn');if(!n){n=document.createElement('nav');n.id='abn';n.className='abn';document.querySelector('.app').appendChild(n);document.addEventListener('click',e=>{const b=$('#sb');if(b&&b.classList.contains('open')&&!e.target.closest('#sb')&&!e.target.closest('[data-a=menu]'))b.classList.remove('open')})}
-const sb=$('#sb');sb&&sb.classList.remove('open');const k=L.length>5?4:L.length,v=L.slice(0,k),lb=x=>x[0]=='announce'?'Notices':(x[0]=='dashboard'||x[0]=='me'||x[0]=='student'||(x[0]=='parents'&&SES().role=='parent'))?'Home':x[2].split(/[ &,]/)[0];
+const sb=$('#sb');sb&&sb.classList.remove('open');const k=L.length>5?4:L.length,v=L.slice(0,k),lb=x=>x[0]=='announce'?'Notices':(x[0]=='dashboard'||x[0]=='me'||x[0]=='student'||(x[0]=='parents'&&SES().role=='parent'))?'Home':x[0]=='mytt'?'Timetable':((w)=>w[0]=='My'&&w[1]?w[1]:w[0])(x[2].split(/[ &,]/).filter(Boolean));
 n.innerHTML='<div class="abp">'+v.map(x=>`<a href="#${x[0]}" class="${x[0]==m[0]?'on':''}">${ic(x[1])}<span>${lb(x)}</span></a>`).join('')+'</div>'+(L.length>5?`<button type="button" data-a="menu" aria-label="More" class="${v.some(x=>x[0]==m[0])?'':'on'}">${ic('dots')}<span>More</span></button>`:'')}
 function countUp0(){document.querySelectorAll('.st .n').forEach(e=>{const m=e.textContent.match(/^(Rs )?([\d,]+)$/);if(!m)return;const v=+m[2].replace(/,/g,''),p=m[1]||'',s=performance.now();(function f(t){const k=Math.min(1,(t-s)/900);e.textContent=p+Math.round(v*(1-Math.pow(1-k,3))).toLocaleString('en');if(k<1)requestAnimationFrame(f)})(s)})}
 function countUp(){countUp0();try{ANIMN()}catch(e){}}
@@ -1155,3 +1155,5 @@ if(typeof lgin=='function'){const _l=lgin;lgin=function(){const r=_l.apply(this,
   }
 }catch(e){}return r}}
 })();
+
+;(function(){let q=0;const run=()=>{q=0;try{document.querySelectorAll('td.ac').forEach(td=>{const n=td.querySelectorAll(':scope>.bt').length,ib=!!td.querySelector(':scope>.ib');td.classList.toggle('ac4',n>=4&&!ib)});document.querySelectorAll('[data-a="lpg"]').forEach(b=>{const p=b.parentNode;if(p&&!p.classList.contains('pgr'))p.classList.add('pgr')})}catch(e){}};new MutationObserver(()=>{if(!q)q=requestAnimationFrame(run)}).observe(document.documentElement,{childList:true,subtree:true});run()})();
