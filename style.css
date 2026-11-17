@@ -2755,3 +2755,77 @@ body.stp-open{overflow:hidden}
 
 #lgn .pq-su{font-size:21px!important;font-weight:700!important;line-height:1!important}
 @media(max-width:700px){#lgn .pq-su{font-size:19px!important}}
+
+/* ===== Stat cards spacing fix: icon / number / pill ab chipakte nahi ===== */
+.app .kp,.app .dsh .kp,.dsh .kp,.ow .kp{gap:14px!important;padding:16px 16px 15px!important;min-height:132px;justify-content:flex-start}
+.app .dsh .kp{padding:16px 14px 15px 18px!important}
+.app .kp-h,.dsh .kp-h,.ow .kp-h{margin-bottom:4px;gap:12px!important;align-items:center}
+.app .kp-i,.dsh .kp-i{width:38px;height:38px;border-radius:12px}
+.app .kp-m,.dsh .kp-m{margin:2px 0 0;padding:0}
+.app .kp-n,.app .dsh .kp-n,.dsh .kp-n{line-height:1.2!important;margin-top:2px;display:flex;align-items:baseline;gap:4px}
+.app .kp-n small,.dsh .kp-n small{margin-right:0!important}
+.app .kp-b,.app .dsh .kp-b,.dsh .kp-b{margin-top:6px!important;padding:5px 12px!important}
+@media(max-width:820px){
+  .app .kp,.app .dsh .kp{gap:12px!important;padding:14px 13px 13px 15px!important;min-height:118px}
+  .app .kp-h{gap:10px!important;margin-bottom:2px}
+  .app .kp-i{width:34px;height:34px}
+  .app .kp-b,.app .dsh .kp-b{margin-top:4px!important}
+}
+
+/* ===== Mobile app-style stat cards (light weight, compact, clean) ===== */
+@media(max-width:820px){
+  .app .g4,.app .dsh .g4{gap:10px!important}
+  .app .kp,.app .dsh .kp{gap:10px!important;padding:13px 13px 12px!important;min-height:0!important;border-radius:18px!important;box-shadow:0 2px 10px rgba(30,58,138,.07)!important}
+  .app .kp:hover,.app .dsh .kp:hover,.ow .kp:hover{transform:none!important;box-shadow:0 2px 10px rgba(30,58,138,.07)!important}
+  .app .kp:hover .kp-n,.ow .kp:hover .kp-n{transform:none!important}
+  .app .kp-h,.app .dsh .kp-h{gap:9px!important;margin-bottom:0!important}
+  .app .kp-i,.app .dsh .kp-i{width:30px!important;height:30px!important;border-radius:10px!important}
+  .app .kp-i svg,.app .dsh .kp-i svg{width:16px!important;height:16px!important;stroke-width:1.8!important}
+  .app .kp-l,.app .dsh .kp-l{font-size:12px!important;font-weight:500!important;letter-spacing:0}
+  .app .kp-n,.app .dsh .kp-n{font-size:22px!important;font-weight:600!important;letter-spacing:-.01em!important;line-height:1.15!important;margin-top:0!important}
+  .app .kp-n small,.app .dsh .kp-n small{font-size:11px!important;font-weight:500!important;opacity:.6}
+  .app .kp-b,.app .dsh .kp-b{font-size:10.5px!important;font-weight:500!important;padding:4px 10px!important;margin-top:2px!important}
+}
+
+/* ===== Revenue hero tiles: bigger, readable numbers on mobile ===== */
+.app .dsh .rvh .rvh-t b em{font-style:normal;font-size:.62em;font-weight:500;opacity:.75;margin-left:1px}
+@media(max-width:820px){
+  .app .dsh .rvh .rvh-t{min-height:96px!important;padding:12px 13px!important}
+  .app .dsh .rvh .rvh-t i{font-size:12.5px!important;font-weight:500}
+  .app .dsh .rvh .rvh-t b{flex-direction:column!important;align-items:flex-start!important;gap:1px!important;font-size:22px!important;font-weight:600!important;line-height:1.15!important;letter-spacing:-.01em}
+  @supports (width:1cqw){.app .dsh .rvh .rvh-t b{font-size:min(22px,18.5cqw)!important}}
+  .app .dsh .rvh .rvh-t b small{font-size:10.5px!important;font-weight:500!important;letter-spacing:.04em;opacity:.8}
+}
+
+/* ===== Toolbar buttons: text never squeezes into 3 lines (e.g. "Save and alert parents") ===== */
+.app .tb>.bt{white-space:nowrap!important;min-width:max-content;max-width:100%}
+.app .tb>.bt svg{flex:none}
+@media(max-width:820px){
+  .app .tb>.bt[data-a="savea"],.app .tb>.bt[data-a="allp"]{flex:1 1 100%!important;min-height:48px;justify-content:center;font-size:14px!important}
+  .app .tb>.bt[data-a="allp"]{order:3}
+  .app .tb>.bt[data-a="savea"]{order:4}
+}
+
+/* ===== Mobile: aligned card header + light, even action buttons ===== */
+@media(max-width:820px){
+  /* 1) Card header: name and status badge on ONE line, same vertical centre, badge right edge = content edge */
+  .app table.rt tr{align-items:start}
+  .app table.rt td.ttl{grid-column:1/-1!important;grid-row:1;align-self:center;display:flex;align-items:center;min-height:28px;line-height:1.25;padding-right:104px!important;text-align:left}
+  .app table.rt td.stt{position:static!important;grid-column:1/-1!important;grid-row:1;justify-self:end;align-self:center;margin:0!important;z-index:1;text-align:right;line-height:1}
+  .app table.rt td.stt .bd{display:inline-flex;align-items:center;white-space:nowrap}
+  .app table.rt td[data-l]{text-align:left}
+  .app table.rt td[data-l]::before{text-align:left}
+
+  /* 2) Action buttons inside cards: lighter, equal height, same left edge as the text */
+  .app table.rt td.ac{display:flex!important;flex-wrap:wrap;justify-content:flex-start!important;align-items:center;gap:8px!important;text-align:left}
+  .app table.rt td.ac .bt,.app table.rt td.ac .bt.sm{flex:1 1 auto;justify-content:center;min-height:36px!important;padding:0 14px!important;font-size:13px!important;font-weight:600!important;letter-spacing:0;line-height:1;border-radius:12px!important;box-shadow:0 2px 6px color-mix(in srgb,var(--b) 20%,transparent)!important}
+  .app table.rt td.ac .bt.gh,.app table.rt td.ac .bt.o{box-shadow:none!important}
+  .app table.rt td.ac .bt::after{display:none!important}
+  .app table.rt td.ac .ib{flex:none;width:36px;height:36px;margin:0}
+
+  /* 3) Every button in the app: lighter weight and shadow, no jumping on touch */
+  .app .bt{font-weight:600;letter-spacing:0;box-shadow:0 3px 9px color-mix(in srgb,var(--b) 22%,transparent),inset 0 1px 0 rgba(255,255,255,.25)}
+  .app .bt.gh{box-shadow:none}
+  .app .bt.sm{min-height:34px;padding:6px 14px}
+  .app .bt:hover,.app .bt.gh:hover{transform:none;filter:none}
+}
