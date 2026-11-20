@@ -3226,3 +3226,168 @@ html body .rce .rce-s1.on{color:#f59e0b;background:#fff8e6;border-color:#fcd34d}
 .ow .sa2{gap:7px!important}
 }
 
+/* ===== ESMOS: Students page - class-wise sections, app view ===== */
+.cw-kp{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.cw-kp>div{padding:11px 8px;text-align:center;background:linear-gradient(135deg,#eef4ff,#e3edff);border:1px solid var(--ln);border-radius:16px;min-width:0}
+.cw-kp b{display:block;font-size:22px;line-height:1.15;color:#14336f}
+.cw-kp span{display:block;margin-top:2px;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mu)}
+.cw-ch{display:flex;gap:8px;flex-wrap:nowrap!important;overflow-x:auto;max-width:100%;margin:0 0 12px;padding:2px;scrollbar-width:none}
+.cw-ch::-webkit-scrollbar{display:none}
+.cw-ch .cp{flex:none;white-space:nowrap;padding:7px 15px;font-weight:600}
+.cw-bar{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:6px 2px 10px}
+.cw-bar b{font-size:15px;color:var(--tx)}
+.cw-bar span{display:flex;gap:6px}
+html body .cw-bar button{margin:0;padding:6px 12px;border:0;border-radius:999px;background:#eef3ff;color:#1d4ed8;font-size:12px;font-weight:600;box-shadow:none;cursor:pointer}
+.cw-list{display:flex;flex-direction:column;gap:12px}
+.cw-sec{background:#fff;border:1px solid var(--ln);border-radius:20px;overflow:hidden;box-shadow:0 6px 18px rgba(30,64,175,.06)}
+html body .cw-h{display:flex;align-items:center;gap:12px;width:100%;box-sizing:border-box;margin:0;padding:12px 14px;border:0;border-radius:0;background:linear-gradient(135deg,#f3f7ff,#e9f1ff);color:inherit;font:inherit;text-align:left;box-shadow:none;cursor:pointer}
+.cw-ic{flex:none;width:46px;height:46px;border-radius:15px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;background:linear-gradient(135deg,#3b82f6,#1d4ed8);line-height:1}
+.cw-ic i{font-style:normal;font-size:17px;font-weight:800}
+.cw-ic em{font-style:normal;font-size:10px;font-weight:700;margin-top:2px;opacity:.9}
+.cw-t{flex:1;min-width:0}
+.cw-t b{display:block;font-size:16px;color:var(--tx)}
+.cw-t small{display:block;margin-top:2px;font-size:12.5px;color:var(--mu)}
+.cw-chev{flex:none;width:20px;height:20px;color:#1d4ed8;transition:transform .25s}
+.cw-sec.open .cw-chev{transform:rotate(180deg)}
+.cw-b{display:none;padding:12px}
+.cw-sec.open .cw-b{display:block}
+.cw-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
+.cw-card{padding:12px;background:#fff;border:1px solid var(--ln);border-radius:16px;min-width:0}
+.cw-top{display:flex;align-items:center;gap:11px}
+.cw-av{flex:none;width:42px;height:42px;border-radius:14px;display:grid;place-items:center;color:#fff;font-weight:800;font-size:17px}
+.cw-m{flex:1;min-width:0}
+.cw-n{display:block;font-size:15px;color:var(--tx);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cw-m small{display:block;margin-top:1px;font-size:12px;color:var(--mu)}
+.cw-bt{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:10px;padding-top:10px;border-top:1px dashed var(--ln)}
+.cw-g{min-width:0;display:flex;flex-direction:column;gap:1px;font-size:13px}
+.cw-g small{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mu)}
+.cw-g span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cw-g a{color:#1d4ed8;font-weight:600;text-decoration:none}
+.cw-a{display:flex;align-items:center;gap:6px;flex:none}
+html body .cw-a .bt{margin:0;height:34px;padding:0 12px;font-size:12.5px;border-radius:12px}
+.cw-a .ib{margin:0}
+.cw-em{padding:24px;text-align:center}
+@media(max-width:820px){.cw-grid{grid-template-columns:1fr}.cw-b{padding:10px}}
+
+/* ===== ESMOS: WhatsApp reminders - chat-style cards ===== */
+.wm-kp{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.wm-kp>div{padding:11px 8px;text-align:center;background:linear-gradient(135deg,#eef4ff,#e3edff);border:1px solid var(--ln);border-radius:16px;min-width:0}
+.wm-kp>div.q{background:linear-gradient(135deg,#fff7e6,#ffefcc);border-color:#fde3a7}
+.wm-kp>div.ok{background:linear-gradient(135deg,#e9fbef,#d6f6e1);border-color:#b9ecc9}
+.wm-kp b{display:block;font-size:22px;line-height:1.15;color:#14336f}
+.wm-kp .q b{color:#b45309}.wm-kp .ok b{color:#137536}
+.wm-kp span{display:block;margin-top:2px;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mu)}
+.wm-ch{display:flex;gap:8px;flex-wrap:nowrap!important;overflow-x:auto;max-width:100%;margin:0 0 14px;padding:2px;scrollbar-width:none}
+.wm-ch::-webkit-scrollbar{display:none}
+.wm-ch .cp{flex:none;white-space:nowrap;padding:7px 15px;font-weight:600}
+.wm-ch .cp em{font-style:normal;margin-left:4px;padding:1px 7px;border-radius:999px;background:rgba(29,78,216,.1);font-size:11.5px}
+.wm-ch .cp.on em{background:rgba(255,255,255,.25)}
+.wm-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:12px}
+.wm-card{position:relative;padding:14px 14px 14px 18px;background:#fff;border:1px solid var(--ln);border-radius:20px;box-shadow:0 6px 18px rgba(30,64,175,.06);overflow:hidden;min-width:0}
+.wm-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:#94a3b8}
+.wm-card.q::before{background:linear-gradient(#fbbf24,#f59e0b)}
+.wm-card.ok::before{background:linear-gradient(#34d399,#16a34a)}
+.wm-card.bad::before{background:linear-gradient(#f87171,#dc2626)}
+.wm-top{display:flex;align-items:center;gap:11px}
+.wm-av{flex:none;width:42px;height:42px;border-radius:14px;display:grid;place-items:center;color:#fff;font-weight:800;font-size:17px;background:linear-gradient(135deg,#25d366,#128c7e)}
+.wm-m{flex:1;min-width:0}
+.wm-n{display:block;font-size:15.5px;color:var(--tx);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wm-m small{display:block;margin-top:1px;font-size:12.5px;color:var(--mu)}
+.wm-meta{display:flex;flex-wrap:wrap;gap:6px;margin:11px 0 10px}
+.wm-chip{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:999px;font-size:11.5px;font-weight:600;background:#f1f5fb;color:#475569}
+.wm-chip i{width:6px;height:6px;border-radius:50%;background:#94a3b8}
+.wm-p{background:#eef3ff;color:#1d4ed8}
+.wm-bub{position:relative;padding:10px 13px;border-radius:4px 16px 16px 16px;background:#e7fbd9;color:#1f2d1f;font-size:14px;line-height:1.5;overflow-wrap:anywhere;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden}
+.wm-bub.open{-webkit-line-clamp:unset;display:block}
+.wm-more{cursor:pointer}
+.wm-act{display:flex;gap:8px;margin-top:12px}
+html body .wm-act .wab{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;height:42px;margin:0;padding:0 14px;border-radius:14px;font-size:14.5px;font-weight:700}
+.wm-act .wab svg{width:19px;height:19px}
+html body .wm-act .wm-ed{flex:none;display:inline-flex;align-items:center;justify-content:center;gap:6px;height:42px;margin:0;padding:0 16px;border:1px solid #cddbfb;border-radius:14px;background:#eef3ff;color:#1d4ed8;font-size:14px;font-weight:600;box-shadow:none;cursor:pointer}
+.wm-act .wm-ed svg{width:16px;height:16px}
+.wm-em{grid-column:1/-1;padding:28px 16px;text-align:center;border:1px dashed var(--ln);border-radius:20px}
+.wm-em b{display:block;font-size:15px;color:var(--tx)}
+.wm-em span{display:block;margin-top:4px;font-size:13px;color:var(--mu)}
+@media(max-width:820px){.wm-list{grid-template-columns:1fr}}
+
+/* ===== ESMOS: Fee Management - class-wise records, app view ===== */
+.fq-kp{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fq-kp>div{padding:12px 14px;border-radius:16px;border:1px solid var(--ln);min-width:0}
+.fq-kp .ok{background:linear-gradient(135deg,#e9fbef,#d6f6e1);border-color:#b9ecc9}
+.fq-kp .bad{background:linear-gradient(135deg,#fff1f2,#ffe0e4);border-color:#fbc4cc}
+.fq-kp span{display:block;font-size:10.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--mu)}
+.fq-kp b{display:block;margin-top:2px;font-size:19px;line-height:1.2;overflow-wrap:anywhere}
+.fq-kp .ok b{color:#137536}.fq-kp .bad b{color:#be123c}
+.fq-ov{margin:12px 0 14px}
+.fq-ov small{display:block;margin-top:6px;font-size:12.5px;color:var(--mu)}
+.fq-pb{height:8px;border-radius:999px;background:#e4ecfb;overflow:hidden}
+.fq-pb i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#3b82f6,#16a34a)}
+.fq-ac{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.fq-ac .bt:first-child{grid-column:1/-1}
+.fq-ac .bt{margin:0;width:100%}
+.fq-note{margin:8px 2px 14px;font-size:12.5px}
+.fq-ch{display:flex;gap:8px;flex-wrap:nowrap!important;overflow-x:auto;max-width:100%;margin:0 0 12px;padding:2px;scrollbar-width:none}
+.fq-ch::-webkit-scrollbar{display:none}
+.fq-ch .cp{flex:none;white-space:nowrap;font-weight:600}
+.fq-ch .cp em{font-style:normal;margin-left:4px;padding:1px 7px;border-radius:999px;background:rgba(29,78,216,.1);font-size:11.5px}
+.fq-ch .cp.on em{background:rgba(255,255,255,.25)}
+.fq-bar{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:6px 2px 10px}
+.fq-bar b{font-size:15px;color:var(--tx)}
+.fq-bar span{display:flex;gap:6px}
+html body .fq-bar button[type][type][type]{margin:0;padding:5px 12px;border:0;background:#eef3ff;color:#1d4ed8;font-weight:600;cursor:pointer}
+.fq-list{display:flex;flex-direction:column;gap:12px}
+.fq-sec{background:#fff;border:1px solid var(--ln);border-radius:20px;overflow:hidden}
+html body .fq-h{display:flex;align-items:center;gap:12px;width:100%;box-sizing:border-box;margin:0;padding:12px 14px;border:0;border-radius:0;background:linear-gradient(135deg,#f3f7ff,#e9f1ff);color:inherit;font:inherit;text-align:left;box-shadow:none;cursor:pointer}
+.fq-ic{flex:none;width:46px;height:46px;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;background:linear-gradient(135deg,#3b82f6,#1d4ed8);line-height:1}
+.fq-ic i{font-style:normal;font-size:17px;font-weight:800}
+.fq-ic em{font-style:normal;font-size:10px;font-weight:700;margin-top:2px;opacity:.9}
+.fq-t{flex:1;min-width:0}
+.fq-t b{display:block;font-size:16px;color:var(--tx)}
+.fq-t small,.fq-s small{display:block;margin-top:2px;font-size:12px;color:var(--mu)}
+.fq-s{flex:none;text-align:right}
+.fq-s b{display:block;font-size:14.5px}
+.fq-s b.r{color:#be123c}.fq-s b.g{color:#137536}
+.fq-chev{flex:none;width:20px;height:20px;color:#1d4ed8;transition:transform .25s}
+.fq-sec.open .fq-chev{transform:rotate(180deg)}
+.fq-hp{height:4px;border-radius:0;background:#dbe6fb}
+.fq-hp i{border-radius:0}
+.fq-b{display:none;padding:12px}
+.fq-sec.open .fq-b{display:block}
+.fq-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:10px}
+.fq-card{position:relative;padding:12px 12px 12px 16px;background:#fff;border:1px solid var(--ln);border-radius:16px;overflow:hidden;min-width:0}
+.fq-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:#94a3b8}
+.fq-card.ok::before{background:#16a34a}.fq-card.bad::before{background:#dc2626}.fq-card.pt::before{background:#3b82f6}.fq-card.un::before{background:#f59e0b}
+.fq-top{display:flex;align-items:center;gap:10px}
+.fq-av{flex:none;width:40px;height:40px;border-radius:13px;display:grid;place-items:center;color:#fff;font-weight:800;font-size:16px}
+.fq-m{flex:1;min-width:0}
+.fq-n{display:block;font-size:15px;color:var(--tx);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fq-m small{display:block;margin-top:1px;font-size:12px;color:var(--mu);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fq-amt{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:10px 0 8px}
+.fq-amt>div{min-width:0;padding:7px 8px;border-radius:12px;background:#f5f8ff}
+.fq-amt span{display:block;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mu)}
+.fq-amt b{display:block;margin-top:1px;font-size:13.5px;overflow-wrap:anywhere}
+.fq-amt b.g{color:#137536}.fq-amt b.r{color:#be123c}
+.fq-card .fq-pb{height:6px}
+.fq-act{display:flex;align-items:center;justify-content:flex-end;gap:6px;margin-top:10px}
+.fq-act .bt{margin:0}
+.fq-em{padding:24px;text-align:center}
+@media(max-width:820px){.fq-grid{grid-template-columns:1fr}.fq-b{padding:10px}}
+
+/* ===== ESMOS: standard buttons - 10px radius, no drop shadow, one size scale (44 / 36 / 32) ===== */
+:root{--bh:44px;--bs:36px;--bx:32px;--br:10px}
+/* default size */
+html body :is(.bt,.wab,.wm-ed)[class][class][class]{border-radius:var(--br)!important;box-shadow:none!important;text-shadow:none!important;filter:none!important;min-height:var(--bh)!important;height:auto!important;padding:10px 20px!important;font-size:14.5px!important;font-weight:600!important;line-height:1.25!important;align-items:center;justify-content:center;box-sizing:border-box}
+/* small buttons: table rows, cards, Challan, Promote, Edit */
+html body :is(.bt.sm,.fr-a .bt,.cw-a .bt)[class][class][class]{min-height:var(--bs)!important;padding:7px 14px!important;font-size:13px!important}
+/* compact buttons: export bar, expand / collapse */
+html body :is(.xpb .bt,.xpb button.bt)[class][class][class]{min-height:var(--bx)!important;padding:5px 12px!important;font-size:12.5px!important;border-radius:8px!important}
+html body .cw-bar button[type][type][type]{min-height:var(--bx)!important;padding:5px 12px!important;font-size:12.5px!important;border-radius:8px!important;box-shadow:none!important}
+/* icon buttons */
+html body .ib[class][class][class]{width:36px!important;height:36px!important;min-width:36px!important;min-height:36px!important;padding:0!important;border-radius:var(--br)!important;box-shadow:none!important;filter:none!important}
+/* filter chips */
+html body .cp[class][class][class]{min-height:var(--bs)!important;padding:0 14px!important;border-radius:var(--br)!important;box-shadow:none!important;font-size:13.5px!important;line-height:1.2!important}
+/* star rating buttons */
+html body .rce .rce-s1[class][class][class]{border-radius:var(--br)!important;box-shadow:none!important}
+/* no shadow on hover / focus / press either */
+html body :is(.bt,.wab,.wm-ed,.ib,.cp):is(:hover,:focus,:active)[class][class][class]{box-shadow:none!important;filter:none!important}
+html body :is(.bt,.wab,.wm-ed,.ib,.cp):focus-visible[class][class][class]{outline:2px solid #93b4fb!important;outline-offset:2px}

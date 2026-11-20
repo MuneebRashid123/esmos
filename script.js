@@ -39,7 +39,7 @@ async function OLOAD(){try{const[a,b,pp,us]=await Promise.all([rpc('owner_school
 async function OLOGIN(u,p,up){const er=document.getElementById('oer');er.textContent='Please wait...';try{await sbAuth(up?'up':'in',u,p);const ok=up?await rpc('bootstrap_owner'):await rpc('is_owner');if(!ok){setTok(null);throw new Error(up?'An owner already exists. Ask the owner to sign in.':'This account is not the owner.')}try{sessionStorage.setItem('dyn_o','1')}catch(e){}PLT.owner={u};PLT.loaded=false;location.hash='#owner';draw()}catch(e){er.textContent=e.message}}
 function PLX(){PLR();const p=document.getElementById('pl');if(DT&&!LOC)return CPLX(p);if(DT){const t=TNT();if(t&&ACC(EFF(t))){p.hidden=true;return false}try{sessionStorage.removeItem('dyn_t');sessionStorage.removeItem('ls_ses')}catch(e){}location.hash='#blocked';location.reload();return true}
 document.querySelector('.app').style.display='none';document.getElementById('lgn').hidden=true;p.hidden=false;PLAT();return true}
-const PTOP=(w)=>`<div class="pn"><a class="lgo" href="#" onclick="return NAVG('')"><img src="${w?LOGOW:LOGO}" alt="ESMOS"></a><nav><a class="l" href="#features" onclick="return NAVG('features')">Features</a><a class="l" href="#how" onclick="return NAVG('how')">How it works</a><a class="l" href="#contact" onclick="return NAVG('contact')">Contact</a><button type="button" class="bt o pn-st" data-setup>Setup</button><a class="bt o" href="#signin" onclick="return GO('signin')">Login</a><button class="bt" data-p="demo">Try live demo</button></nav></div>`;
+const PTOP=(w)=>`<div class="pn"><a class="lgo" href="#" onclick="return NAVG('')"><img src="${w?LOGOW:LOGO}" alt="ESMOS"></a><nav><a class="l" href="#features" onclick="return NAVG('features')">Features</a><a class="l" href="#how" onclick="return NAVG('how')">How it works</a><a class="l" href="#contact" onclick="return NAVG('contact')">Contact</a><a class="bt o" href="#signin" onclick="return GO('signin')">Login</a><button class="bt" data-p="demo">Try live demo</button></nav></div>`;
 const FT=[['students','Students and admissions','Admission forms, class lists and complete student records.',[['New admissions','24',72],['Active students','412',92],['Class lists ready','12 / 12',100]]],['attendance','Daily attendance','Mark attendance in seconds and alert parents about absences.',[['Present today','389',94],['Absent (parents alerted)','23',6],['Classes marked','12 / 12',100]]],['fees','Fee challans and dues','Monthly fees, fines, receipts and defaulter lists.',[['Collected this month','82%',82],['Pending dues','18%',18],['Receipts issued','338',82]]],['exams','Exams and results','Enter marks, get grades and share results with parents.',[['Marks entered','95%',95],['Grades generated','Auto',100],['Results shared','120',60]]],['timetable','Class timetable','Weekly timetable for every class and teacher.',[['Classes scheduled','12',100],['Teachers assigned','28',90],['Free periods','4',20]]],['payroll','Payroll and salary slips','Staff salaries with printable slips.',[['Salaries processed','35 / 38',92],['Slips printed','30',80],['Pending','3',8]]],['whatsapp','WhatsApp reminders','Fee due, absence and receipt messages in one tap.',[['Fee reminders','1 tap',100],['Absence alerts','1 tap',100],['Receipt messages','1 tap',100]]],['finance','Finance reports','Income, expenses and balances at a glance.',[['Income','78%',78],['Expenses','46%',46],['Balance','Healthy',32]]],['roles','4 separate portals','Admin, employee, parent and student each get their own login and see only their own data.',[['Admin','Full',100],['Employee','Own',70],['Parent / Student','Own child',50]]]];
 const DET=[
 ['Recent admissions',[['Ayesha Khan','Class 5 \u00b7 Adm LS-1041','Active','g'],['Hamza Ali','Class 3 \u00b7 Adm LS-1042','Active','g'],['Zain Malik','Class 1 \u00b7 Application','Applied','b'],['Mehak Shah','Class 5 \u00b7 Documents pending','Incomplete','a']]],
@@ -543,7 +543,7 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-an],[data-
 document.addEventListener('change',e=>{const x=e.target;if(x&&(x.id=='cmk'||x.id=='cmto'))cmFill()});
 const PG={announce:anPage,complaints:cmPage,me,student:pHome,pfee:PSX('fee'),patt:PSX('att'),pres:PSX('res'),phw:PSX('hw'),homework:()=>hwPage(),approvals:()=>apvPage(),ptt:PSX('tt'),logins:lgns,dashboard:dash,whatsapp:wa,timetable:()=>ttGrid()+crud('timetable'),attendance:att,payroll:payr,parents:()=>SES().role=='parent'?pHome():par(),roles:rol,setup};
 function draw(){if(PLX())return;try{THEME()}catch(e){}PAYPOP();const u=SES(),L=u.role?nav(u):[];if(!L.length){lgin();return}$('#lgn').hidden=true;document.querySelector('.app').style.display='';const id=location.hash.slice(1),m=L.find(x=>x[0]==id)||L[0],k=ALIAS[m[0]]||m[0];
-$('#sb').innerHTML=`<div class="lg"><i>${ic('cap')}</i><div>${esc(S.set.name)}<small>${PORT[u.role][0]}</small></div></div>`+L.map(x=>`<a href="#${x[0]}" class="${x[0]==m[0]?'on':''}">${ic(x[1])}${x[2]}</a>`).join('')+`<div class="lo"><div>${esc(u.name)}<small>${PORT[u.role][0]}</small></div><button class="bt sm" data-a="logout">Logout</button>${OWQ()?'<button class="bt sm" data-a="exit">Console</button>':''}</div>`;
+$('#sb').innerHTML=`<div class="lg"><i>${ic('cap')}</i><div>${esc(S.set.name)}<small>${PORT[u.role][0]}</small></div></div>`+L.map(x=>`<a href="#${x[0]}" class="${x[0]==m[0]?'on':''}">${ic(x[1])}${x[2]}</a>`).join('')+`<div class="lo"><div>${esc(u.name)}<small>${PORT[u.role][0]}</small></div><button class="bt sm" data-a="logout">Logout</button></div>`;
 $('#ti').textContent=m[2];$('#su').textContent=m[3];$('#dt').textContent=new Date().toLocaleDateString('en',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
 $('#v').innerHTML=PG[m[0]]?PG[m[0]]():crud(k);if($('#v').classList.contains('fx'))countUp();try{ABN(L,m)}catch(e){}}
 function ABN(L,m){let n=document.getElementById('abn');if(!n){n=document.createElement('nav');n.id='abn';n.className='abn';document.querySelector('.app').appendChild(n);document.addEventListener('click',e=>{const b=$('#sb');if(b&&b.classList.contains('open')&&!e.target.closest('#sb')&&!e.target.closest('[data-a=menu]'))b.classList.remove('open')})}
@@ -723,7 +723,7 @@ return`<div class="ps hx" id="p-app"><div class="hxq">${Q.map(q=>`<a class="hxi"
 
 
 /* ===== Home: app-style bottom bar ===== */
-function HBAR(wm){const B=[['Home','home',"return NAVG('')",''],['Features','cap',"return NAVG('features')",''],['Demo','exa','','data-p="demo"'],['Setup','<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3"/><circle cx="4" cy="12" r="2"/><circle cx="12" cy="10" r="2"/><circle cx="20" cy="14" r="2"/></svg>',"return false",'data-setup'],['Login','par',"return GO('signin')",''],['Hubs','<svg class=\"i\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3.5\" y=\"3.5\" width=\"7\" height=\"7\" rx=\"2\"/><rect x=\"13.5\" y=\"3.5\" width=\"7\" height=\"7\" rx=\"2\"/><rect x=\"3.5\" y=\"13.5\" width=\"7\" height=\"7\" rx=\"2\"/><rect x=\"13.5\" y=\"13.5\" width=\"7\" height=\"7\" rx=\"2\"/></svg>',"return GO('hubs')",'']];
+function HBAR(wm){const B=[['Home','home',"return NAVG('')",''],['Features','cap',"return NAVG('features')",''],['Demo','exa','','data-p="demo"'],['Login','par',"return GO('signin')",''],['Hubs','<svg class=\"i\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3.5\" y=\"3.5\" width=\"7\" height=\"7\" rx=\"2\"/><rect x=\"13.5\" y=\"3.5\" width=\"7\" height=\"7\" rx=\"2\"/><rect x=\"3.5\" y=\"13.5\" width=\"7\" height=\"7\" rx=\"2\"/><rect x=\"13.5\" y=\"13.5\" width=\"7\" height=\"7\" rx=\"2\"/></svg>',"return GO('hubs')",'']];
 return`<nav class="hbar" aria-label="Quick menu">${B.map((b,i)=>`<a href="#" ${b[3]} onclick="${b[2]||'return false'}" class=""><span>${b[1][0]=='<'?b[1]:ic(b[1])}</span><b>${b[0]}</b></a>`).join('')}</nav>`}
 S.logins=S.logins||[];ensure();save();if(DT&&!LOC)BOOTC();draw();setTimeout(()=>$('#v').classList.remove('fx'),1900);
 (function(){
@@ -1854,3 +1854,87 @@ document.addEventListener('click',e=>{const c=e.target.closest&&e.target.closest
 try{if(location.hash=='#owner'&&sessionStorage.getItem('dyn_o'))draw()}catch(e){}
 })();
 
+/* ===== Students: class-wise sections (each class / section in its own collapsible card) ===== */
+try{C.students.flt={All:()=>true};CL.forEach(n=>{C.students.flt[n]=r=>r.cls==n})}catch(e){}
+function stuRows(){const c=C.students,q=(Q.students||'').toLowerCase(),fl=FL.students||'All';return S.students.filter(r=>(!c.flt||!c.flt[fl]||c.flt[fl](r))&&(!q||JSON.stringify(r).toLowerCase().includes(q)))}
+function stuCard(r){
+const c=C.students,nm=String(r.name||'?').trim(),pal=['#3b82f6','#10b981','#f59e0b','#8b5cf6','#ec4899','#06b6d4'],col=pal[(parseInt(r.id)||0)%6],ph=String(r.phone||'').replace(/[^\d+]/g,'');
+const xs=(c.x||[]).filter(x=>!x[2]||x[2](r)).map(x=>`<button type="button" class="bt sm" data-a="${x[1]}" data-k="students" data-id="${r.id}">${x[0]}</button>`).join('');
+return`<div class="cw-card"><div class="cw-top"><span class="cw-av" style="background:${col}">${esc(nm.charAt(0).toUpperCase())}</span><div class="cw-m"><b class="cw-n">${esc(nm)}</b><small>Roll ${esc(r.roll||'-')} &middot; Adm ${esc(r.adm||'-')}</small></div>${badge(r.status)}</div><div class="cw-bt"><div class="cw-g"><small>Guardian</small><span>${esc(r.guardian||'-')}</span>${ph?`<a href="tel:${esc(ph)}">${esc(r.phone)}</a>`:''}</div><div class="cw-a">${xs}<button class="ib" title="Edit" data-a="edit" data-k="students" data-id="${r.id}">${ic('edit')}</button><button class="ib" title="Delete" data-a="del" data-k="students" data-id="${r.id}">${ic('del')}</button></div></div></div>`}
+function stuGroups(){
+const rows=stuRows();if(!rows.length)return'<p class="em cw-em">No students found.</p>';
+const g={};rows.forEach(r=>{const k=scl(r);(g[k]=g[k]||[]).push(r)});
+const ord=k=>{const i=CL.indexOf(k.split(' - ')[0]);return i<0?99:i},keys=Object.keys(g).sort((a,b)=>ord(a)-ord(b)||a.localeCompare(b));
+const mob=!!(window.matchMedia&&matchMedia('(max-width:820px)').matches),q=(Q.students||'').trim(),fl=FL.students||'All',sgo=FL.sgo=FL.sgo||{},auto=!mob||!!q||fl!='All'||keys.length==1;
+return keys.map((k,i)=>{
+const L=g[k].slice().sort((a,b)=>(parseInt(a.roll)||9999)-(parseInt(b.roll)||9999)||String(a.name).localeCompare(b.name)),act=L.filter(s=>s.status=='Active').length,open=k in sgo?sgo[k]:(auto||i==0),p=k.split(' - '),num=p[0].replace(/^Class\s*/i,''),sec=p[1]||'';
+return`<section class="cw-sec${open?' open':''}"><button type="button" class="cw-h" data-sgt="${esc(k)}" aria-expanded="${open}"><span class="cw-ic"><i>${esc(num)}</i>${sec?`<em>${esc(sec)}</em>`:''}</span><span class="cw-t"><b>${esc(k)}</b><small>${L.length} student${L.length==1?'':'s'} &middot; ${act} active</small></span><svg class="cw-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button><div class="cw-b"><div class="cw-grid">${L.map(stuCard).join('')}</div></div></section>`}).join('')}
+function stuPage(){
+const c=C.students,all=S.students,act=all.filter(s=>s.status=='Active').length,nc=new Set(all.map(s=>scl(s))).size,chips=['All'].concat(CL.filter(n=>all.some(s=>s.cls==n)));
+if(!chips.includes(FL.students||'All'))FL.students='All';const cur=FL.students||'All';
+return`<div class="card cw"><div class="cw-kp"><div><b>${all.length}</b><span>Students</span></div><div><b>${act}</b><span>Active</span></div><div><b>${nc}</b><span>Class lists</span></div></div>
+<div class="tb"><div class="se">${ic('srch')}<input id="q" data-c="q" data-k="students" placeholder="Search name, roll, guardian..." value="${esc(Q.students||'')}"></div><button class="bt" data-a="add" data-k="students">${ic('plus')}${c.add}</button></div>
+<div class="ch cw-ch">${chips.map(n=>`<button class="cp ${n==cur?'on':''}" data-a="flt" data-k="students" data-id="${esc(n)}">${esc(n)}</button>`).join('')}</div>
+<div class="tw cw-x" style="display:none"><table><thead><tr>${c.cols.map(x=>`<th>${x[1]}</th>`).join('')}<th></th></tr></thead><tbody id="tb">${rowsHtml('students')}</tbody></table></div>
+<div class="cw-bar"><b>Class-wise list</b><span><button type="button" data-sgall="1">Expand all</button><button type="button" data-sgall="0">Collapse all</button></span></div>
+<div id="stg" class="cw-list">${stuGroups()}</div></div>`}
+crud=(function(_c){return function(k){return k=='students'?stuPage():_c.apply(this,arguments)}})(crud);
+rowsHtml=(function(_r){return function(k){const h=_r.apply(this,arguments);if(k=='students'){try{const g=document.getElementById('stg');if(g)g.innerHTML=stuGroups()}catch(e){}}return h}})(rowsHtml);
+document.addEventListener('click',e=>{
+const h=e.target.closest&&e.target.closest('[data-sgt]');
+if(h){const s=h.closest('.cw-sec'),o=!s.classList.contains('open');s.classList.toggle('open',o);h.setAttribute('aria-expanded',o);FL.sgo=FL.sgo||{};FL.sgo[h.dataset.sgt]=o;return}
+const a=e.target.closest&&e.target.closest('[data-sgall]');
+if(a){const o=a.dataset.sgall=='1';FL.sgo=FL.sgo||{};document.querySelectorAll('#stg .cw-sec').forEach(s=>{s.classList.toggle('open',o);const b=s.querySelector('[data-sgt]');b.setAttribute('aria-expanded',o);FL.sgo[b.dataset.sgt]=o})}});
+
+/* ===== WhatsApp reminders: chat-style message feed (app view) ===== */
+function wmRows(){const c=C.msgs,q=(Q.msgs||'').toLowerCase(),fl=FL.msgs||'All';return S.msgs.filter(r=>(!c.flt||!c.flt[fl]||c.flt[fl](r))&&(!q||(JSON.stringify(r)+(r.sid?sn(r.sid):'')).toLowerCase().includes(q)))}
+function wmTime(t){const m=String(t||'').match(/^(.+?),?\s+(\d{1,2}:\d{2})(?::\d{2})?\s*([AaPp][Mm])?/);return m?{d:m[1],t:m[2]+(m[3]?' '+m[3].toUpperCase():'')}:{d:String(t||'-'),t:''}}
+function wmCard(r){
+const nm=r.sid?sn(r.sid):'',title=nm&&nm!='-'?nm:(r.to||r.phone||'WhatsApp message'),tm=wmTime(r.time),st=r.st||'Queued',cls=st=='Sent'?'ok':st=='Queued'?'q':'bad',long=String(r.text||'').length>110;
+return`<div class="wm-card ${cls}"><div class="wm-top"><span class="wm-av">${esc(String(title).trim().charAt(0).toUpperCase()||'W')}</span><div class="wm-m"><b class="wm-n">${esc(title)}</b><small>To ${esc(r.to||'parent')}</small></div>${badge(st)}</div><div class="wm-meta"><span class="wm-chip wm-t"><i></i>${esc(tm.d)}${tm.t?' &middot; '+esc(tm.t):''}</span><span class="wm-chip wm-p">${esc(r.tpl||'Message')}</span></div><div class="wm-bub${long?' wm-more':''}"${long?' data-wmb="1" title="Tap to read more"':''}>${esc(r.text||'')}</div><div class="wm-act">${waBtn(r)}${st=='Queued'?`<button type="button" class="wm-ed" data-a="emsg" data-k="msgs" data-id="${r.id}">${ic('edit')}Edit</button>`:''}</div></div>`}
+function wmFeed(){const L=wmRows();return L.length?L.map(wmCard).join(''):`<div class="wm-em"><b>No messages here yet</b><span>Messages you queue or send will show up in this list.</span></div>`}
+function msgsPage(){
+const c=C.msgs,all=S.msgs,n=f=>all.filter(f).length,fl=FL.msgs||'All',cnt={All:all.length,Queued:n(r=>r.st=='Queued'),Sent:n(r=>r.st=='Sent')};
+return`<div class="card wm"><div class="wm-kp"><div><b>${cnt.All}</b><span>Messages</span></div><div class="q"><b>${cnt.Queued}</b><span>Queued</span></div><div class="ok"><b>${cnt.Sent}</b><span>Sent</span></div></div>
+<div class="tb"><div class="se">${ic('srch')}<input id="q" data-c="q" data-k="msgs" placeholder="Search parent, student, message..." value="${esc(Q.msgs||'')}"></div></div>
+<div class="ch wm-ch">${Object.keys(c.flt).map(x=>`<button class="cp ${x==fl?'on':''}" data-a="flt" data-k="msgs" data-id="${x}">${x} <em>${cnt[x]!=null?cnt[x]:''}</em></button>`).join('')}</div>
+<div class="tw wm-x" style="display:none"><table><thead><tr>${c.cols.map(x=>`<th>${x[1]}</th>`).join('')}<th></th></tr></thead><tbody id="tb">${rowsHtml('msgs')}</tbody></table></div>
+<div id="mfd" class="wm-list">${wmFeed()}</div></div>`}
+crud=(function(_c){return function(k){return k=='msgs'?msgsPage():_c.apply(this,arguments)}})(crud);
+rowsHtml=(function(_r){return function(k){const h=_r.apply(this,arguments);if(k=='msgs'){try{const g=document.getElementById('mfd');if(g)g.innerHTML=wmFeed()}catch(e){}}return h}})(rowsHtml);
+document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-wmb]');if(b)b.classList.toggle('open')});
+
+/* ===== Fee Management: class-wise fee records (collapsible class cards, app view) ===== */
+function feeRows(){const c=C.fees,q=(Q.fees||'').toLowerCase(),fl=FL.fees||'All';return S.fees.filter(r=>(!c.flt||!c.flt[fl]||c.flt[fl](r))&&(!q||(JSON.stringify(r)+(r.sid?sn(r.sid):'')).toLowerCase().includes(q)))}
+function feeDate(d){const t=new Date(String(d||'')+'T00:00:00');return isNaN(t)?esc(d||'-'):t.toLocaleDateString('en',{day:'numeric',month:'short'})}
+function feeCard(r){
+const c=C.fees,s=S.students.find(x=>x.id==r.sid),nm=s?s.name:(r.sid?sn(r.sid):'Student'),st=fst(r),cls=st=='Paid'?'ok':st=='Overdue'?'bad':st=='Partial'?'pt':'un',pct=r.amount?Math.min(100,Math.round(r.paid/r.amount*100)):0,pal=['#3b82f6','#10b981','#f59e0b','#8b5cf6','#ec4899','#06b6d4'],col=pal[(parseInt(r.sid)||0)%6];
+const xs=(c.x||[]).filter(x=>!x[2]||x[2](r)).map(x=>`<button type="button" class="bt sm${x[1]=='col'?' blue':' gh'}" data-a="${x[1]}" data-k="fees" data-id="${r.id}">${x[0]}</button>`).join('');
+return`<div class="fq-card ${cls}"><div class="fq-top"><span class="fq-av" style="background:${col}">${esc(String(nm).trim().charAt(0).toUpperCase()||'S')}</span><div class="fq-m"><b class="fq-n">${esc(nm)}</b><small>${s?'Roll '+esc(s.roll||'-')+' &middot; ':''}${esc(r.month)} &middot; Due ${feeDate(r.due)}</small></div>${badge(st)}</div><div class="fq-amt"><div><span>Amount</span><b>${money(r.amount)}</b></div><div><span>Paid</span><b class="g">${money(r.paid)}</b></div><div><span>Balance</span><b class="${bal(r)>0?'r':'g'}">${money(bal(r))}</b></div></div><div class="fq-pb"><i style="width:${pct}%"></i></div><div class="fq-act">${xs}<button class="ib" title="Edit" data-a="edit" data-k="fees" data-id="${r.id}">${ic('edit')}</button><button class="ib" title="Delete" data-a="del" data-k="fees" data-id="${r.id}">${ic('del')}</button></div></div>`}
+function feeGroups(){
+const rows=feeRows();if(!rows.length)return'<p class="em fq-em">No fee records found.</p>';
+const g={};rows.forEach(r=>{const s=S.students.find(x=>x.id==r.sid),k=s?scl(s):'Other';(g[k]=g[k]||[]).push(r)});
+const ord=k=>{const i=CL.indexOf(k.split(' - ')[0]);return i<0?99:i},keys=Object.keys(g).sort((a,b)=>ord(a)-ord(b)||a.localeCompare(b));
+const mob=!!(window.matchMedia&&matchMedia('(max-width:820px)').matches),q=(Q.fees||'').trim(),fl=FL.fees||'All',fgo=FL.fgo=FL.fgo||{},auto=!mob||!!q||fl!='All'||keys.length==1;
+const rn=r=>{const s=S.students.find(x=>x.id==r.sid);return s?(parseInt(s.roll)||9999):9999};
+return keys.map((k,i)=>{
+const L=g[k].slice().sort((a,b)=>rn(a)-rn(b)||String(a.due).localeCompare(String(b.due))),tot=sum(L,r=>r.amount),pd=sum(L,r=>r.paid),pen=sum(L,bal),pc=tot?Math.round(pd/tot*100):0,ns=new Set(L.map(r=>r.sid)).size,open=k in fgo?fgo[k]:(auto||i==0),p=k.split(' - '),num=p[0].replace(/^Class\s*/i,''),sec=p[1]||'';
+return`<section class="fq-sec${open?' open':''}"><button type="button" class="fq-h" data-fgt="${esc(k)}" aria-expanded="${open}"><span class="fq-ic"><i>${esc(num)}</i>${sec?`<em>${esc(sec)}</em>`:''}</span><span class="fq-t"><b>${esc(k)}</b><small>${ns} student${ns==1?'':'s'} &middot; ${L.length} challan${L.length==1?'':'s'}</small></span><span class="fq-s"><b class="${pen>0?'r':'g'}">${pen>0?money(pen):'All paid'}</b><small>${pc}% collected</small></span><svg class="fq-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button><div class="fq-pb fq-hp"><i style="width:${pc}%"></i></div><div class="fq-b"><div class="fq-grid">${L.map(feeCard).join('')}</div></div></section>`}).join('')}
+function feesPage(){
+const c=C.fees,all=S.fees,tot=sum(all,r=>r.amount),pd=sum(all,r=>r.paid),pen=sum(all,bal),pc=tot?Math.round(pd/tot*100):0,fl=FL.fees||'All',n=f=>all.filter(f).length,cnt={All:all.length,Defaulters:n(r=>fst(r)=='Overdue'),Paid:n(r=>fst(r)=='Paid')};
+return`<div class="card fq"><div class="fq-kp"><div class="ok"><span>Collected</span><b>${money(pd)}</b></div><div class="${pen>0?'bad':'ok'}"><span>Pending</span><b>${money(pen)}</b></div></div>
+<div class="fq-ov"><div class="fq-pb"><i style="width:${pc}%"></i></div><small>Billed ${money(tot)} &middot; ${pc}% collected</small></div>
+<div class="fq-ac"><button class="bt blue" data-a="gen">${ic('plus')}Generate monthly challans</button><button class="bt gh" data-a="add" data-k="fees">${ic('plus')}New challan</button><button class="bt gh" data-a="struct">Fee structure</button></div>
+<p class="mu fq-note">Late fine of ${money(S.set.fine)} is added automatically on overdue payments.</p>
+<div class="tb"><div class="se">${ic('srch')}<input id="q" data-c="q" data-k="fees" placeholder="Search student, fee, month..." value="${esc(Q.fees||'')}"></div></div>
+<div class="ch fq-ch">${Object.keys(c.flt).map(x=>`<button class="cp ${x==fl?'on':''}" data-a="flt" data-k="fees" data-id="${x}">${x} <em>${cnt[x]!=null?cnt[x]:''}</em></button>`).join('')}</div>
+<div class="tw fq-x" style="display:none"><table><thead><tr>${c.cols.map(x=>`<th>${x[1]}</th>`).join('')}<th></th></tr></thead><tbody id="tb">${rowsHtml('fees')}</tbody></table></div>
+<div class="fq-bar"><b>Class-wise fee records</b><span><button type="button" data-fgall="1">Expand all</button><button type="button" data-fgall="0">Collapse all</button></span></div>
+<div id="ffd" class="fq-list">${feeGroups()}</div></div>`}
+crud=(function(_c){return function(k){return k=='fees'?feesPage():_c.apply(this,arguments)}})(crud);
+rowsHtml=(function(_r){return function(k){const h=_r.apply(this,arguments);if(k=='fees'){try{const g=document.getElementById('ffd');if(g)g.innerHTML=feeGroups()}catch(e){}}return h}})(rowsHtml);
+document.addEventListener('click',e=>{
+const h=e.target.closest&&e.target.closest('[data-fgt]');
+if(h){const s=h.closest('.fq-sec'),o=!s.classList.contains('open');s.classList.toggle('open',o);h.setAttribute('aria-expanded',o);FL.fgo=FL.fgo||{};FL.fgo[h.dataset.fgt]=o;return}
+const a=e.target.closest&&e.target.closest('[data-fgall]');
+if(a){const o=a.dataset.fgall=='1';FL.fgo=FL.fgo||{};document.querySelectorAll('#ffd .fq-sec').forEach(s=>{s.classList.toggle('open',o);const b=s.querySelector('[data-fgt]');b.setAttribute('aria-expanded',o);FL.fgo[b.dataset.fgt]=o})}});
