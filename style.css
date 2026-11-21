@@ -3777,3 +3777,70 @@ html body .app .cf .cf-b.on{box-shadow:0 4px 10px color-mix(in srgb,var(--b) 26%
 .cw-bar b{font-size:14px}
 .cw-bar span{gap:6px;flex:none}
 .cw-bar span button{font-size:12px!important;padding:6px 8px!important}
+/* ===== v28/v31 Mobile: clean cards for every Edit/Delete list (no overlap, readable, thumb-friendly) ===== */
+@media(max-width:820px){
+html body .app #v table.rt td{overflow-wrap:break-word!important;word-break:normal!important;hyphens:none!important}
+html body .app #v table.rt tr:has(td.ac .aci){display:grid!important;grid-template-columns:repeat(6,minmax(0,1fr))!important;gap:12px 10px!important;padding:14px 14px 12px!important;align-items:start!important}
+html body .app #v table.rt tr:has(td.ac .aci)::before{display:none!important}
+html body .app #v table.rt tr:has(td.ac .aci)>td{flex:none!important;min-width:0!important;margin:0!important;grid-column:span 3!important;order:0!important;font-size:14px!important;font-weight:600!important;color:var(--tx)}
+html body .app #v table.rt tr:has(td.ac .aci)>td[data-l="Student"],
+html body .app #v table.rt tr:has(td.ac .aci)>td:first-child{grid-column:1/-1!important;order:-3!important;font-size:17px!important;font-weight:800!important;padding:0 0 2px!important;display:block!important}
+html body .app #v table.rt tr:has(td.ac .aci)>td[data-l="Student"]::before{display:none!important}
+html body .app #v table.rt tr:has(td.ac .aci)>td[data-l="Subject"],
+html body .app #v table.rt tr:has(td.ac .aci)>td[data-l="Test"]{grid-column:span 3!important}
+html body .app #v table.rt tr:has(td.ac .aci)>td::before{font-size:10px!important;margin-bottom:3px!important}
+html body .app #v table.rt tr:has(td.ac .aci)>td.ac{grid-column:1/-1!important;order:99!important;display:block!important;border-top:1px solid var(--ln)!important;padding:10px 0 0!important;margin:2px 0 0!important;text-align:left!important}
+html body .app #v table.rt tr:has(td.ac .aci)>td.ac .aci{display:grid!important;grid-template-columns:1fr 1fr!important;gap:10px!important;width:100%!important}
+html body .app #v table.rt tr:has(td.ac .aci)>td.ac .aci .ib{width:100%!important;height:44px!important;margin:0!important;padding:0 10px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:8px!important;border-radius:13px!important;white-space:nowrap!important}
+html body .app #v table.rt tr:has(td.ac .aci)>td.ac .aci .ib em{display:inline!important;font-size:14px!important;font-weight:700!important}
+html body .app #v table.rt tr:has(td.ac .aci)>td.ac .aci .ib svg{width:18px!important;height:18px!important;flex:none!important}
+html body .app #v table.rt tr:has(td.ac .aci)>td[data-l="Marks"],
+html body .app #v table.rt tr:has(td.ac .aci)>td[data-l="Percent"],
+html body .app #v table.rt tr:has(td.ac .aci)>td[data-l="Grade"]{grid-column:span 2!important}
+html body .app #v table.rt tr:has(td.ac .aci)>td.ttl{grid-column:1/-1!important;order:-3!important;font-size:17px!important;font-weight:800!important;display:block!important;padding:0 0 2px!important}
+html body .app #v table.rt tr:has(td.ac .aci)>td.ttl::before{display:none!important}
+html body .app #v table.rt tr:has(td.ac .aci)>td[data-l="Amount"],html body .app #v table.rt tr:has(td.ac .aci)>td[data-l="Fee"]{color:#1d4ed8!important;font-weight:800!important}
+html body .app #v table.rt tr:has(td.ac .aci):has(td.ttl)>td:first-child:not(.ttl){grid-column:span 3!important;order:0!important;font-size:14px!important;font-weight:600!important;padding:0!important}
+html body .app #v table.rt tr:has(td.ac .aci):has(td.ttl)>td:first-child:not(.ttl)::before{display:block!important}
+/* keep last cards clear of the floating buttons + bottom bar */
+html body .app #v{padding-bottom:calc(190px + env(safe-area-inset-bottom,0px))!important}
+}
+
+.lgb{display:none!important}
+
+/* ===== v29 Sidebar: every menu item reachable, compact on short screens, visible scrollbar ===== */
+html body .app aside#sb .sbn{scrollbar-width:thin!important;scrollbar-color:rgba(255,255,255,.5) transparent;padding-right:4px!important;padding-bottom:16px!important}
+html body .app aside#sb .sbn::-webkit-scrollbar{display:block!important;width:5px}
+html body .app aside#sb .sbn::-webkit-scrollbar-thumb{background:rgba(255,255,255,.45);border-radius:6px}
+html body .app aside#sb .sbn::-webkit-scrollbar-track{background:transparent}
+@media(max-height:820px){
+html body .app aside#sb{padding-top:calc(12px + env(safe-area-inset-top,0px))!important}
+html body .app aside#sb .sbn a{padding-top:8px!important;padding-bottom:8px!important;min-height:0!important;margin-top:0!important;margin-bottom:2px!important;font-size:14px!important}
+html body .app aside#sb .lo{gap:6px!important;padding-top:8px!important;padding-bottom:calc(8px + env(safe-area-inset-bottom,0px))!important}
+html body .app aside#sb .lo .bt.lob{height:40px!important}
+html body .app aside#sb .lo .lav{width:32px!important;height:32px!important;font-size:13px!important}
+}
+@media(max-height:640px){
+html body .app aside#sb .sbn a{padding-top:6px!important;padding-bottom:6px!important;font-size:13.5px!important}
+html body .app aside#sb .lo .lou{display:none!important}
+}
+
+/* ===== v30 Sidebar: Hubs options listed right under Hubs ===== */
+html body .app aside#sb .hbs{display:flex;flex-direction:column;gap:2px;margin:2px 0 8px 22px;padding-left:10px;border-left:1px solid rgba(255,255,255,.28)}
+html body .app aside#sb .hbs a{display:flex!important;align-items:center;gap:9px;padding:7px 10px!important;min-height:0!important;font-size:13px!important;border-radius:10px;opacity:.92}
+html body .app aside#sb .hbs a::before{display:none!important}
+html body .app aside#sb .hbs a:hover{opacity:1;transform:none!important}
+html body .app aside#sb .hbs .hbd{flex:none;width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.6}
+
+/* ===== v32 Mobile: tidy date-filter box (chips grid, full-width select) ===== */
+@media(max-width:820px){
+html body .app #v .cfb{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:12px;border-radius:16px;align-items:stretch}
+html body .app #v .cfb>span:first-child{grid-column:1/-1;font-size:13px;font-weight:700;color:#0f1d3a}
+html body .app #v .cfb>button{height:40px;min-width:0;padding:0 6px;border-radius:11px;font-size:13px;white-space:nowrap;display:flex;align-items:center;justify-content:center}
+html body .app #v .cfb>button[data-k="x"]{order:2;background:#fff1f3;color:#be123c}
+html body .app #v .cfb>select[data-k="m"]{order:3;grid-column:1/-1;width:100%;height:42px;font-size:14px;padding:0 12px;border-radius:11px}
+html body .app #v .cfb>span.cfi{order:4;grid-column:1/-1;gap:8px;font-size:13px}
+html body .app #v .cfb .cfi input,html body .app #v .cfb .cfi select{flex:1 1 0;min-width:0;width:100%;height:42px;font-size:14px;border-radius:11px}
+html body .app #v .cfb>.cfn{order:5;grid-column:1/-1;width:100%;margin:0;text-align:left;font-size:12.5px}
+html body .app #v .cfb .cfi input[type="date"],html body .app #v .cfb .cfi input[type="month"]{font-size:12.5px;padding:0 6px}
+}
