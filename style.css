@@ -4134,3 +4134,96 @@ html body .app #v .perm input[type=checkbox]:disabled:checked{background:#9db4e3
 /* ===== review popup: every subject shows its % and grade ===== */
 #md .rp-tw td.sj[data-x]::after{content:attr(data-x);display:block;margin-top:2px;font-size:12px;font-weight:500;color:var(--mu)}
 #md .rp-tw td.sj[data-x="Not entered"]{color:var(--mu);font-weight:500}
+
+/* ===== v35 MOBILE FIX: equal boxes, text always inside ===== */
+@media(max-width:820px){
+ html body .app #v table.rt>tbody>tr{grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-auto-rows:auto;align-items:stretch!important}
+ html body .app #v table.rt td[data-l]:not(.ttl):not(.stt):not(.ac):not(.wd){
+  grid-column:auto!important;box-sizing:border-box!important;width:100%!important;min-width:0!important;max-width:100%!important;
+  min-height:72px!important;height:100%;align-self:stretch!important;justify-content:flex-start!important;
+  overflow:hidden!important;overflow-wrap:anywhere!important;word-break:normal!important;white-space:normal!important;hyphens:auto}
+ html body .app #v table.rt td[data-l]:not(.ttl):not(.stt)::before,
+ html body .app table.rt td[data-l]::before{
+  white-space:normal!important;overflow-wrap:anywhere!important;max-width:100%;font-size:9.5px!important;letter-spacing:.03em!important;line-height:1.25!important;display:block!important}
+ html body .app #v table.rt td.wd{grid-column:1/-1!important}
+ html body .app #v table.rt td>*{max-width:100%;min-width:0}
+ /* filter chips: equal width, no word breaking */
+ .app .ch{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(0,1fr));gap:8px!important;width:100%}
+ .app .ch .cp{width:100%;min-width:0;min-height:44px;display:flex;align-items:center;justify-content:center;gap:6px;
+  white-space:nowrap!important;word-break:keep-all!important;overflow-wrap:normal!important;font-size:13px!important;padding:8px 6px!important;text-align:center}
+ /* generic safety: nothing may overflow its card */
+ .app #v .card,.app #v .cb,.app #v .hero{min-width:0;max-width:100%;overflow-wrap:anywhere}
+ .app #v .two{grid-template-columns:minmax(0,1fr)!important}
+ .app #v .tw{max-width:100%}
+}
+@media(max-width:380px){
+ html body .app #v table.rt td[data-l]:not(.ttl):not(.stt):not(.ac):not(.wd){min-height:66px!important;padding:8px 9px!important;font-size:13px!important}
+ .app .ch .cp{font-size:12px!important}
+}
+@media(max-width:820px){
+ .app .cw-bar,.app .fq-bar{display:grid!important;grid-template-columns:1fr;gap:8px!important}
+ .app .cw-bar>span,.app .fq-bar>span{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;width:100%}
+ .app .cw-bar button,.app .fq-bar button{width:100%;min-width:0;min-height:40px;white-space:nowrap;padding:8px 6px;text-align:center}
+}
+/* v36: staff rows (and any row with a 6-col legacy rule) -> clean 2-column tiles */
+@media(max-width:820px){
+ html body .app #v table.rt tr:has(td[data-l="Basic salary"]):has(td.ac .aci),
+ html body .app #v table.rt tr:has(td[data-l="Class access"]):has(td.ac .aci){grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ html body .app #v table.rt tr:has(td[data-l="Basic salary"])>td[data-l],
+ html body .app #v table.rt tr:has(td[data-l="Class access"])>td[data-l]{grid-column:auto!important}
+ html body .app #v table.rt tr:has(td[data-l="Class access"])>td[data-l="Class access"],
+ html body .app #v table.rt tr:has(td[data-l="Class teacher of"])>td[data-l="Class teacher of"]{grid-column:1/-1!important}
+ html body .app #v table.rt tr:has(td[data-l="Basic salary"])>td.stt{position:absolute!important;top:14px!important;right:12px!important;grid-column:auto!important}
+}
+/* v36: filter chips - equal columns, never clipped */
+@media(max-width:820px){
+ .app .ch{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(104px,1fr))!important;gap:8px!important;width:100%;overflow:visible!important}
+ .app .ch .cp,.app .ch button{width:100%;min-width:0!important;max-width:100%;box-sizing:border-box;min-height:44px;display:flex!important;align-items:center;justify-content:center;gap:5px;
+  white-space:nowrap!important;word-break:keep-all!important;overflow:hidden;text-overflow:ellipsis;font-size:12.5px!important;padding:8px 4px!important;text-align:center;flex:none!important}
+ .app .ch .cp .n,.app .ch .cp b,.app .ch .cp small,.app .ch .cp span{flex:none;margin:0!important}
+}
+@media(max-width:820px){
+ .app .cf-r{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(100px,1fr))!important;gap:8px!important;width:100%;overflow:visible!important}
+ .app .cf-r .cf-b{width:100%!important;min-width:0!important;max-width:100%;box-sizing:border-box;min-height:44px;display:flex!important;align-items:center;justify-content:center;gap:5px;
+  white-space:nowrap!important;word-break:keep-all!important;overflow:hidden;text-overflow:ellipsis;font-size:12.5px!important;padding:8px 4px!important;flex:none!important;margin:0!important}
+}
+@media(max-width:820px){
+ .app .cf-r,.app .ch{grid-template-columns:repeat(auto-fit,minmax(118px,1fr))!important}
+ .app .cf-r .cf-b,.app .ch .cp{font-size:12.5px!important;padding:8px 6px!important;text-overflow:clip!important}
+ .app #v .bt{max-width:100%;box-sizing:border-box}
+}
+/* v36 final: all chip rows = equal grid columns, no clipping, no mid-word breaks */
+@media(max-width:820px){
+ html body .app .ch,html body .app .cw-ch,html body .app .fq-ch,html body .app .wm-ch,html body .app .ad-ch,html body .app .cf-r,html body .app .at-chips{
+  display:grid!important;grid-template-columns:repeat(auto-fit,minmax(124px,1fr))!important;gap:8px!important;overflow:visible!important;
+  -webkit-mask-image:none!important;mask-image:none!important;width:100%!important;max-width:100%!important}
+ html body .app .ch .cp,html body .app .cw-ch .cp,html body .app .fq-ch .cp,html body .app .wm-ch .cp,html body .app .ad-ch .cp,html body .app .cf-r .cf-b,html body .app .at-chips .at-chip{
+  flex:none!important;width:100%!important;min-width:0!important;max-width:100%!important;box-sizing:border-box!important;min-height:44px!important;height:100%;
+  white-space:nowrap!important;word-break:keep-all!important;overflow:hidden;text-overflow:clip!important;font-size:12.5px!important;padding:8px 6px!important;justify-content:center}
+ html body .app .at-chips .at-chip{white-space:normal!important;flex-direction:column}
+}
+/* v37: action rows (extra button + Edit/Delete) - exact, equal alignment */
+@media(max-width:820px){
+ html body .app #v table.rt td.ac:has(.acx),html body .app #v table.rt td.ac:has(.aci){display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:8px!important;align-items:stretch}
+ html body .app #v table.rt td.ac .acx{display:grid!important;grid-template-columns:repeat(var(--n,1),minmax(0,1fr))!important;gap:8px!important;width:100%!important;margin:0!important}
+ html body .app #v table.rt td.ac .aci{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important;width:100%!important;margin:0!important}
+ html body .app #v table.rt td.ac .acx .bt,html body .app #v table.rt td.ac .aci .ib,html body .app #v table.rt td.ac .aci button{
+  width:100%!important;min-width:0!important;height:44px!important;min-height:44px!important;margin:0!important;padding:0 12px!important;box-sizing:border-box!important;
+  display:inline-flex!important;align-items:center;justify-content:center;gap:6px;border-radius:14px!important;font-size:14px!important;font-weight:600;line-height:1;white-space:nowrap}
+ html body .app #v table.rt td.ac .aci .ib svg{width:17px;height:17px;flex:none}
+ html body .app #v table.rt td.ac .aci .ib em{font-style:normal}
+}
+@media(max-width:820px){
+ html body .app #v table.rt td.ac.ac .acx .bt.sm,html body .app #v table.rt td.ac.ac .acx button.bt{height:44px!important;min-height:44px!important;width:100%!important;padding:0 12px!important;border-radius:14px!important;font-size:14px!important;display:inline-flex!important;align-items:center;justify-content:center;flex:none!important}
+ html body .app #v table.rt td.ac.ac:has(.acx):has(.aci){row-gap:8px!important}
+ html body .app #v table.rt td.ac.ac .acx{margin-bottom:0!important}
+ html body .app #v table.rt td.ac.ac .aci{margin-top:0!important}
+}
+@media(max-width:820px){
+ html body .app #v table.rt td.ac.ac .acx .bt[class][class][class][class][class][class][class][class],
+ html body .app #v table.rt td.ac.ac .aci .ib[class][class][class][class][class][class][class][class]{height:44px!important;min-height:44px!important;max-height:44px!important;width:100%!important;border-radius:14px!important;padding:0 12px!important;font-size:14px!important;box-sizing:border-box!important}
+}
+@media(max-width:820px){
+ html body .app #v table.rt td.ac.ac .acx[class][class][class][class][class][class]{margin:0 0 8px!important;display:grid!important;width:100%!important}
+ html body .app #v table.rt td.ac.ac .aci[class][class][class][class][class][class]{margin:0!important;display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important;width:100%!important}
+}
