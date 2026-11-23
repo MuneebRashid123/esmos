@@ -4565,3 +4565,109 @@ html body .cw-ch .cp.cw-mc[class][class][class]{flex:none;white-space:nowrap;bor
 }
 .clm>.tb{display:flex;flex-wrap:nowrap;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px}.clm>.tb h3{margin:0}.clm>.tb .tg{margin:0;flex:none;white-space:nowrap}
 html body .cw-ch .cp.cw-mc[class][class][class]{grid-column:1/-1}
+
+/* ===== v40 Mobile polish: sidebar user row, class dropdown, class-wise attendance ===== */
+
+/* 1) Sidebar: user row sits on one clean line, aligned with the Logout button */
+html body .app aside#sb .lo{display:flex;flex-direction:column;align-items:stretch;gap:10px}
+html body .app aside#sb .lo .lou{width:100%;box-sizing:border-box;justify-content:flex-start;text-align:left;padding:0 4px;margin:0}
+html body .app aside#sb .lo .lou>div{flex:1 1 auto;text-align:left}
+html body .app aside#sb .lo .bt.lob{box-sizing:border-box;margin:0}
+
+/* 2) Class filter: one dropdown instead of chips (script.js builds the select) */
+html body .app .cf{display:block;margin:2px 0 14px}
+html body .app .cf .cf-t{display:none}
+html body .app .cf .cf-r{display:none!important}
+html body .app .cf select.cf-sel{display:block;width:100%;max-width:360px;height:48px;margin:0;padding:0 42px 0 16px;box-sizing:border-box;border:1px solid #cfdcf6;border-radius:14px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231d4ed8' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 14px center/18px;color:#14264d;font:600 15px/1.2 Inter,sans-serif;-webkit-appearance:none;appearance:none;box-shadow:0 4px 12px -8px rgba(29,78,216,.35);text-overflow:ellipsis}
+html body .app .cf select.cf-sel:focus{outline:0;border-color:#1d4ed8;box-shadow:0 0 0 3px rgba(29,78,216,.15)}
+html body .app .cf.cf-fin{padding:0;background:none;border:0;box-shadow:none;backdrop-filter:none}
+html body .app .cf.cf-in{margin:0 0 14px}
+@media(max-width:820px){html body .app .cf select.cf-sel{max-width:none}}
+
+@media(max-width:820px){
+ /* 3) Space so the floating bottom bar never covers the last card; dashboard top is not clipped */
+ html body .app main>#v{padding-bottom:calc(132px + env(safe-area-inset-bottom,0px))!important}
+ body.on-dash .app main>#v{padding-top:14px!important;padding-left:2px;padding-right:2px}
+ body.on-dash .app .dsh .hm-t{padding-left:2px}
+
+ /* 4) Class-wise attendance: filters */
+ html body .app .cwa .cwa-h{display:flex;flex-direction:column;gap:14px;margin:0 0 14px}
+ html body .app .cwa .cwa-h h3{margin:0;font-size:18px}
+ html body .app .cwa .cwa-f{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+ html body .app .cwa .cwa-f label{display:flex;flex-direction:column;gap:6px;margin:0;min-width:0;font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mu)}
+ html body .app .cwa .cwa-f input,html body .app .cwa .cwa-f select{display:block;width:100%!important;min-width:0;height:48px;margin:0;padding:0 14px;box-sizing:border-box;border:1px solid #cfdcf6;border-radius:14px;background-color:#fff;color:#14264d;font:600 15px Inter,sans-serif;text-transform:none;letter-spacing:0}
+ html body .app .cwa .cwa-f select{-webkit-appearance:none;appearance:none;padding-right:42px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231d4ed8' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;background-size:18px}
+
+ /* Export buttons: one tidy row, labels never break */
+ html body .app .cwa .xpb{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:2px 0 16px}
+ html body .app .cwa .xpb .xpl{grid-column:1/-1;font-size:11.5px;letter-spacing:.08em}
+ html body .app .cwa .xpb .bt{width:100%!important;height:44px!important;padding:0 6px!important;gap:6px!important;font-size:13.5px!important;white-space:nowrap!important;word-break:normal!important;overflow-wrap:normal!important;border-radius:12px!important}
+
+ /* Class card: title + stat tiles + full-width button */
+ html body .app #v .cwa table.rt>tbody{gap:14px}
+ html body .app #v .cwa table.rt tr{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:14px;border-radius:20px;background:#fff;border:1px solid #dbe6fb;box-shadow:0 8px 20px -14px rgba(29,78,216,.35)}
+ html body .app #v .cwa table.rt td{padding:10px 12px;border-radius:14px;background:#f3f7ff;font-size:20px;font-weight:700;color:#14264d;line-height:1.1;overflow-wrap:normal}
+ html body .app #v .cwa table.rt td[data-l]::before{margin-bottom:5px;font-size:10px;line-height:1.2;font-weight:700;color:#6b7a99;white-space:nowrap}
+ html body .app #v .cwa table.rt td.ttl{grid-column:1/-1;order:-3;padding:2px 2px 4px;background:none;border-radius:0;font-size:22px;padding-right:2px}
+ html body .app #v .cwa table.rt td.ttl::before{display:block;margin-bottom:2px;font-size:10.5px}
+ html body .app #v .cwa table.rt td.ttl b{font-weight:800}
+ html body .app #v .cwa table.rt td:nth-child(9){grid-column:1/-1;background:#eaf2ff;order:90}
+ html body .app #v .cwa table.rt td:nth-child(9) .pb{min-width:0!important}
+ html body .app #v .cwa table.rt td:nth-child(9) b{font-size:16px}
+ html body .app #v .cwa table.rt td.ac{grid-column:1/-1;order:99;display:block;margin:2px 0 0;padding:0;background:none;border:0}
+ html body .app #v .cwa table.rt td.ac .bt{width:100%;height:46px;margin:0;padding:0 16px;font-size:14.5px;font-weight:700;border-radius:14px}
+
+ /* Student list inside a class: four small tiles per row */
+ html body .app #v .cwa-s table.rt tr{grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+ html body .app #v .cwa-s table.rt td{padding:9px 8px;font-size:18px;text-align:center}
+ html body .app #v .cwa-s table.rt td[data-l]::before{font-size:9.5px;text-align:center}
+ html body .app #v .cwa-s table.rt td.ttl{grid-column:1/-1;text-align:left;font-size:17px;padding:0 0 2px;order:-3}
+ html body .app #v .cwa-s table.rt td.ttl::before{display:none}
+ html body .app #v .cwa-s table.rt td[data-l="Adm No"]{grid-column:1/3;order:-2;font-size:14px;text-align:left}
+ html body .app #v .cwa-s table.rt td[data-l="Today"]{grid-column:3/5;order:-2;font-size:13px;text-align:left;display:flex;flex-direction:column;align-items:flex-start;justify-content:center}
+ html body .app #v .cwa-s table.rt td[data-l="Attendance %"]{grid-column:1/-1;order:90;text-align:left;background:#eaf2ff}
+}
+
+/* v40b: class-wise attendance tile polish */
+@media(max-width:820px){
+ html body .app #v .at .cwa{padding:0!important;border:0!important;box-shadow:none!important;background:transparent!important;margin-bottom:12px!important}
+ html body .app #v .cwa table.rt td[data-l]::before{font-size:9.5px;letter-spacing:.02em;white-space:nowrap}
+ html body .app #v .cwa table.rt td{padding:10px 10px}
+ html body .app #v .cwa table.rt tr{padding:12px}
+ html body .app #v .cwa-s table.rt td[data-l]::before{letter-spacing:0;font-size:9px}
+}
+
+/* v40c: compact tiles, full-width attendance %, clean button row */
+@media(max-width:820px){
+ html body .app #v .cwa table.rt tr{align-content:start;grid-auto-rows:auto}
+ html body .app #v .cwa table.rt td{min-height:0!important;height:auto!important;align-self:start;display:block}
+ html body .app #v .cwa table.rt td[data-l="Attendance %"]{grid-column:1/-1!important;order:90}
+ html body .app #v .cwa table.rt td[data-l="Attendance %"]>div{width:100%}
+ html body .app #v .cwa table.rt td.ac{border:0!important;box-shadow:none!important;background:none!important;padding:0!important;margin:0!important;border-radius:0}
+ html body .app #v .cwa table.rt td.ac::before,html body .app #v .cwa table.rt td.ac::after{display:none!important;content:none!important}
+}
+
+/* v40d: win over earlier !important card-tile rules */
+@media(max-width:820px){
+ html body .app #v .at .cwa table.rt tbody tr td{min-height:0!important;height:auto!important}
+ html body .app #v .at .cwa table.rt tbody tr td[data-l="Attendance %"]{grid-column:1/-1!important;grid-row:auto!important;order:90!important}
+ html body .app #v .at .cwa table.rt tbody tr{grid-template-rows:none!important;grid-auto-rows:auto!important}
+}
+
+/* v40e: same selector weight as the older tile rule */
+@media(max-width:820px){
+ html body .app #v .at .cwa table.rt td[data-l]:not(.ttl):not(.stt):not(.ac):not(.wd){min-height:0!important;height:auto!important;padding:10px 12px!important;font-size:20px!important}
+ html body .app #v .at .cwa table.rt td[data-l="Attendance %"]:not(.ttl):not(.stt):not(.ac):not(.wd){grid-column:1/-1!important;order:90!important}
+ html body .app #v .at .cwa-s table.rt td[data-l]:not(.ttl):not(.stt):not(.ac):not(.wd){padding:9px 8px!important;font-size:18px!important}
+}
+
+/* v40f: final touches */
+@media(max-width:820px){
+ html body .app #v .at .cwa table.rt td[data-l="Late"]:not(.ttl):not(.stt):not(.ac):not(.wd){grid-column:1/-1!important}
+ html body .app #v .at .cwa-s table.rt td[data-l="Late"]:not(.ttl):not(.stt):not(.ac):not(.wd){grid-column:auto!important}
+ html body .app #v .at .cwa-s table.rt td.ttl{text-align:left!important}
+ html body .app #v .at .cwa-s table.rt td.ttl::before{display:none!important;content:none!important}
+ html body .app #v .at .cwa-s table.rt td[data-l="Adm No"]::before,html body .app #v .at .cwa-s table.rt td[data-l="Today"]::before{text-align:left}
+ html body .app #v .at .cwa-s>.tb{display:flex;flex-direction:column;align-items:flex-start;gap:4px;margin-bottom:6px}
+ html body .app #v .at .cwa-s>.tb .mu{margin:0!important}
+}

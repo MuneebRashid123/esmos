@@ -1706,12 +1706,12 @@ function adminCW(){
     R.forEach(function(r){t.P+=r.P;t.A+=r.A;t.L+=r.L;t.T+=r.T;if(r.td=='P'||r.td=='T')t.td.P++;if(r.td=='A')t.td.A++});
     t.all=t.P+t.A+t.L+t.T;t.pc=t.all?Math.round((t.P+t.T)/t.all*100):0;return{c:c,t:t}}),
   rows=sum.map(function(x){var t=x.t;return'<tr style="cursor:pointer" data-a="cwpick" data-k="'+x.c+'"><td><b>'+x.c+'</b></td><td>'+t.n+'</td><td>'+t.td.P+'</td><td>'+t.td.A+'</td><td>'+t.P+'</td><td>'+t.A+'</td><td>'+t.L+'</td><td>'+t.T+'</td><td style="min-width:150px">'+(t.all?cwBar(t.pc):'<span class="mu">No data</span>')+'</td><td class="ac"><button class="bt sm blue" data-a="cwpick" data-k="'+x.c+'">View students</button></td></tr>'}).join(''),
-  top='<div class="card" style="margin-bottom:18px"><div class="tb" style="gap:10px;flex-wrap:wrap"><h3>Class-wise attendance</h3><label style="margin:0 0 0 auto">Month<input type="month" value="'+mo+'" data-c="cwm" style="width:auto"></label><label style="margin:0">Class<select data-c="cwc"><option value="">All classes</option>'+CL.map(function(c){return'<option'+(c==sel?' selected':'')+'>'+c+'</option>'}).join('')+'</select></label></div>'+
-  '<div class="tw"><table><thead><tr><th>Class</th><th>Students</th><th>Present today ('+A.d+')</th><th>Absent today</th><th>Present (month)</th><th>Absent</th><th>Leave</th><th>Late</th><th>Attendance %</th><th></th></tr></thead><tbody>'+rows+'</tbody></table></div><p class="mu" style="margin-top:8px">Tap a class to see every student. Month figures are for '+mo+'. "Today" uses the date chosen in the Students tab.</p></div>';
+  top='<div class="card cwa" style="margin-bottom:18px"><div class="cwa-h"><h3>Class-wise attendance</h3><div class="cwa-f"><label>Month<input type="month" value="'+mo+'" data-c="cwm"></label><label>Class<select data-c="cwc"><option value="">All classes</option>'+CL.map(function(c){return'<option'+(c==sel?' selected':'')+'>'+c+'</option>'}).join('')+'</select></label></div></div>'+
+  '<div class="tw"><table><thead><tr><th>Class</th><th>Students</th><th>Present today</th><th>Absent today</th><th>Present (month)</th><th>Absent</th><th>Leave</th><th>Late</th><th>Attendance %</th><th></th></tr></thead><tbody>'+rows+'</tbody></table></div><p class="mu" style="margin-top:8px">Tap a class to see every student. Month figures are for '+mo+'. "Today" means '+A.d+'.</p></div>';
   if(!sel)return top;
   var R=cwData(sel,mo).sort(function(a,b){return a.pc-b.pc||String(a.s.name).localeCompare(b.s.name)}),
   low=R.filter(function(r){return r.t&&r.pc<75}).length;
-  return top+'<div class="card"><div class="tb"><h3>'+esc(sel)+' - students ('+mo+')</h3><span class="mu" style="margin-left:auto">'+low+' below 75%</span></div><div class="tw"><table><thead><tr><th>Adm No</th><th>Student</th><th>Today</th><th>Present</th><th>Absent</th><th>Leave</th><th>Late</th><th>Attendance %</th></tr></thead><tbody>'+
+  return top+'<div class="card cwa cwa-s"><div class="tb"><h3>'+esc(sel)+' - students ('+mo+')</h3><span class="mu" style="margin-left:auto">'+low+' below 75%</span></div><div class="tw"><table><thead><tr><th>Adm No</th><th>Student</th><th>Today</th><th>Present</th><th>Absent</th><th>Leave</th><th>Late</th><th>Attendance %</th></tr></thead><tbody>'+
   (R.map(function(r){return'<tr><td>'+esc(r.s.adm)+'</td><td>'+esc(r.s.name)+'</td><td>'+cwTag(r.td)+'</td><td>'+r.P+'</td><td>'+r.A+'</td><td>'+r.L+'</td><td>'+r.T+'</td><td style="min-width:150px">'+(r.t?cwBar(r.pc):'<span class="mu">No data</span>')+'</td></tr>'}).join('')||'<tr><td colspan="8" class="em">No active students in this class.</td></tr>')+'</tbody></table></div></div>';
 }
 PG.attendance=function(){
@@ -2800,3 +2800,33 @@ Object.assign(H,{
 document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target&&e.target.id==='clsn'){e.preventDefault();H.clsadd()}});
 {const _d=draw;draw=function(){CLSYNC();CLREBUILD();CLFIX();return _d.apply(this,arguments)}}
 {const _s=PG.setup;PG.setup=function(){return clsMgrCard()+_s.apply(this,arguments)}}
+
+/* ESMOS: class filters as a dropdown list (every class chip row becomes one select, chips stay as the hidden source of truth) */
+(function(){
+if(window.__ESMOS_CFSEL)return;window.__ESMOS_CFSEL=1;
+function label(b){var n=b.firstChild?String(b.firstChild.textContent||'').trim():'',c=b.querySelector('i');
+ if(!n||n=='All')n='All classes';return c?n+' ('+c.textContent.trim()+')':n}
+function enhance(){
+ document.querySelectorAll('.cf').forEach(function(cf){
+  var r=cf.querySelector('.cf-r');if(!r)return;
+  var bs=[].slice.call(r.querySelectorAll('.cf-b'));if(!bs.length)return;
+  var sig=bs.map(function(b){return b.getAttribute('data-id')+'|'+label(b)+'|'+(b.classList.contains('on')?1:0)}).join(';');
+  var sel=cf.querySelector('select.cf-sel');
+  if(sel&&sel.getAttribute('data-sig')===sig)return;
+  if(!sel){
+   sel=document.createElement('select');sel.className='cf-sel';sel.setAttribute('aria-label','Filter by class');
+   sel.addEventListener('change',function(){
+    var id=sel.value,b=[].slice.call(r.querySelectorAll('.cf-b')).filter(function(x){return x.getAttribute('data-id')===id})[0];
+    if(b)b.click();
+   });
+   cf.insertBefore(sel,r);
+  }
+  sel.innerHTML='';
+  bs.forEach(function(b){var o=document.createElement('option');o.value=b.getAttribute('data-id');o.textContent=label(b);if(b.classList.contains('on'))o.selected=true;sel.appendChild(o)});
+  sel.setAttribute('data-sig',sig);
+ });
+}
+var q=0;
+new MutationObserver(function(){if(!q)q=requestAnimationFrame(function(){q=0;try{enhance()}catch(e){}})}).observe(document.documentElement,{childList:true,subtree:true});
+try{enhance()}catch(e){}
+})();
