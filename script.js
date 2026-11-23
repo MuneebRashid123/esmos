@@ -3,7 +3,7 @@ const SK=k=>k=='timetable'?'tt':k;
 /* ===== v26: class-wise tools (admin portal) ===== */
 var CF={};
 var CWK={students:1,fees:1,exams:1,adm:1};
-function clsNum(c){return parseInt(String(c).replace(/\D/g,''),10)||99}
+function clsNum(c){const i=CL.indexOf(c);return i>=0?i:1000+(parseInt(String(c).replace(/\D/g,''),10)||99)}
 function clsOfRow(k,r){if(k=='fees'||k=='exams'){const t=(S.students||[]).find(x=>x.id==r.sid);return t?t.cls:''}return r.cls||''}
 function CWF(k,r){if(!TROW(k,r))return false;const v=CF[k];return!v||v=='All'||clsOfRow(k,r)==v}
 function CWCHIPS(k){
@@ -354,10 +354,12 @@ else if(id=='sf'){e.preventDefault();const c=String(new FormData(f).get('c')).tr
 else if(id=='lead'){e.preventDefault();const d=Object.fromEntries(new FormData(f));if(CLOUD)rpc('submit_lead',{p_name:d.n,p_school:d.s,p_phone:d.p,p_msg:d.m||''}).catch(()=>0);else{PLR();PLT.leads.unshift({id:Date.now(),n:d.n,s:d.s,p:d.p,m:d.m||'',t:new Date().toLocaleString()});PSV()}f.reset();toast('Thanks! We will contact you soon.');window.open('https://wa.me/'+WAN+'?text='+encodeURIComponent('Hello ESMOS, I am '+d.n+' from '+d.s+' ('+d.p+'). '+(d.m||'I want to set up the school software.')),'_blank')}});
 
 const IC={hwk:'<path d="M4 4h10a3 3 0 013 3v13H7a3 3 0 01-3-3z"/><path d="M8 8h5M8 12h4"/><path d="M18 9l3 3-6 6-3.5.5.5-3.5z"/>',dsh:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4M8 14h3M13 14h3M8 17.5h3"/>',res:'<rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 2.5h6v3H9zM9 14l2 2 4-4.5"/>',dots:'<circle cx="12" cy="5" r="2.3" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="2.3" fill="currentColor" stroke="none"/><circle cx="12" cy="19" r="2.3" fill="currentColor" stroke="none"/>',ann:'<path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"/>',cmp:'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',home:'<path d="M3 11l9-8 9 8v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',stu:'<circle cx="9" cy="7" r="4"/><path d="M2 21v-1a6 6 0 0 1 12 0v1M16 3.5a4 4 0 0 1 0 7M22 21v-1a5 5 0 0 0-4-4.9"/>',fee:'<rect x="2" y="6" width="20" height="14" rx="2"/><path d="M2 10h20M16 15h2"/>',wa:'<path fill="#25D366" stroke="none" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>',wao:'<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22z"/><path transform="translate(6.6 6.6) scale(.45)" stroke-width="3.8" d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>',att:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4M9 15l2 2 4-4"/>',tea:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',rep:'<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/>',exa:'<circle cx="12" cy="9" r="6"/><path d="M8.5 14L7 22l5-3 5 3-1.5-8"/>',tim:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',fin:'<path d="M3 3v18h18M7 15l4-4 3 3 5-6"/>',pay:'<rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/>',adm:'<path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.5 5h13l3.5 7v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-6z"/>',par:'<circle cx="9" cy="7" r="3"/><circle cx="17" cy="9" r="2"/><path d="M3 20a6 6 0 0 1 12 0M15 20a4 4 0 0 1 6 0"/>',rol:'<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',set:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9L7 7M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/>',plus:'<path d="M12 5v14M5 12h14"/>',edit:'<path d="M4 20h4L19 9l-4-4L4 16z"/>',del:'<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/>',menu:'<path d="M4 6h16M4 12h16M4 18h16"/>',srch:'<circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/>',cap:'<path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c3 3 9 3 12 0v-5"/>',send:'<path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/>',chk:'<path d="M5 12l5 5 9-10"/>',wai:'<path fill="#25D366" stroke="none" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>'};
+IC.aup='<path d="M12 19V5M6 11l6-6 6 6"/>';IC.adn='<path d="M12 5v14M6 13l6 6 6-6"/>';
 IC.dn='<path d="M3 7l6 6 4-4 8 8"/><path d="M15 17h6v-6"/>';IC.up='<path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/>';IC.lo='<path d="M9 4H5a1 1 0 00-1 1v14a1 1 0 001 1h4"/><path d="M16 8l4 4-4 4M20 12H9"/>';IC.cls='<rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 21h8M12 18v3"/>';
 IC.lock='<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/><path d="M12 15v2"/>'; document.getElementById('sp').innerHTML='<svg>'+Object.entries(IC).map(([k,v])=>`<symbol id="i-${k}" viewBox="0 0 24 24">${v}</symbol>`).join('')+'</svg>';
 const MOD=[['dashboard','home','Dashboard','Your school at a glance'],['students','stu','Students','Registration, profiles and class assignment'],['fees','fee','Fee Management','Challans, payments, fines and defaulters'],['whatsapp','wai','WhatsApp Automation','Reminders, alerts and notices for parents'],['attendance','att','Attendance','Mark, correct and review'],['staff','tea','Teachers & Staff','Profiles, assignments and salary structure'],['reports','rep','Staff Weekly Reports','Submit, review and approve'],['exams','exa','Examinations & Results','Marks, grades and positions'],['homework','hwk','Homework & Assignments','Give homework by student name'],['approvals','chk','Approvals','Approve report cards before students and parents see them'],['timetable','tim','Timetable','Classes, periods and substitutes'],['finance','fin','Finance','Revenue, expenses and net profit'],['payroll','pay','Payroll','Salary slips and payments'],['admissions','adm','Admissions','From application to enrollment'],['parents','par','Parent Portal','What parents see'],['roles','rol','Roles & Permissions','Access control and activity'],['setup','set','Settings & Security','Configuration and backup']];
 const $=s=>document.querySelector(s),K='dyn_s_'+(DT||'x'),CL=['Class 1','Class 2','Class 3','Class 4','Class 5','Class 6','Class 7','Class 8','Class 9','Class 10'],DAYS=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const CL0=CL.slice();
 const MN=['January','February','March','April','May','June','July','August','September','October','November','December'],repFill=r=>{if(!r.month||!r.wk){const d=String(r.week||r.date||today()).slice(0,10),y=d.slice(0,4),m=+d.slice(5,7)||1,dy=+d.slice(8,10)||1;r.month=MN[m-1]+' '+y;r.wk='Week '+Math.min(5,Math.ceil(dy/7))}return r},repLbl=r=>{repFill(r);const mt=String(r.month).split(' '),mi=MN.indexOf(mt[0]),y=+mt[1],wn=+String(r.wk).replace(/\D/g,'')||1,st=1+(wn-1)*7,dim=new Date(y,mi+1,0).getDate(),en=Math.min(st+6,dim),sh=MN[mi].slice(0,3);return`<span>${esc(r.wk)} &middot; ${esc(r.month)}<br><small style="font-weight:500;color:#6b7a99">${st}${st==en?'':' - '+en} ${sh}</small></span>`},repMonths=()=>{const y=+today().slice(0,4),o=[];for(let a=y-1;a<=y;a++)MN.forEach(m=>o.push(m+' '+a));return o},repWeeks=['Week 1','Week 2','Week 3','Week 4','Week 5'],repWeekDate=o=>{const t=String(o.month||'').split(' '),mi=MN.indexOf(t[0]);if(mi<0)return o.week;const wn=+String(o.wk).replace(/\D/g,'')||1;return t[1]+'-'+String(mi+1).padStart(2,'0')+'-'+String(1+(wn-1)*7).padStart(2,'0')},fmtD=d=>{if(!d)return'-';try{const x=new Date(String(d).slice(0,10)+'T00:00:00');return isNaN(x)?esc(d):x.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})}catch(e){return esc(d)}},dAge=d=>{try{return Math.floor((new Date(today()+'T00:00:00')-new Date(String(d).slice(0,10)+'T00:00:00'))/864e5)}catch(e){return 9999}},today=()=>new Date().toISOString().slice(0,10),mm=()=>today().slice(0,7),yy=()=>today().slice(0,4),mon=()=>new Date().toLocaleString('en',{month:'short',year:'numeric'});
 const money=n=>{n=Math.round(n||0);return(n<0?'-':'')+'Rs '+Math.abs(n).toLocaleString('en')},esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])),ic=n=>`<svg class="i${n=='wai'?' f':''}"><use href="#i-${n}"/></svg>`;const WAI=ic('wai');
 const uid=()=>Date.now()*10+Math.floor(Math.random()*10),sum=(a,f)=>a.reduce((x,y)=>x+f(y),0);
@@ -379,7 +381,7 @@ payroll:[],adm:[{id:1,name:'Zain Malik',cls:'Class 1',guardian:'Adeel Malik',pho
 rules:{due:1,abs:1,rcpt:1},set:{name:'Leadership School',session:'2026-2027',dueDay:10,fine:200,api:'',tfa:0},log:[],logins:[],
 roles:{'Super Admin':MOD.map(m=>m[0]),Owner:MOD.map(m=>m[0]),Principal:MOD.map(m=>m[0]).filter(x=>x!='roles'&&x!='setup'),Accountant:['dashboard','fees','finance','payroll','admissions','whatsapp'],Teacher:['dashboard','students','attendance','exams','timetable','reports'],Receptionist:['dashboard','students','admissions','whatsapp','fees'],Parent:['parents']}}}
 try{S=JSON.parse(localStorage.getItem(K))}catch(e){}
-if(!S||!S.students)S=seed(); try{const _t=TNT();if(_t&&_t.demo&&S.set&&S.set.name!=_t.name)S.set.name=_t.name}catch(e){}
+if(!S||!S.students)S=seed(); CLSYNC(); try{const _t=TNT();if(_t&&_t.demo&&S.set&&S.set.name!=_t.name)S.set.name=_t.name}catch(e){}
 const save=()=>{if(!DT)return;try{ensure()}catch(e){}if(!LOC){if(CAN){clearTimeout(save.t);save.t=setTimeout(()=>rpc('school_save',{p_code:DT,p_data:S}).catch(e=>toast('Not saved: '+e.message)),700)}return}try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}};
 const toast=t=>{const e=$('#to');e.textContent=t;e.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('on'),2300)};
 const lg=t=>{S.log.unshift({t,time:new Date().toLocaleString()});S.log=S.log.slice(0,30)};
@@ -743,7 +745,7 @@ for(const r of rows){const sid=+r.dataset.id,st=S.students.find(x=>x.id==sid),mv
 for(const r of rows){const sid=+r.dataset.id,mv=r.querySelector('.rm').value.trim();if(mv==='')continue;const m=+mv,key=rsKey({sid,subject:sub,test:c.test}),ex=S.exams.find(e=>rsKey(e)==key);if(!ex||ex.marks!=m)chg.push({sid,m});if(ex){ex.marks=m;ex.total=tot;ex.by=by;ex.on=on}else S.exams.push({id:Math.max(0,...S.exams.map(e=>e.id))+1,sid,subject:sub,test:c.test,marks:m,total:tot,by,on});n++}
 chg.forEach(q=>{const s=S.students.find(x=>x.id==q.sid);if(s)sendMsg(s.id,'Result notification','Dear '+s.guardian+', '+s.name+(s.roll?' (Roll no '+s.roll+')':'')+' scored '+q.m+'/'+tot+' in '+sub+' ('+c.test+'). Full result is in the Parent Portal.')});lg('Results saved: '+c.cls+' '+sub+' ('+n+')');try{save()}catch(e){}toast(n+' results saved and sent to student portal and parents.');draw()},
 flt(k,id){FL[k]=id;draw()},
-promo(k,id){const r=S.students.find(x=>x.id==id);r.cls=CL[CL.indexOf(r.cls)+1];r.roll=nextRoll(r.cls,r.id);lg('Promoted '+r.name);save();toast(r.name+' promoted to '+r.cls);draw()},
+promo(k,id){const r=S.students.find(x=>x.id==id);const nx=CL[CL.indexOf(r.cls)+1];if(!nx){r.status='Passed out';lg('Passed out '+r.name);save();toast(r.name+' marked as passed out');draw();return}r.cls=nx;r.roll=nextRoll(r.cls,r.id);lg('Promoted '+r.name);save();toast(r.name+' promoted to '+r.cls);draw()},
 col(k,id){const r=S.fees.find(f=>f.id==id),late=fst(r)=='Overdue'&&!r.fa,fn=+S.set.fine||0;form('Collect payment - '+esc(sn(r.sid)),[['amt','Amount received (Rs)','number'],['mode','Payment mode','sel',['Cash','Bank','Online']]],{amt:bal(r)+(late?fn:0),mode:'Cash'},v=>{if(late){r.amount+=fn;r.fa=1}const a=Math.max(0,Math.min(v.amt,bal(r)));r.paid+=a;S.pays.push({fid:r.id,amt:a,date:today(),mode:v.mode,rn:'RC-'+(1001+S.pays.length),by:(S.staff.find(x=>x.id==SES().id)||{}).name||'Admin'});const s=S.students.find(x=>x.id==r.sid);if(S.rules.rcpt&&s)sendMsg(s.id,'Payment receipt',rcp(r,s));lg('Payment '+money(a)+' from '+sn(r.sid));toast('Payment recorded')},'Record payment',late?`<p class="mu">A late fine of ${money(fn)} will be added.</p>`:'')},
 rec(k,id){const r=S.fees.find(f=>f.id==id),s=S.students.find(x=>x.id==r.sid);if(!s)return;form('Receipt',[],{},()=>{sendMsg(s.id,'Payment receipt',rcp(r,s));openWa(S.msgs[0]);toast('Opening WhatsApp')},'Send on WhatsApp',`<div class="cb"><span>Student</span><b style="margin-left:auto">${esc(s.name)}</b></div><div class="cb"><span>Fee</span><b style="margin-left:auto">${esc(r.month)}</b></div><div class="cb"><span>Paid</span><b style="margin-left:auto">${money(r.paid)}</b></div><div class="cb"><span>Balance</span><b style="margin-left:auto">${money(bal(r))}</b></div>`)},
 chl(k,id){const r=S.fees.find(f=>f.id==id);form('Fee challan',[],{},()=>{},'Close',`<div class="cb"><span>Student</span><b style="margin-left:auto">${esc(sn(r.sid))}</b></div><div class="cb"><span>Fee</span><b style="margin-left:auto">${esc(r.month)}</b></div><div class="cb"><span>Amount</span><b style="margin-left:auto">${money(r.amount)}</b></div><div class="cb"><span>Due date</span><b style="margin-left:auto">${r.due}</b></div><div class="cb"><span>Status</span>${badge(fst(r))}</div>`)},
@@ -1688,13 +1690,42 @@ function adminEmp(){
   '</tbody></table></div>'+(recs.length>shown.length?'<p class="mu" style="margin-top:8px">Showing the latest 200 records. Narrow the filters to see more.</p>':'')+'</div>';
 }
 var _attP=PG.attendance;
+function cwData(c,mo){
+  var ds=Object.keys(S.att||{}).filter(function(x){return x.slice(0,7)==mo});
+  return S.students.filter(function(s){return s.cls==c&&s.status=='Active'}).map(function(s){
+    var r={s:s,P:0,A:0,L:0,T:0};
+    ds.forEach(function(d){var m=(S.att[d]||{})[s.id];if(m&&r[m]!==undefined)r[m]++});
+    r.t=r.P+r.A+r.L+r.T;r.pc=r.t?Math.round((r.P+r.T)/r.t*100):0;
+    r.td=((S.att[A.d]||{})[s.id])||'';return r});
+}
+function cwTag(v){var m={P:['g','Present'],A:['r','Absent'],L:['b','Leave'],T:['a','Late']}[v];return m?'<span class="tg '+m[0]+'">'+m[1]+'</span>':'<span class="mu">Not marked</span>'}
+function cwBar(p){return'<div style="display:flex;align-items:center;gap:8px"><div class="pb" style="flex:1;min-width:70px"><div style="width:'+p+'%"></div></div><b>'+p+'%</b></div>'}
+function adminCW(){
+  var mo=FL.cwm||mm(),sel=FL.cwc||'',
+  sum=CL.map(function(c){var R=cwData(c,mo),t={n:R.length,P:0,A:0,L:0,T:0,td:{P:0,A:0}};
+    R.forEach(function(r){t.P+=r.P;t.A+=r.A;t.L+=r.L;t.T+=r.T;if(r.td=='P'||r.td=='T')t.td.P++;if(r.td=='A')t.td.A++});
+    t.all=t.P+t.A+t.L+t.T;t.pc=t.all?Math.round((t.P+t.T)/t.all*100):0;return{c:c,t:t}}),
+  rows=sum.map(function(x){var t=x.t;return'<tr style="cursor:pointer" data-a="cwpick" data-k="'+x.c+'"><td><b>'+x.c+'</b></td><td>'+t.n+'</td><td>'+t.td.P+'</td><td>'+t.td.A+'</td><td>'+t.P+'</td><td>'+t.A+'</td><td>'+t.L+'</td><td>'+t.T+'</td><td style="min-width:150px">'+(t.all?cwBar(t.pc):'<span class="mu">No data</span>')+'</td><td class="ac"><button class="bt sm blue" data-a="cwpick" data-k="'+x.c+'">View students</button></td></tr>'}).join(''),
+  top='<div class="card" style="margin-bottom:18px"><div class="tb" style="gap:10px;flex-wrap:wrap"><h3>Class-wise attendance</h3><label style="margin:0 0 0 auto">Month<input type="month" value="'+mo+'" data-c="cwm" style="width:auto"></label><label style="margin:0">Class<select data-c="cwc"><option value="">All classes</option>'+CL.map(function(c){return'<option'+(c==sel?' selected':'')+'>'+c+'</option>'}).join('')+'</select></label></div>'+
+  '<div class="tw"><table><thead><tr><th>Class</th><th>Students</th><th>Present today ('+A.d+')</th><th>Absent today</th><th>Present (month)</th><th>Absent</th><th>Leave</th><th>Late</th><th>Attendance %</th><th></th></tr></thead><tbody>'+rows+'</tbody></table></div><p class="mu" style="margin-top:8px">Tap a class to see every student. Month figures are for '+mo+'. "Today" uses the date chosen in the Students tab.</p></div>';
+  if(!sel)return top;
+  var R=cwData(sel,mo).sort(function(a,b){return a.pc-b.pc||String(a.s.name).localeCompare(b.s.name)}),
+  low=R.filter(function(r){return r.t&&r.pc<75}).length;
+  return top+'<div class="card"><div class="tb"><h3>'+esc(sel)+' - students ('+mo+')</h3><span class="mu" style="margin-left:auto">'+low+' below 75%</span></div><div class="tw"><table><thead><tr><th>Adm No</th><th>Student</th><th>Today</th><th>Present</th><th>Absent</th><th>Leave</th><th>Late</th><th>Attendance %</th></tr></thead><tbody>'+
+  (R.map(function(r){return'<tr><td>'+esc(r.s.adm)+'</td><td>'+esc(r.s.name)+'</td><td>'+cwTag(r.td)+'</td><td>'+r.P+'</td><td>'+r.A+'</td><td>'+r.L+'</td><td>'+r.T+'</td><td style="min-width:150px">'+(r.t?cwBar(r.pc):'<span class="mu">No data</span>')+'</td></tr>'}).join('')||'<tr><td colspan="8" class="em">No active students in this class.</td></tr>')+'</tbody></table></div></div>';
+}
 PG.attendance=function(){
   var u=SES();
   if(u.role!='admin')return _attP();
   FL.atab=FL.atab||'stu';
-  var tabs='<div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap"><button class="bt'+(FL.atab=='stu'?'':' gh')+'" data-a="atab" data-k="stu">Students</button><button class="bt'+(FL.atab=='emp'?'':' gh')+'" data-a="atab" data-k="emp">Employees</button></div>';
-  return tabs+(FL.atab=='emp'?adminEmp():_attP());
+  var tb=function(k,l){return'<button class="bt'+(FL.atab==k?'':' gh')+'" data-a="atab" data-k="'+k+'">'+l+'</button>'},
+  tabs='<div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">'+tb('stu','Students')+tb('cw','Class-wise')+tb('emp','Employees')+'</div>';
+  return tabs+(FL.atab=='emp'?adminEmp():FL.atab=='cw'?adminCW():_attP());
 };
+window.adminCW=adminCW;
+H.cwpick=function(k){FL.cwc=k;draw()};
+CH.cwm=function(v){FL.cwm=v||mm();draw()};
+CH.cwc=function(v){FL.cwc=v;draw()};
 H.atab=function(k){FL.atab=k;draw()};
 H.emk=function(k,id){
   var cur=(EA()[A.d]||{})[k];
@@ -2028,14 +2059,14 @@ const g={};rows.forEach(r=>{const k=scl(r);(g[k]=g[k]||[]).push(r)});
 const ord=k=>{const i=CL.indexOf(k.split(' - ')[0]);return i<0?99:i},keys=Object.keys(g).sort((a,b)=>ord(a)-ord(b)||a.localeCompare(b));
 const mob=!!(window.matchMedia&&matchMedia('(max-width:820px)').matches),q=(Q.students||'').trim(),fl=FL.students||'All',sgo=FL.sgo=FL.sgo||{},auto=!mob||!!q||fl!='All'||keys.length==1;
 return keys.map((k,i)=>{
-const L=g[k].slice().sort((a,b)=>(parseInt(a.roll)||9999)-(parseInt(b.roll)||9999)||String(a.name).localeCompare(b.name)),act=L.filter(s=>s.status=='Active').length,open=k in sgo?sgo[k]:(auto||i==0),p=k.split(' - '),num=p[0].replace(/^Class\s*/i,''),sec=p[1]||'';
+const L=g[k].slice().sort((a,b)=>(parseInt(a.roll)||9999)-(parseInt(b.roll)||9999)||String(a.name).localeCompare(b.name)),act=L.filter(s=>s.status=='Active').length,open=k in sgo?sgo[k]:(auto||i==0),p=k.split(' - '),num=CLAB(p[0]),sec=p[1]||'';
 return`<section class="cw-sec${open?' open':''}"><button type="button" class="cw-h" data-sgt="${esc(k)}" aria-expanded="${open}"><span class="cw-ic"><i>${esc(num)}</i>${sec?`<em>${esc(sec)}</em>`:''}</span><span class="cw-t"><b>${esc(k)}</b><small>${L.length} student${L.length==1?'':'s'} &middot; ${act} active</small></span><svg class="cw-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button><div class="cw-b"><div class="cw-grid">${L.map(stuCard).join('')}</div></div></section>`}).join('')}
 function stuPage(){
 const c=C.students,all=S.students,act=all.filter(s=>s.status=='Active').length,nc=new Set(all.map(s=>scl(s))).size,chips=['All'].concat(CL.filter(n=>all.some(s=>s.cls==n)));
 if(!chips.includes(FL.students||'All'))FL.students='All';const cur=FL.students||'All';
 return`<div class="card cw"><div class="cw-kp"><div><b>${all.length}</b><span>Students</span></div><div><b>${act}</b><span>Active</span></div><div><b>${nc}</b><span>Class lists</span></div></div>
 <div class="tb"><div class="se">${ic('srch')}<input id="q" data-c="q" data-k="students" placeholder="Search name, roll, guardian..." value="${esc(Q.students||'')}"></div><button class="bt" data-a="add" data-k="students">${ic('plus')}${c.add}</button></div>
-<div class="ch cw-ch">${chips.map(n=>`<button class="cp ${n==cur?'on':''}" data-a="flt" data-k="students" data-id="${esc(n)}">${esc(n)}</button>`).join('')}</div>
+<div class="ch cw-ch">${chips.map(n=>`<button class="cp ${n==cur?'on':''}" data-a="flt" data-k="students" data-id="${esc(n)}">${esc(n)}</button>`).join('')}${CLCAN()?`<button type="button" class="cp cw-mc" data-a="clsmgr">+ Manage classes</button>`:''}</div>
 <div class="tw cw-x" style="display:none"><table><thead><tr>${c.cols.map(x=>`<th>${x[1]}</th>`).join('')}<th></th></tr></thead><tbody id="tb">${rowsHtml('students')}</tbody></table></div>
 <div class="cw-bar"><b>Class-wise list</b><span><button type="button" data-sgall="1">Expand all</button><button type="button" data-sgall="0">Collapse all</button></span></div>
 <div id="stg" class="cw-list">${stuGroups()}</div></div>`}
@@ -2079,13 +2110,13 @@ const ord=k=>{const i=CL.indexOf(k.split(' - ')[0]);return i<0?99:i},keys=Object
 const mob=!!(window.matchMedia&&matchMedia('(max-width:820px)').matches),q=(Q.fees||'').trim(),fl=FL.fees||'All',fgo=FL.fgo=FL.fgo||{},auto=!mob||!!q||fl!='All'||keys.length==1;
 const rn=r=>{const s=S.students.find(x=>x.id==r.sid);return s?(parseInt(s.roll)||9999):9999};
 return keys.map((k,i)=>{
-const L=g[k].slice().sort((a,b)=>rn(a)-rn(b)||String(a.due).localeCompare(String(b.due))),tot=sum(L,r=>r.amount),pd=sum(L,r=>r.paid),pen=sum(L,bal),pc=tot?Math.round(pd/tot*100):0,ns=new Set(L.map(r=>r.sid)).size,open=k in fgo?fgo[k]:(auto||i==0),p=k.split(' - '),num=p[0].replace(/^Class\s*/i,''),sec=p[1]||'';
-return`<section class="fq-sec${open?' open':''}"><button type="button" class="fq-h" data-fgt="${esc(k)}" aria-expanded="${open}"><span class="fq-ic"><i>${esc(num)}</i>${sec?`<em>${esc(sec)}</em>`:''}</span><span class="fq-t"><b>${esc(k)}</b><small>${ns} student${ns==1?'':'s'} &middot; ${L.length} challan${L.length==1?'':'s'}</small></span><svg class="fq-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg><span class="fq-s"><b class="fq-pen${pen>0?'':' fq-paid'}">${pen>0?money(pen)+' pending':'All paid'}</b><small>${pc}% collected</small></span></button><div class="fq-pb fq-hp"><i style="width:${pc}%"></i></div><div class="fq-b"><div class="fq-grid">${L.map(feeCard).join('')}</div></div></section>`}).join('')}
+const L=g[k].slice().sort((a,b)=>rn(a)-rn(b)||String(a.due).localeCompare(String(b.due))),tot=sum(L,r=>r.amount),pd=sum(L,r=>r.paid),pen=sum(L,bal),pc=tot?Math.round(pd/tot*100):0,ns=new Set(L.map(r=>r.sid)).size,open=k in fgo?fgo[k]:(auto||i==0),p=k.split(' - '),num=CLAB(p[0]),sec=p[1]||'';
+return`<section class="fq-sec${open?' open':''}"><button type="button" class="fq-h" data-fgt="${esc(k)}" aria-expanded="${open}"><span class="fq-ic"><i>${esc(num)}</i>${sec?`<em>${esc(sec)}</em>`:''}</span><span class="fq-t"><b>${esc(k)}</b><small>${ns} student${ns==1?'':'s'} &middot; ${L.length} challan${L.length==1?'':'s'}</small></span><svg class="fq-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg><span class="fq-s"><b class="fq-pen${pen>0?'':' fq-paid'}">${pen>0?money(pen)+' pending':'All paid'}</b><small>${pc}% collected</small></span></button><div class="fq-pb fq-hp"><i style="width:${pc}%"></i></div><div class="fq-b"><div class="fq-cp"><span>Fee challans of this class</span><button type="button" data-fcp="1" data-c="${esc((S.students.find(x=>x.id==L[0].sid)||{}).cls||'')}" data-s="${esc((S.students.find(x=>x.id==L[0].sid)||{}).sec||'')}">Print challans</button></div><div class="fq-grid">${L.map(feeCard).join('')}</div></div></section>`}).join('')}
 function feesPage(){
 const c=C.fees,all=S.fees,tot=sum(all,r=>r.amount),pd=sum(all,r=>r.paid),pen=sum(all,bal),pc=tot?Math.round(pd/tot*100):0,fl=FL.fees||'All',n=f=>all.filter(f).length,cnt={All:all.length,Defaulters:n(r=>fst(r)=='Overdue'),Paid:n(r=>fst(r)=='Paid')};
 return`<div class="card fq"><div class="fq-kp"><div class="fq-ok"><span>Collected</span><b>${money(pd)}</b></div><div class="${pen>0?'fq-bad':'fq-ok'}"><span>Pending</span><b>${money(pen)}</b></div></div>
 <div class="fq-ov"><div class="fq-pb"><i style="width:${pc}%"></i></div><small>Billed ${money(tot)} &middot; ${pc}% collected</small></div>
-<div class="fq-ac"><button class="bt blue" data-a="gen">${ic('plus')}Generate monthly challans</button><button class="bt gh" data-a="add" data-k="fees">${ic('plus')}New challan</button><button class="bt gh" data-a="struct">Fee structure</button></div>
+<div class="fq-ac"><button class="bt blue" data-a="gen">${ic('plus')}Generate monthly challans</button><button class="bt gh" data-a="add" data-k="fees">${ic('plus')}New challan</button><button class="bt gh" data-a="struct">Fee structure</button><button class="bt gh" data-fcp="1" style="grid-column:1/-1">Print class-wise challans</button></div>
 <p class="mu fq-note">Late fine of ${money(S.set.fine)} is added automatically on overdue payments.</p>
 <div class="tb"><div class="se">${ic('srch')}<input id="q" data-c="q" data-k="fees" placeholder="Search student, fee, month..." value="${esc(Q.fees||'')}"></div></div>
 <div class="ch fq-ch">${Object.keys(c.flt).map(x=>`<button class="cp ${x==fl?'on':''}" data-a="flt" data-k="fees" data-id="${x}">${x} <em>${cnt[x]!=null?cnt[x]:''}</em></button>`).join('')}</div>
@@ -2203,7 +2234,7 @@ const L=all.filter(s=>s.cls==A.c).sort(atxSort),idx=steps.indexOf(A.c),marked=L.
 const chips=steps.map(c=>{const Lc=all.filter(s=>s.cls==c),m=Lc.filter(s=>day[s.id]).length,k=Lc.length&&m==Lc.length?' done':m?' part':'';return`<button type="button" class="at-chip${k}${c==A.c?' on':''}" data-atcls="${esc(c)}"><b>${esc(c)}</b><small>${m}/${Lc.length}</small></button>`}).join('');
 let rows='';secs.forEach(sc=>{const part=L.filter(s=>String(s.sec||'')==sc);if(secs.length>1)rows+=`<div class="at-sh">${sc?'Section '+esc(sc):'No section'}</div>`;rows+=part.map(s=>atxRow('s',s.id,s.name,'Roll '+esc(s.roll||'-')+' &middot; Adm '+esc(s.adm||'-'),day[s.id])).join('')});
 return`<div class="at-chips">${chips}</div><div class="at-nav"><button type="button" class="bt sm gh" data-atnav="-1"${idx<=0?' disabled':''}>&larr; Previous</button><span>Step ${idx+1} of ${steps.length}</span><button type="button" class="bt sm gh" data-atnav="1"${idx>=steps.length-1?' disabled':''}>Next &rarr;</button></div>
-<div class="at-hd"><span class="at-ic">${esc(A.c.replace(/^Class\s*/i,''))}</span><div class="at-t"><b>${esc(A.c)}</b><small>${L.length} student${L.length==1?'':'s'} &middot; ${marked} marked</small></div><button type="button" class="bt sm gh" data-atall="1"${L.length?'':' disabled'}>Mark all present</button></div>
+<div class="at-hd"><span class="at-ic">${esc(CLAB(A.c))}</span><div class="at-t"><b>${esc(A.c)}</b><small>${L.length} student${L.length==1?'':'s'} &middot; ${marked} marked</small></div><button type="button" class="bt sm gh" data-atall="1"${L.length?'':' disabled'}>Mark all present</button></div>
 <div class="at-pb"><i style="width:${pct}%"></i></div>${atxTiles(L,day)}${atxLegend()}
 ${L.length?`<div class="at-list">${rows}</div><div class="at-act"><button type="button" class="bt" data-atsave="s">${ic('send')}Save and alert parents</button>${idx<steps.length-1?'<button type="button" class="bt gh" data-atnav="1">Next class &rarr;</button>':''}</div>`:`<p class="em at-em">No active students in ${esc(A.c)}.</p>`}`}
 function atxMonthPct(id){const mo=A.d.slice(0,7);let p=0,t=0;Object.keys(S.satt||{}).filter(d=>d.slice(0,7)==mo).forEach(d=>{const v=S.satt[d][id];if(v){t++;if(v=='P'||v=='T')p++}});return t?Math.round(p/t*100)+'%':'-'}
@@ -2215,11 +2246,11 @@ ${L.length?`<div class="at-list">${L.map(s=>atxRow('t',s.id,s.name,esc(s.role)+(
 function atxChart(){const rep=TCLX(CL).map(c=>{let p=0,t=0;Object.keys(S.att).filter(x=>x.slice(0,7)==mm()).forEach(x=>TASTU(S.students).filter(s=>s.cls==c).forEach(s=>{const m=S.att[x][s.id];if(m){t++;if(m=='P'||m=='T')p++}}));return[c,t?Math.round(p/t*100):0]});return`<div class="card" style="margin-top:14px"><h3>Class-wise attendance this month (%)</h3>${attChart(rep.map(x=>[x[0].replace('Class ','C'),x[1]]))}</div>`}
 function atxBody(){
 const adm=atxAdmin();if(!adm)ATX.tab='stu';const stu=ATX.tab=='stu';
-return`<div class="card at"><div class="at-top">${adm?`<div class="at-tabs"><button type="button" class="${stu?'on':''}" data-attab="stu">Students</button><button type="button" class="${stu?'':'on'}" data-attab="tea">Teachers</button></div>`:''}<div class="at-dt"><input type="date" id="atd" value="${esc(A.d)}"><button type="button" class="bt sm gh" data-attoday="1">Today</button></div></div>
-<div class="at-sr"><div class="se">${ic('srch')}<input id="atq" autocomplete="off" placeholder="${stu?'Search student, roll or adm no...':'Search teacher or staff...'}" value="${esc(ATX.q)}"></div></div>
-<div id="atc">${stu?atxStuHtml():atxTeaHtml()}</div></div>${stu?atxChart():''}`}
+return`<div class="card at"><div class="at-top">${adm?`<div class="at-tabs"><button type="button" class="${stu?'on':''}" data-attab="stu">Students</button><button type="button" class="${ATX.tab=='cw'?'on':''}" data-attab="cw">Class-wise</button><button type="button" class="${ATX.tab=='tea'?'on':''}" data-attab="tea">Teachers</button></div>`:''}<div class="at-dt"><input type="date" id="atd" value="${esc(A.d)}"><button type="button" class="bt sm gh" data-attoday="1">Today</button></div></div>
+<div class="at-sr"${ATX.tab=='cw'?' style="display:none"':''}><div class="se">${ic('srch')}<input id="atq" autocomplete="off" placeholder="${stu?'Search student, roll or adm no...':'Search teacher or staff...'}" value="${esc(ATX.q)}"></div></div>
+<div id="atc">${ATX.tab=='cw'?adminCW():stu?atxStuHtml():atxTeaHtml()}</div></div>${stu?atxChart():''}`}
 function atxCenter(){const c=document.querySelector('.at-chips'),o=c&&c.querySelector('.on');if(c&&o)c.scrollLeft=o.offsetLeft-(c.clientWidth-o.offsetWidth)/2}
-function atxUpd(keep){const el=document.getElementById('atc');if(!el)return;const old=el.querySelector('.at-chips'),sl=old?old.scrollLeft:0;el.innerHTML=ATX.tab=='stu'?atxStuHtml():atxTeaHtml();const nw=el.querySelector('.at-chips');if(nw){if(keep)nw.scrollLeft=sl;else atxCenter()}}
+function atxUpd(keep){const el=document.getElementById('atc');if(!el)return;const old=el.querySelector('.at-chips'),sl=old?old.scrollLeft:0;el.innerHTML=ATX.tab=='cw'?adminCW():ATX.tab=='stu'?atxStuHtml():atxTeaHtml();const nw=el.querySelector('.at-chips');if(nw){if(keep)nw.scrollLeft=sl;else atxCenter()}}
 function atxRender(){const w=document.getElementById('atw');if(!w)return;w.innerHTML=atxBody();atxCenter()}
 function atxSaveS(){const d=S.att[A.d]||{};let n=0;if(S.rules.abs)TASTU(S.students).filter(s=>s.cls==A.c&&d[s.id]=='A'&&!S.al[A.d+'_'+s.id]).forEach(s=>{sendMsg(s.id,'Absent alert',fill(TPL.abs[1],s));S.al[A.d+'_'+s.id]=1;n++});lg('Attendance saved: '+A.c);save();toast('Saved. '+n+' absent alerts ready in WhatsApp page')}
 PG.attendance=function(){setTimeout(atxCenter,30);return'<div id="atw">'+atxBody()+'</div>'};
@@ -2398,7 +2429,7 @@ function unpaidPanel(rows){
   return`<div class="card fm-up"><div class="fm-uph"><h3>Unpaid students</h3><span class="fm-cnt">${L.length}</span><button type="button" class="fm-lk" data-a="fxst" data-id="Unpaid">View all</button></div><div class="fm-ul">${L.slice(0,6).map(x=>`<div class="fm-ur"><span class="fm-av">${esc(inits(x.s&&x.s.name))}</span><div class="fm-un"><button type="button" class="fm-nm" data-a="fhist" data-id="${x.first.sid}">${esc(x.s?x.s.name:'Unknown')}</button><small>${esc(x.s?x.s.cls:'')} &middot; ${plural(x.rs.length,'pending fee')}${x.late?' &middot; <em class="fm-od">Overdue</em>':''}</small></div><b class="fm-ub">${money(x.b)}</b><button type="button" class="fm-b pri" data-a="col" data-k="fees" data-id="${x.first.id}">Collect</button></div>`).join('')}</div>${L.length>6?`<p class="fm-more">+ ${L.length-6} more unpaid students. Use "View all".</p>`:''}</div>`;
 }
 function acts(r){
-  return`<button type="button" class="fm-b hist" data-a="fhist" data-id="${r.sid}">History</button>${rem(r)>0?`<button type="button" class="fm-b pri" data-a="col" data-k="fees" data-id="${r.id}">Collect</button>`:''}${pdd(r)>0?`<button type="button" class="fm-b" data-a="rec" data-k="fees" data-id="${r.id}">Receipt</button>`:''}<button type="button" class="fm-b" data-a="edit" data-k="fees" data-id="${r.id}">Edit</button><button type="button" class="fm-b dng" data-a="del" data-k="fees" data-id="${r.id}">Delete</button>`;
+  return`<button type="button" class="fm-b hist" data-a="fhist" data-id="${r.sid}">History</button>${rem(r)>0?`<button type="button" class="fm-b pri" data-a="col" data-k="fees" data-id="${r.id}">Collect</button>`:''}${pdd(r)>0?`<button type="button" class="fm-b" data-a="rec" data-k="fees" data-id="${r.id}">Receipt</button>`:''}<button type="button" class="fm-b" data-ch="one" data-id="${r.id}">Challan</button><button type="button" class="fm-b" data-a="edit" data-k="fees" data-id="${r.id}">Edit</button><button type="button" class="fm-b dng" data-a="del" data-k="fees" data-id="${r.id}">Delete</button>`;
 }
 function table(rows){
   const L=rows.slice().sort((a,b)=>String(b.due||'').localeCompare(String(a.due||''))||sn(a.sid).localeCompare(sn(b.sid)));
@@ -2421,7 +2452,7 @@ function page(){
   const yrs=yearsList();
   const opt=(v,l,c)=>`<option value="${v}"${v==c?' selected':''}>${l}</option>`;
   const any=FX.q||FX.m||FX.y||FX.pd||FX.dd||FX.st!='All';
-  return`<div class="fm"><div class="card fm-hd"><div><h3>Fee collection</h3><p>Student-wise fees with automatic Paid, Unpaid and Partial status. Late fine of ${money(S.set.fine)} is added automatically on overdue payments.</p></div><div class="fm-ha"><button type="button" class="bt blue" data-a="gen">${ic('plus')}Generate monthly challans</button><button type="button" class="bt o" data-a="geny">Generate yearly challans</button><button type="button" class="bt o" data-a="struct">Class-wise fee structure</button><button type="button" class="bt o" data-a="add" data-k="fees">${ic('plus')}New fee</button></div></div>${CWCHIPS('fees')}<div class="card fm-fl"><div class="se fm-se">${ic('srch')}<input type="search" data-fxq="1" placeholder="Search student name, roll no, class..." value="${esc(FX.q)}" autocomplete="off"></div><label class="fm-f"><span>Month</span><select data-fx="m">${opt('','All months',FX.m)}${MN.map((n,i)=>opt(String(i+1).padStart(2,'0'),n,FX.m)).join('')}</select></label><label class="fm-f"><span>Year</span><select data-fx="y">${opt('','All years',FX.y)}${yrs.map(y=>opt(y,y,FX.y)).join('')}</select></label><label class="fm-f"><span>Payment date</span><input type="date" data-fx="pd" value="${esc(FX.pd)}"></label><label class="fm-f"><span>Due date</span><input type="date" data-fx="dd" value="${esc(FX.dd)}"></label>${any?`<button type="button" class="fm-b clr" data-a="fxclr">Clear filters</button>`:''}</div><div id="fxres">${body()}</div></div>`;
+  return`<div class="fm"><div class="card fm-hd"><div><h3>Fee collection</h3><p>Student-wise fees with automatic Paid, Unpaid and Partial status. Late fine of ${money(S.set.fine)} is added automatically on overdue payments.</p></div><div class="fm-ha"><button type="button" class="bt blue" data-a="gen">${ic('plus')}Generate monthly challans</button><button type="button" class="bt o" data-a="geny"><i class="fmi"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg></i>Generate yearly challans</button><button type="button" class="bt o" data-a="struct"><i class="fmi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg></i>Class-wise fee structure</button><button type="button" class="bt o" data-a="add" data-k="fees">${ic('plus')}<i class="fmi"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg></i>New fee</button><button type="button" class="bt o" data-ch="setup"><i class="fmi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6"/><rect x="3" y="9" width="18" height="9" rx="2"/><path d="M7 15h10v6H7z"/></svg></i>Challan setup</button><button type="button" class="bt o" data-fcp="1"><i class="fmi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6"/><rect x="3" y="9" width="18" height="9" rx="2"/><path d="M7 15h10v6H7z"/></svg></i>Print challans</button></div></div>${CWCHIPS('fees')}<div class="card fm-fl"><div class="se fm-se">${ic('srch')}<input type="search" data-fxq="1" placeholder="Search student name, roll no, class..." value="${esc(FX.q)}" autocomplete="off"></div><label class="fm-f"><span>Month</span><select data-fx="m">${opt('','All months',FX.m)}${MN.map((n,i)=>opt(String(i+1).padStart(2,'0'),n,FX.m)).join('')}</select></label><label class="fm-f"><span>Year</span><select data-fx="y">${opt('','All years',FX.y)}${yrs.map(y=>opt(y,y,FX.y)).join('')}</select></label><label class="fm-f"><span>Payment date</span><input type="date" data-fx="pd" value="${esc(FX.pd)}"></label><label class="fm-f"><span>Due date</span><input type="date" data-fx="dd" value="${esc(FX.dd)}"></label>${any?`<button type="button" class="fm-b clr" data-a="fxclr">Clear filters</button>`:''}</div><div id="fxres">${body()}</div></div>`;
 }
 PG.fees=page;
 
@@ -2506,3 +2537,266 @@ document.addEventListener('change',e=>{
 });
 window.FEEX=FX;
 })();
+
+/* ===== ESMOS: Challan setup (editable details, logo, custom fields, paper sizes) and printing ===== */
+(function(){
+const PX=3.7795,SRC=[['cno','Challan no'],['name','Student name'],['father','Father name'],['adm','Adm no'],['roll','Roll no'],['cls','Class'],['sec','Section'],['phone','Phone / WhatsApp'],['session','Session'],['month','Fee month'],['issue','Issue date'],['due','Due date'],['amount','Fee amount'],['paid','Paid so far'],['fine','Late fine'],['total','Payable amount'],['status','Status'],['text','Fixed text (you type it)'],['blank','Blank line (fill by hand)']],
+PRE=[['a4p','A4 Portrait',210,297],['a4l','A4 Landscape (3 copies side by side)',297,210],['a5p','A5 Portrait',148,210],['a5l','A5 Landscape',210,148],['a6','A6',105,148],['let','Letter',216,279],['leg','Legal',216,356],['th','Thermal 80 mm',80,200]];
+const C=()=>{const d={title:'FEE CHALLAN',name:'',addr:'',phone:'',showLogo:1,logo:'',logoH:16,fields:[['cno','Challan No'],['name','Student Name'],['father','Father Name'],['adm','Adm No'],['roll','Roll No',0],['cls','Class'],['sec','Section',0],['phone','Phone',0],['month','Fee Month'],['due','Due Date'],['amount','Fee Amount'],['fine','Late Fine'],['total','Payable Amount']].map(x=>({src:x[0],label:x[1],on:x[2]===0?0:1,val:''})),bank:{on:0,name:'',title:'',acc:'',branch:''},note:'Fee must be deposited on or before the due date. Late fine is charged after the due date.',ncopies:3,copies:['Bank Copy','School Copy','Student Copy','Parent Copy'],layout:'cols',sign:1,signL:['Cashier','Principal'],size:'a4l',sizes:[],margin:8,fs:100};return S.chal=Object.assign(d,S.chal||{})};
+const SZ=()=>PRE.map(x=>({id:x[0],name:x[1],w:x[2],h:x[3]})).concat(C().sizes),cur=()=>SZ().find(s=>s.id==C().size)||SZ()[1];
+function V(r){const t=S.students.find(s=>s.id==r.sid)||{},a=+r.amount||0,p=+r.paid||0,late=r.due&&r.due<today()&&p<a&&!r.fa,f=late?(+S.set.fine||0):0;return{cno:'CH-'+String(r.id).slice(-6).toUpperCase(),name:t.name,father:t.guardian,adm:t.adm,roll:t.roll,cls:t.cls,sec:t.sec,phone:t.phone,session:S.set.session,month:r.month,issue:today(),due:r.due,amount:money(a),paid:money(p),fine:money(f),total:money(Math.max(0,a-p)+f),status:p>=a?'Paid':late?'Overdue':p>0?'Partial':'Unpaid'}}
+const SAMPLE={cno:'CH-000123',name:'Student Name',father:'Father Name',adm:'LS-1001',roll:'1',cls:'Class 5',sec:'A',phone:'0300 1234567',session:'2026-2027',month:'December 2026',issue:'2026-12-01',due:'2026-12-10',amount:'Rs 5,000',paid:'Rs 0',fine:'Rs 0',total:'Rs 5,000',status:'Unpaid'};
+function cp(v,nm,c){const lg=c.logo||(S.set.theme||{}).logo||'',rows=c.fields.filter(f=>f.on).map(f=>`<tr><th>${esc(f.label)}</th><td>${f.src=='blank'?'<i class="bl"></i>':esc(f.src=='text'?f.val:(v[f.src]??''))}</td></tr>`).join(''),b=c.bank.on?`<div class="bk"><b>Bank:</b> ${esc(c.bank.name)}<br>Account title: ${esc(c.bank.title)}<br>Account no: ${esc(c.bank.acc)}${c.bank.branch?'<br>Branch: '+esc(c.bank.branch):''}</div>`:'';return`<div class="cp"><div class="hd">${c.showLogo&&lg?`<img src="${lg}" style="height:${c.logoH}mm">`:''}<div><b class="sn">${esc(c.name||S.set.name)}</b>${c.addr?'<br>'+esc(c.addr):''}${c.phone?'<br>'+esc(c.phone):''}</div></div><div class="tt">${esc(c.title)}<em>${esc(nm)}</em></div><table>${rows}</table>${b}<p class="nt">${esc(c.note).replace(/\n/g,'<br>')}</p>${c.sign?`<div class="sg">${c.signL.map(x=>`<span>${esc(x)}</span>`).join('')}</div>`:''}</div>`}
+function pg(list,c,sz){const n=Math.max(1,Math.min(4,+c.ncopies||1)),m=+c.margin||0;return`<!doctype html><html><head><meta charset="utf-8"><style>@page{size:${sz.w}mm ${sz.h}mm;margin:0}*{box-sizing:border-box}html,body{margin:0}body{font-family:Arial,sans-serif;font-size:${(9*c.fs/100).toFixed(1)}pt;color:#111}.pg{width:${sz.w}mm;height:${sz.h}mm;padding:${m}mm;page-break-after:always;overflow:hidden}.pg:last-child{page-break-after:auto}.gr{display:grid;width:${sz.w-2*m}mm;height:${sz.h-2*m}mm;gap:3mm;${c.layout=='cols'?'grid-template-columns:repeat('+n+',1fr)':'grid-template-rows:repeat('+n+',1fr)'}}.cp{border:1px solid #111;padding:3mm;display:flex;flex-direction:column;overflow:hidden;min-width:0}.hd{display:flex;gap:2mm;align-items:center;border-bottom:1px solid #111;padding-bottom:2mm;font-size:.85em}.sn{font-size:1.25em}.tt{text-align:center;font-weight:700;margin:2mm 0;letter-spacing:.5px}.tt em{display:block;font-weight:400;font-size:.8em}table{width:100%;border-collapse:collapse}th,td{border-bottom:1px solid #bbb;padding:1.2mm 1mm;text-align:left;vertical-align:bottom}th{font-weight:600;width:42%}.bl{display:block;height:1em}.bk,.nt{font-size:.85em;margin:2mm 0}.sg{margin-top:auto;display:flex;justify-content:space-around;gap:3mm;padding-top:8mm;font-size:.85em}.sg span{border-top:1px solid #111;padding-top:1mm;min-width:18mm;text-align:center}</style></head><body>${list.map(v=>`<div class="pg"><div class="gr">${c.copies.slice(0,n).map(x=>cp(v,x,c)).join('')}</div></div>`).join('')}</body></html>`}
+function printL(list){if(!list.length){toast('No challans to print');return}const f=document.createElement('iframe');f.style.cssText='position:fixed;right:0;bottom:0;width:0;height:0;border:0';document.body.appendChild(f);f.onload=()=>setTimeout(()=>{f.contentWindow.focus();f.contentWindow.print();setTimeout(()=>f.remove(),60000)},300);f.srcdoc=pg(list,C(),cur())}
+window.ESMOS_CHALLAN={html:pg,list:printL};
+window.ESMOS_CHALLAN.openPrint=function(cls,sec,st){open('setup');M.tab='x';PF.cls=cls||'';PF.sec=sec||'';PF.mon='';PF.st=st||'All';draw2()};
+let M=null,PF={cls:'',sec:'',mon:'',st:'All'};
+const st=document.createElement('style');st.textContent='#chov{position:fixed;inset:0;z-index:99999;background:rgba(15,23,42,.55);display:flex;align-items:stretch;justify-content:center;padding:12px}.chw{background:#fff;border-radius:16px;width:100%;max-width:1200px;display:flex;flex-direction:column;overflow:hidden}.chh{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid #e2e8f0;flex-wrap:wrap}.chh h3{margin:0;font-size:17px;flex:1}.chb{display:flex;flex:1;min-height:0;flex-wrap:wrap;overflow:auto}.che{flex:1 1 380px;max-width:470px;padding:14px;overflow:auto;border-right:1px solid #e2e8f0}.chp{flex:2 1 400px;background:#eef2f7;padding:14px;overflow:auto}.cht{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}.cht button{border:1px solid #cbd5e1;background:#fff;border-radius:20px;padding:6px 14px;cursor:pointer;font-size:13px}.cht button.on{background:#1d4ed8;color:#fff;border-color:#1d4ed8}.chl{display:block;font-size:12px;font-weight:600;margin:8px 0 0}.chl input,.chl select,.chl textarea,.chr input[type=text],.chr input:not([type]){display:block;width:100%;margin-top:3px;padding:7px 9px;border:1px solid #cbd5e1;border-radius:8px;font-size:13px}.chk{display:flex;gap:7px;align-items:center;font-size:13px;margin:8px 0}.chr{display:flex;gap:5px;align-items:center;margin:5px 0}.chr input:not([type=checkbox]){margin:0;flex:1;min-width:0}.chr small{font-size:10px;color:#64748b;width:70px}.chr button,.chx{border:1px solid #cbd5e1;background:#fff;border-radius:7px;padding:5px 8px;cursor:pointer}.chs{font-size:12px;color:#64748b;margin:12px 0 4px;font-weight:700;text-transform:uppercase}.chbox{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:10px;margin-top:10px}#chpv{border:0;background:#fff;box-shadow:0 4px 18px rgba(0,0,0,.18);transform-origin:top left}';document.head.appendChild(st);
+const L=(p,t,v,n)=>`<label class="chl">${t}<input data-chv="${p}"${n?' type="number" data-n="1"':''} value="${esc(v)}"></label>`,K=(p,t,v,re)=>`<label class="chk"><input type="checkbox" data-chv="${p}" data-re="${re?1:0}"${v?' checked':''}>${t}</label>`;
+function ed(){const c=C(),sz=cur(),tab=M.tab;
+if(M.mode=='one')return`<div class="chs">Paper size</div><label class="chl">Print on<select data-chv="size" data-re="1">${SZ().map(s=>`<option value="${s.id}"${s.id==c.size?' selected':''}>${esc(s.name)} - ${s.w} x ${s.h} mm</option>`).join('')}</select></label><button class="bt" style="margin-top:14px;width:100%" data-ch="p1">Print this challan</button><button class="bt gh" style="margin-top:8px;width:100%" data-ch="setup">Edit challan setup</button>`;
+const T=[['d','Details'],['f','Fields'],['p','Paper size'],['x','Print']].map(x=>`<button data-ch="tab" data-k="${x[0]}" class="${tab==x[0]?'on':''}">${x[1]}</button>`).join('');let b='';
+if(tab=='d')b=`${L('title','Challan title',c.title)}${L('name','School name (blank = '+esc(S.set.name)+')',c.name)}${L('addr','Address',c.addr)}${L('phone','Phone / contact',c.phone)}${K('showLogo','Show logo',c.showLogo,1)}<label class="chl">Logo (PNG or JPG; blank = school logo)<input type="file" accept="image/*" data-chlogo="1"></label>${c.logo?'<button class="chx" data-ch="nologo" style="margin-top:6px">Remove uploaded logo</button>':''}${L('logoH','Logo height (mm)',c.logoH,1)}<div class="chs">Bank details</div>${K('bank.on','Show bank details',c.bank.on,1)}${c.bank.on?L('bank.name','Bank name',c.bank.name)+L('bank.title','Account title',c.bank.title)+L('bank.acc','Account number',c.bank.acc)+L('bank.branch','Branch',c.bank.branch):''}<div class="chs">Note and signatures</div><label class="chl">Note / instructions<textarea rows="3" data-chv="note">${esc(c.note)}</textarea></label>${K('sign','Show signature lines',c.sign,1)}${c.sign?L('signL.0','Signature 1',c.signL[0])+L('signL.1','Signature 2',c.signL[1]):''}<div class="chs">Copies on each page</div><label class="chl">Number of copies<select data-chv="ncopies" data-n="1" data-re="1">${[1,2,3,4].map(n=>`<option${n==c.ncopies?' selected':''}>${n}</option>`).join('')}</select></label>${c.copies.slice(0,c.ncopies).map((x,i)=>L('copies.'+i,'Copy '+(i+1)+' name',x)).join('')}<label class="chl">Layout<select data-chv="layout"><option value="cols"${c.layout=='cols'?' selected':''}>Side by side</option><option value="rows"${c.layout=='rows'?' selected':''}>One below another</option></select></label><button class="chx" data-ch="reset" style="margin-top:14px">Reset everything to default</button>`;
+if(tab=='f')b=`<p class="mu" style="font-size:12px">Tick the details to show. Rename any label, move it up or down, or add your own.</p>${c.fields.map((f,i)=>`<div class="chr"><input type="checkbox" data-chv="fields.${i}.on"${f.on?' checked':''}><input data-chv="fields.${i}.label" value="${esc(f.label)}">${f.src=='text'?`<input data-chv="fields.${i}.val" placeholder="Text" value="${esc(f.val)}">`:`<small>${(SRC.find(x=>x[0]==f.src)||[0,''])[1]}</small>`}<button data-ch="up" data-i="${i}">&uarr;</button><button data-ch="down" data-i="${i}">&darr;</button><button data-ch="del" data-i="${i}">&times;</button></div>`).join('')}<div class="chbox"><b style="font-size:13px">Add a new field</b><label class="chl">Label<input id="chnl" placeholder="e.g. Mother Name"></label><label class="chl">Take value from<select id="chns">${SRC.map(x=>`<option value="${x[0]}">${x[1]}</option>`).join('')}</select></label><button class="bt sm" style="margin-top:10px" data-ch="addf">Add field</button></div>`;
+if(tab=='p')b=`<label class="chl">Paper size<select data-chv="size" data-re="1">${SZ().map(s=>`<option value="${s.id}"${s.id==c.size?' selected':''}>${esc(s.name)} - ${s.w} x ${s.h} mm</option>`).join('')}</select></label>${L('margin','Page margin (mm)',c.margin,1)}${L('fs','Text size (%)',c.fs,1)}${c.sizes.some(s=>s.id==c.size)?'<button class="chx" data-ch="dels" style="margin-top:10px">Delete this custom size</button>':''}<div class="chbox"><b style="font-size:13px">Create a new size</b><label class="chl">Name<input id="chsn" placeholder="e.g. Half page 150 x 200"></label><div style="display:flex;gap:8px"><label class="chl" style="flex:1">Width (mm)<input id="chsw" type="number" value="150"></label><label class="chl" style="flex:1">Height (mm)<input id="chsh" type="number" value="200"></label></div><button class="bt sm" style="margin-top:10px" data-ch="adds">Save size</button></div>`;
+if(tab=='x'){const ms=[...new Set(S.fees.map(f=>f.month))],ls=listP(),cs=[...new Set(S.fees.filter(f=>typeof TROW!='function'||TROW('fees',f)).map(f=>(S.students.find(t=>t.id==f.sid)||{}).cls).filter(Boolean))].sort((a,b)=>CL.indexOf(a)-CL.indexOf(b));b=`<div class="chs">Which class do you want to print?</div><div class="cht">${['',...cs].map(x=>`<button data-ch="pcls" data-v="${esc(x)}" class="${x==PF.cls?'on':''}">${x?esc(x):'All classes'}</button>`).join('')}</div><label class="chl">Class<select data-pf="cls"><option value="">All classes</option>${CL.map(x=>`<option${x==PF.cls?' selected':''}>${x}</option>`).join('')}</select></label><label class="chl">Section<select data-pf="sec"><option value="">All sections</option>${[...new Set(S.students.filter(t=>!PF.cls||t.cls==PF.cls).map(t=>t.sec).filter(Boolean))].sort().map(x=>`<option${x==PF.sec?' selected':''}>${esc(x)}</option>`).join('')}</select></label><label class="chl">Fee month<select data-pf="mon"><option value="">All months</option>${ms.map(x=>`<option${x==PF.mon?' selected':''}>${esc(x)}</option>`).join('')}</select></label><label class="chl">Status<select data-pf="st">${['All','Unpaid only'].map(x=>`<option${x==PF.st?' selected':''}>${x}</option>`).join('')}</select></label><p class="mu" style="font-size:12px;margin-top:12px">${ls.length} challan${ls.length==1?'':'s'} selected, one page per student on ${esc(sz.name)}.</p><button class="bt" style="width:100%" data-ch="pall">Print ${ls.length} challans</button><button class="bt gh" style="width:100%;margin-top:8px" data-ch="ptest">Print sample challan</button>`}
+return`<div class="cht">${T}</div>${b}`}
+function listP(){return S.fees.filter(f=>{const t=S.students.find(s=>s.id==f.sid)||{};return(typeof TROW!='function'||TROW('fees',f))&&(!PF.cls||t.cls==PF.cls)&&(!PF.sec||t.sec==PF.sec)&&(!PF.mon||f.month==PF.mon)&&(PF.st=='All'||(+f.paid||0)<(+f.amount||0))}).map(V)}
+function draw2(keepEd){const o=document.getElementById('chov');if(!o)return;if(!keepEd||!o.querySelector('.che'))o.innerHTML=`<div class="chw"><div class="chh"><h3>${M.mode=='one'?'Fee challan':'Challan setup'}</h3><button class="bt gh sm" data-ch="close">Close</button></div><div class="chb"><div class="che">${ed()}</div><div class="chp"><div id="chpb"><iframe id="chpv"></iframe></div></div></div></div>`;prev()}
+function prev(){const c=C(),sz=cur(),fr=document.getElementById('chpv'),bx=document.getElementById('chpb');if(!fr)return;const r=M.rid&&S.fees.find(f=>f.id==M.rid),sc=Math.min(1,(bx.parentNode.clientWidth-30)/(sz.w*PX));fr.style.width=sz.w*PX+'px';fr.style.height=sz.h*PX+'px';fr.style.transform='scale('+sc+')';bx.style.cssText='width:'+sz.w*PX*sc+'px;height:'+sz.h*PX*sc+'px';fr.srcdoc=pg([r?V(r):(S.fees[0]&&M.mode!='one'?V(S.fees[0]):SAMPLE)],c,sz)}
+function open(mode,rid){C();M={mode,tab:'d',rid};let o=document.getElementById('chov');if(o)o.remove();o=document.createElement('div');o.id='chov';document.body.appendChild(o);draw2()}
+let sv;const sav=()=>{clearTimeout(sv);sv=setTimeout(()=>{try{save()}catch(e){}},400)};
+function setP(p,v){const k=p.split('.');let o=C();for(let i=0;i<k.length-1;i++)o=o[k[i]];o[k[k.length-1]]=v}
+const onIn=e=>{const t=e.target;if(!t.closest||!t.closest('#chov'))return;if(t.dataset.pf){PF[t.dataset.pf]=t.value;if(t.dataset.pf=='cls')PF.sec='';draw2();return}if(t.dataset.chlogo){const x=t.files[0];if(x)IMGRS(x,300,d=>{C().logo=d;sav();draw2()},'image/png');return}if(!t.dataset.chv)return;let v=t.type=='checkbox'?(t.checked?1:0):t.dataset.n?+t.value:t.value;setP(t.dataset.chv,v);sav();if(e.type=='change'&&t.dataset.re=='1')draw2();else prev()};
+document.addEventListener('input',onIn);document.addEventListener('change',onIn);
+document.addEventListener('keydown',e=>{if(e.key=='Escape'){const o=document.getElementById('chov');o&&o.remove()}});
+document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-ch]');if(!b)return;const a=b.dataset.ch,c=C(),i=+b.dataset.i;
+if(a=='setup'){open('setup');return}if(a=='one'){open('one',+b.dataset.id||b.dataset.id);return}
+if(!document.getElementById('chov'))return;
+if(a=='close'){document.getElementById('chov').remove();return}
+if(a=='tab'){M.tab=b.dataset.k;draw2();return}
+if(a=='up'&&i>0){[c.fields[i-1],c.fields[i]]=[c.fields[i],c.fields[i-1]]}
+else if(a=='down'&&i<c.fields.length-1){[c.fields[i+1],c.fields[i]]=[c.fields[i],c.fields[i+1]]}
+else if(a=='del'){c.fields.splice(i,1)}
+else if(a=='addf'){const l=document.getElementById('chnl').value.trim(),s=document.getElementById('chns').value;if(!l){toast('Type a label for the field');return}c.fields.push({src:s,label:l,on:1,val:''})}
+else if(a=='adds'){const n=document.getElementById('chsn').value.trim(),w=+document.getElementById('chsw').value,h=+document.getElementById('chsh').value;if(!n||!(w>=40&&w<=1000&&h>=40&&h<=1000)){toast('Enter a name and a width and height between 40 and 1000 mm');return}const id='c'+Date.now();c.sizes.push({id,name:n,w,h});c.size=id}
+else if(a=='dels'){c.sizes=c.sizes.filter(s=>s.id!=c.size);c.size='a4l'}
+else if(a=='nologo'){c.logo=''}
+else if(a=='reset'){if(!confirm('Reset all challan settings to default?'))return;delete S.chal;C()}
+else if(a=='p1'){const r=S.fees.find(f=>f.id==M.rid);printL(r?[V(r)]:[]);return}
+else if(a=='pcls'){PF.cls=b.dataset.v||'';PF.sec='';draw2();return}else if(a=='pall'){printL(listP());return}else if(a=='ptest'){printL([SAMPLE]);return}
+else return;
+sav();draw2()});
+H.chl=function(k,id){open('one',id)};
+})();
+
+document.addEventListener('click',function(e){const b=e.target.closest&&e.target.closest('[data-fcp]');if(!b||!window.ESMOS_CHALLAN)return;e.preventDefault();window.ESMOS_CHALLAN.openPrint(b.dataset.c!=null?b.dataset.c:((typeof CF!='undefined'&&CF.fees&&CF.fees!='All')?CF.fees:''),b.dataset.s||'')});
+
+/* ---- student promotion and session close ---- */
+(function(){
+const ADM=()=>{try{return(SES().role||'admin')=='admin'}catch(e){return true}};
+const nextSess=x=>{const m=/^(\d{4})\s*[-\u2013\/]\s*(\d{2,4})$/.exec(String(x||'').trim());if(!m)return'';const a=+m[1]+1,b=+m[2]+1;return a+'-'+(m[2].length==4?String(b):String(b%100).padStart(2,'0'))};
+let PR=null;
+const act=()=>S.students.filter(t=>t.status=='Active');
+const clsList=()=>{const a=act();return CL.concat(a.map(t=>t.cls).filter(c=>c&&!CL.includes(c))).filter(c=>a.some(t=>t.cls==c))};
+const lastOf=c=>CL.indexOf(c)<0||CL.indexOf(c)==CL.length-1;
+function init(){const o=S.set.session||'';PR={old:o,nw:nextSess(o),plan:{},hold:new Set(),renum:true};clsList().forEach(c=>{PR.plan[c]=lastOf(c)?'#':CL[CL.indexOf(c)+1]})}
+function counts(){let p=0,r=0,o=0;act().forEach(t=>{const pl=PR.plan[t.cls];if(PR.hold.has(t.id)||pl=='=')r++;else if(pl=='#')o++;else p++});return{p,r,o}}
+function sumTxt(){const c=counts();return`<b>${c.p}</b> will be promoted, <b>${c.r}</b> will repeat their class, <b>${c.o}</b> will pass out.`}
+function dues(){const ids=new Set(act().map(t=>t.id));return new Set((S.fees||[]).filter(f=>ids.has(f.sid)&&(+f.paid||0)<(+f.amount||0)).map(f=>f.sid)).size}
+function html(){
+const cs=clsList(),u=S.promoUndo,d=dues();
+const rows=cs.map(c=>{const st=act().filter(t=>t.cls==c),ix=CL.indexOf(c),nx=CL[ix+1];
+const opts=(nx?`<option value="${esc(nx)}">Promote to ${esc(nx)}</option>`:'')+`<option value="=">Repeat ${esc(c)}</option><option value="#">Pass out / graduate</option>`;
+const sel=opts.replace(`value="${PR.plan[c]}"`,`value="${PR.plan[c]}" selected`);
+return`<tr><td><b>${esc(c)}</b><br><span class="mu">${st.length} student${st.length==1?'':'s'}</span></td><td><select data-prmf="plan" data-c="${esc(c)}">${sel}</select></td><td><details><summary class="mu" style="cursor:pointer">Hold back (<span data-hc="${esc(c)}">0</span>)</summary><div style="max-height:150px;overflow:auto;margin-top:6px">${st.map(t=>`<label style="display:flex;gap:8px;align-items:center;padding:3px 0;font-weight:500"><input type="checkbox" data-prmf="hold" data-id="${t.id}" data-c="${esc(c)}" style="width:auto;margin:0"> ${esc(t.name)} <span class="mu">${t.roll?'Roll '+esc(t.roll):''}${t.sec?' - '+esc(t.sec):''}</span></label>`).join('')}</div></details></td></tr>`}).join('');
+return`<div class="mb" style="max-width:780px"><h3>Promote students and close session</h3><p class="mu" style="margin:0 0 12px">Choose what happens to every class. Only Active students are moved. Their old class, roll number and result are saved in the student's history.</p>
+${u?`<div class="prm-u"><span>Last promotion: ${esc(u.from||'-')} to ${esc(u.to)}</span><button type="button" class="bt gh sm" data-prm="undo">Undo it</button></div>`:''}
+<div class="prm-g"><label>Session being closed<input data-prmf="old" value="${esc(PR.old)}" placeholder="e.g. 2025-26"></label><label>New session<input data-prmf="nw" value="${esc(PR.nw)}" placeholder="e.g. 2026-27"></label></div>
+<div class="tw prm-w" style="margin-top:10px"><table><thead><tr><th>Class</th><th>What happens</th><th>Exceptions</th></tr></thead><tbody>${rows||'<tr><td colspan="3" class="mu">No active students.</td></tr>'}</tbody></table></div>
+<label style="display:flex;gap:8px;align-items:center;margin-top:12px;font-weight:600"><input type="checkbox" data-prmf="renum" ${PR.renum?'checked':''} style="width:auto;margin:0"> Give fresh roll numbers in the new class (repeaters first)</label>
+${d?`<p class="mu" style="margin:8px 0 0">${d} student${d==1?' has':'s have'} unpaid fee records. They stay on the student and carry forward to the new session.</p>`:''}
+<p id="prm-sum" class="prm-s">${sumTxt()}</p>
+<div class="ra"><button type="button" class="bt gh" data-prm="close">Cancel</button><button type="button" class="bt" data-prm="apply">Promote and start new session</button></div></div>`}
+function openM(){if(!ADM()){toast('Only the admin can promote students');return}init();const m=document.querySelector('#md');m.hidden=false;m.innerHTML=html()}
+function closeM(){const m=document.querySelector('#md');m.hidden=true;m.innerHTML=''}
+function renumber(){const g={};act().forEach(t=>{(g[t.cls+'|'+(t.sec||'')]=g[t.cls+'|'+(t.sec||'')]||[]).push(t)});
+Object.values(g).forEach(L=>{L.sort((a,b)=>(a._k-b._k)||(a._pr-b._pr)||String(a.name).localeCompare(String(b.name)));
+if(PR.renum)L.forEach((t,i)=>{t.roll=String(i+1)});else{const used=new Set();let mx=Math.max(0,...L.map(t=>parseInt(t.roll)||0));L.forEach(t=>{const r=String(t.roll||'');if(!r||used.has(r)){mx++;t.roll=String(mx)}used.add(String(t.roll))})}})}
+function apply(){
+const ns=String(PR.nw||'').trim(),old=String(PR.old||'').trim();
+if(!ns){toast('Enter the new session first');return}
+const c=counts();if(!c.p&&!c.r&&!c.o){toast('No active students to promote');return}
+if(!confirm('Promote '+c.p+', repeat '+c.r+' and pass out '+c.o+' students, and start session '+ns+'?\nYou can undo this right after from the same screen.'))return;
+const undo={from:S.set.session||'',to:ns,items:[]};
+act().forEach(t=>{const pl=PR.plan[t.cls];let res,tg=t.cls;
+if(PR.hold.has(t.id)||pl=='='){res='Repeated'}else if(pl=='#'){res='Passed out'}else{res='Promoted';tg=pl}
+undo.items.push({id:t.id,cls:t.cls,sec:t.sec,roll:t.roll,status:t.status,hl:(t.hist||[]).length});
+t.hist=(t.hist||[]).concat([{session:old,cls:t.cls,sec:t.sec||'',roll:t.roll||'',result:res}]);
+t._pr=parseInt(t.roll)||0;t._k=res=='Repeated'?0:1;
+if(res=='Passed out')t.status='Passed out';else t.cls=tg});
+renumber();S.students.forEach(t=>{delete t._pr;delete t._k});
+S.promoUndo=undo;S.sessions=(S.sessions||[]).concat([{session:old,next:ns,on:new Date().toLocaleDateString(),promoted:c.p,repeated:c.r,passed:c.o}]);
+S.set.session=ns;lg('Session '+(old||'-')+' closed. Started '+ns+' ('+c.p+' promoted, '+c.r+' repeated, '+c.o+' passed out)');
+save();closeM();toast('New session '+ns+' started. '+c.p+' promoted');draw()}
+function undo(){const u=S.promoUndo;if(!u)return;if(!confirm('Undo the last promotion and go back to session '+(u.from||'-')+'?'))return;
+u.items.forEach(it=>{const t=S.students.find(x=>x.id==it.id);if(!t)return;t.cls=it.cls;t.sec=it.sec;t.roll=it.roll;t.status=it.status;t.hist=(t.hist||[]).slice(0,it.hl)});
+S.set.session=u.from;if(S.sessions&&S.sessions.length)S.sessions.pop();delete S.promoUndo;lg('Promotion undone. Back to session '+(u.from||'-'));save();closeM();toast('Promotion undone');draw()}
+document.addEventListener('click',function(e){const b=e.target.closest&&e.target.closest('[data-prm]');if(!b)return;const a=b.dataset.prm;
+if(a=='open')openM();else if(a=='close')closeM();else if(a=='apply')apply();else if(a=='undo')undo()});
+function onF(e){const t=e.target;if(!t.dataset||!t.dataset.prmf||!PR)return;const k=t.dataset.prmf;
+if(k=='plan')PR.plan[t.dataset.c]=t.value;else if(k=='hold'){const id=+t.dataset.id;t.checked?PR.hold.add(id):PR.hold.delete(id);const n=document.querySelector('[data-hc="'+t.dataset.c.replace(/"/g,'\\"')+'"]');if(n)n.textContent=[...document.querySelectorAll('[data-prmf="hold"][data-c="'+t.dataset.c.replace(/"/g,'\\"')+'"]')].filter(x=>x.checked).length}
+else if(k=='renum')PR.renum=t.checked;else if(k=='old')PR.old=t.value;else if(k=='nw')PR.nw=t.value;
+const sm=document.getElementById('prm-sum');if(sm)sm.innerHTML=sumTxt()}
+document.addEventListener('change',onF);document.addEventListener('input',onF);
+crud=(function(_c){return function(k){const h=_c.apply(this,arguments);if(k=='students'&&typeof h=='string'&&ADM())return h.replace('</button></div>\n<div class="ch cw-ch">','</button><button class="bt gh" data-prm="open" type="button">Promote / New session</button></div>\n<div class="ch cw-ch">');return h}})(crud);
+})();
+
+
+/* ===== Custom classes: admin creates, renames, reorders and deletes classes (Settings > Classes) ===== */
+function CLSYNC(){
+ try{
+  const src=Array.isArray(S.classes)?S.classes:CL0,seen=new Set(),out=[];
+  const add=c=>{c=String(c==null?'':c).trim();if(!c||c=='All'||c=='None'||seen.has(c))return;seen.add(c);out.push(c)};
+  src.forEach(add);
+  (S.students||[]).forEach(x=>add(x.cls));(S.staff||[]).forEach(x=>add(x.cls));(S.adm||[]).forEach(x=>add(x.cls));(S.tt||[]).forEach(x=>add(x.cls));
+  S.classes=out;
+  if(CL.length!==out.length||CL.some((c,i)=>c!==out[i])){CL.length=0;out.forEach(c=>CL.push(c))}
+  if(S.struct&&typeof S.struct=='object')out.forEach(c=>{if(S.struct[c]==null)S.struct[c]=0});
+ }catch(e){}
+}
+function CLREBUILD(){
+ try{
+  C.students.flt={All:()=>true};CL.forEach(n=>{C.students.flt[n]=r=>r.cls==n});
+  const f=Object.fromEntries([['All',()=>1],...CL.map(c=>[c,r=>r.cls==c])]);
+  C.timetable.flt=f;if(C.timetable._f0)C.timetable._f0=f;
+  const a=C.staff.f.find(x=>x[0]=='cls');if(a)a[3]=['None'].concat(CL);
+ }catch(e){}
+}
+function CLFIX(){
+ try{
+  const bad=v=>typeof v=='string'&&v&&v!='All'&&!CL.includes(v.split(' - ')[0]);
+  if(bad(A.c))A.c=CL[0];
+  ['ttc','hwc','dsc','students'].forEach(k=>{if(bad(FL[k]))FL[k]='All'});
+  if(FL.timetable&&bad(FL.timetable))FL.timetable=CL[0];
+  Object.keys(CF).forEach(k=>{if(bad(CF[k]))CF[k]='All'});
+  [APS,ADS,ACS].forEach(o=>{if(o&&bad(o.c))o.c=''});
+  ['rs','rc'].forEach(k=>{if(FL[k]&&typeof FL[k]=='object'&&bad(FL[k].cls))FL[k].cls=''});
+ }catch(e){}
+}
+function CLAB(n){
+ n=String(n==null?'':n).replace(/^(Class|Grade)\s*/i,'').trim();
+ if(n.length<=3)return n;
+ const w=n.split(/[\s-]+/).filter(Boolean);
+ if(w.length>1&&/^\d+$/.test(w[w.length-1])){const t=w.slice(0,-1),h=t.length>1?t.map(x=>x[0]).join(''):t[0].slice(0,2);return(h+w[w.length-1]).slice(0,3).toUpperCase()}
+ return(w.length>1?w.map(x=>x[0]).join('').slice(0,3):n.slice(0,3)).toUpperCase();
+}
+function CLCAN(){try{return nav(SES()).some(x=>x[0]=='setup')}catch(e){return false}}
+function CLVAL(raw,ign){
+ const n=String(raw==null?'':raw).replace(/\s+/g,' ').trim();
+ if(!n)return{ok:false,msg:'Enter a class name'};
+ if(n.length>30)return{ok:false,msg:'Class name is too long (maximum 30 characters)'};
+ if(!/^[\p{L}\p{N}][\p{L}\p{N} .\-()]*$/u.test(n))return{ok:false,msg:'Use letters, numbers, spaces and - . ( ) only'};
+ if(n.indexOf(' - ')>-1)return{ok:false,msg:'Do not use " - " inside the name. Write KG-1 instead'};
+ if(/^(all|none)$/i.test(n))return{ok:false,msg:'This name is reserved. Choose another name'};
+ if(CL.some(c=>c!==ign&&c.toLowerCase()==n.toLowerCase()))return{ok:false,msg:'This class already exists'};
+ return{ok:true,name:n};
+}
+function CLPOS(name){
+ const L=S.classes,pre=/^(play|nurs|prep|pre[\s-]?(k|school|nursery)|kg|k\.g|lkg|ukg|montessori|reception|junior|senior|early)/i,main=/^(class|grade|std|standard)\s*-?\s*\d/i;
+ if(pre.test(name)){const i=L.findIndex(c=>main.test(c));if(i>-1)return i}
+ return L.length;
+}
+function CLREFS(name){
+ const skip={tt:1,struct:1,classes:1,log:1,logins:1,msgs:1,promoUndo:1,auth:1},out={},seen=new Set();
+ Object.keys(S).forEach(top=>{
+  if(skip[top])return;let n=0;
+  const walk=(o,d)=>{if(!o||typeof o!='object'||d>6||seen.has(o))return;seen.add(o);if(Array.isArray(o)){o.forEach(x=>walk(x,d+1));return}if(o.cls===name)n++;Object.keys(o).forEach(k=>walk(o[k],d+1))};
+  walk(S[top],0);if(n)out[top]=n;
+ });
+ return out;
+}
+function CLUI(old,nw){
+ const mk=v=>v===old?nw:(typeof v=='string'&&v.indexOf(old+' - ')==0?nw+v.slice(old.length):v);
+ const fix=o=>{if(!o||typeof o!='object')return;Object.keys(o).forEach(k=>{const v=o[k];if(typeof v=='string')o[k]=mk(v)})};
+ [A,FL,CF,APS,ADS,ACS].forEach(fix);['rs','rc'].forEach(k=>{if(FL[k]&&typeof FL[k]=='object')fix(FL[k])});
+}
+function CLRENAME(old,nw){
+ const v=CLVAL(nw,old);if(!v.ok)return v.msg;nw=v.name;
+ if(nw===old)return true;
+ const i=S.classes.indexOf(old);if(i<0)return'Class not found';
+ S.classes[i]=nw;
+ const has=(o,k)=>Object.prototype.hasOwnProperty.call(o,k),seen=new Set();
+ const mk=k=>k===old?nw:(k.indexOf(old+' - ')==0?nw+k.slice(old.length):null);
+ const walk=(o,d,pk)=>{
+  if(!o||typeof o!='object'||d>8||seen.has(o))return;seen.add(o);
+  if(Array.isArray(o)){o.forEach((x,ix)=>{if(typeof x=='string'){if(x===old&&/^(cls|classes|clist)$/i.test(pk||''))o[ix]=nw}else walk(x,d+1,pk)});return}
+  Object.keys(o).forEach(k=>{
+   if(k==='cls'&&o[k]===old){o[k]=nw;return}
+   let key=k;
+   if(d>0){const nk=mk(k);if(nk!==null&&!has(o,nk)){o[nk]=o[k];delete o[k];key=nk}}
+   walk(o[key],d+1,key);
+  });
+ };
+ Object.keys(S).forEach(k=>{if(k!=='classes'&&k!=='log'&&k!=='logins')walk(S[k],1,k)});
+ CLUI(old,nw);CLSYNC();lg('Class renamed: '+old+' to '+nw);
+ return true;
+}
+function CLADD(raw){
+ const v=CLVAL(raw);
+ if(!v.ok){toast(v.msg);const e=$('#clsn');if(e)e.focus();return}
+ if(CL.length>=60){toast('Maximum 60 classes allowed');return}
+ S.classes.splice(CLPOS(v.name),0,v.name);
+ if(S.struct&&S.struct[v.name]==null)S.struct[v.name]=0;
+ lg('Class added: '+v.name);CLSYNC();save();toast('Class "'+v.name+'" added');draw();
+}
+function CLMOVE(name,dir){
+ const i=S.classes.indexOf(name),j=i+dir;
+ if(i<0||j<0||j>=S.classes.length)return;
+ const t=S.classes[i];S.classes[i]=S.classes[j];S.classes[j]=t;
+ CLSYNC();save();draw();
+}
+function clsRen(old,val){
+ form('Rename class',[['name','Class name']],{name:val},v=>{
+  const r=CLRENAME(old,v.name);
+  if(r!==true){toast(r);setTimeout(()=>clsRen(old,v.name),60);return}
+  toast('Class renamed');
+ },'Save','<p class="mu" style="margin:0 0 10px">Students, teachers, fees, timetable, attendance and results of this class move to the new name automatically.</p>');
+}
+function clsInfo(title,msg){
+ const m=$('#md');m.hidden=false;
+ m.innerHTML=`<div class="mb"><h3>${esc(title)}</h3><p class="mu" style="margin:0 0 12px;line-height:1.55">${msg}</p><div class="ra"><button type="button" class="bt" data-a="close">OK</button></div></div>`;
+}
+function clsMgrCard(){
+ const sug=['Play Group','Nursery','Prep','KG-1','KG-2'].filter(n=>!CL.some(c=>c.toLowerCase()==n.toLowerCase()));
+ const cnt={},ct={};
+ (S.students||[]).forEach(s=>{if(s.status=='Active')cnt[s.cls]=(cnt[s.cls]||0)+1});
+ (S.staff||[]).forEach(s=>{if(s.cls&&s.cls!='None'&&s.status=='Active'&&!ct[s.cls])ct[s.cls]=s.name});
+ const n=CL.length,armed=FL.clsdel;
+ const row=(c,i)=>{
+  const k=cnt[c]||0,arm=armed===c;
+  const sub=(k?k+' active student'+(k==1?'':'s'):'No students yet')+(ct[c]?' &middot; '+esc(ct[c]):'');
+  return`<div class="clm-r${arm?' arm':''}"><span class="clm-i">${esc(CLAB(c))}</span><div class="clm-t"><b>${esc(c)}</b><small>${arm?'Tap the bin again to delete this class':sub}</small></div><div class="clm-a"><button type="button" class="ib" data-a="clsup" data-id="${esc(c)}" aria-label="Move ${esc(c)} up"${i==0?' disabled':''}>${ic('aup')}</button><button type="button" class="ib" data-a="clsdn" data-id="${esc(c)}" aria-label="Move ${esc(c)} down"${i==n-1?' disabled':''}>${ic('adn')}</button><button type="button" class="ib" data-a="clsedit" data-id="${esc(c)}" aria-label="Rename ${esc(c)}">${ic('edit')}</button><button type="button" class="ib dl${arm?' on':''}" data-a="clsdel" data-id="${esc(c)}" aria-label="Delete ${esc(c)}">${ic('del')}</button></div></div>`;
+ };
+ return`<div class="card clm" id="clm"><div class="tb"><h3>Classes</h3><span class="tg b">${n} ${n==1?'class':'classes'}</span></div><p class="clm-sub">Create a class with any name. It appears automatically in admissions, students, teachers, attendance, exams, results, fees, timetable and reports.</p><div class="clm-add"><input id="clsn" type="text" maxlength="30" placeholder="New class name, e.g. Nursery" autocomplete="off" enterkeyhint="done"><button type="button" class="bt" data-a="clsadd">${ic('plus')}Add</button></div>${sug.length?`<div class="clm-sg"><span>Quick add</span>${sug.map(x=>`<button type="button" class="cp" data-a="clsq" data-id="${esc(x)}">+ ${esc(x)}</button>`).join('')}</div>`:''}<div class="clm-l">${CL.map(row).join('')}</div><p class="clm-ft">Order = promotion order. Students are promoted to the next class in this list.</p></div>`;
+}
+Object.assign(H,{
+ clsadd(){const e=$('#clsn');CLADD(e?e.value:'')},
+ clsq(k,id){CLADD(id)},
+ clsedit(k,id){FL.clsdel=null;clsRen(id,id)},
+ clsup(k,id){FL.clsdel=null;CLMOVE(id,-1)},
+ clsdn(k,id){FL.clsdel=null;CLMOVE(id,1)},
+ clsdel(k,id){
+  if(CL.length<=1){clsInfo('Cannot delete','Keep at least one class in the school.');return}
+  const r=CLREFS(id),lab={students:'student record',staff:'teacher / staff record',adm:'admission application',hw:'homework',ann:'announcement',rcx:'report card'},ks=Object.keys(r);
+  if(ks.length){FL.clsdel=null;clsInfo('Cannot delete '+id,'<b>'+esc(id)+'</b> is still used by: '+ks.map(x=>r[x]+' '+esc(lab[x]||x)+(r[x]==1?'':'s')).join(', ')+'.<br>Move or remove them first, then delete the class.');draw();return}
+  if(FL.clsdel!==id){FL.clsdel=id;draw();return}
+  S.classes=S.classes.filter(c=>c!==id);S.tt=(S.tt||[]).filter(x=>x.cls!==id);if(S.struct)delete S.struct[id];
+  FL.clsdel=null;lg('Class deleted: '+id);CLSYNC();CLFIX();save();toast('Class "'+id+'" deleted');draw();
+ },
+ clsmgr(){location.hash='#setup';setTimeout(()=>{const e=$('#clm');if(e)e.scrollIntoView({behavior:'smooth',block:'start'})},450)}
+});
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target&&e.target.id==='clsn'){e.preventDefault();H.clsadd()}});
+{const _d=draw;draw=function(){CLSYNC();CLREBUILD();CLFIX();return _d.apply(this,arguments)}}
+{const _s=PG.setup;PG.setup=function(){return clsMgrCard()+_s.apply(this,arguments)}}

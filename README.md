@@ -21,3 +21,4 @@ Open the site, tap "Try live demo", choose a portal. The demo credentials are pr
 ## Notes
 - Data is stored in the browser (local mode), so it stays on each device.
 - Fonts load from Google Fonts, so an internet connection is needed for the exact look.
+- Classes are managed by the admin in Settings & Security > Classes (add, rename, reorder, delete). The list is stored with the school data and feeds every class dropdown, filter and report.
