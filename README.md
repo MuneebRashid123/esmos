@@ -1,24 +1,15 @@
-# ESMOS - School Management Platform
+# ESMOS - School Management System (Supabase edition)
 
-Static web app (HTML + CSS + JavaScript). No build step needed.
+Static site (index.html, style.css, script.js). Open `index.html` or host on GitHub Pages / any static host.
 
-## Files
-- `index.html` - page structure
-- `style.css` - all styling
-- `script.js` - all app logic (portals, fees, attendance, results, ratings)
-- `favicon.png` - site icon
-- `.nojekyll` - tells GitHub Pages to serve files as they are
+Backend: Supabase project **esmos** (ap-south-1). URL and anon key are set at the top of `script.js` (`const SB=`).
 
-## Deploy on GitHub Pages
-1. Create a new repository on GitHub (for example `esmos`).
-2. Upload all files from this folder to the repository root (Add file > Upload files), then Commit.
-3. Open Settings > Pages. Under "Build and deployment" set Source to "Deploy from a branch", Branch to `main` and folder to `/ (root)`, then Save.
-4. After about a minute your site is live at `https://YOUR-USERNAME.github.io/esmos/`.
+- **Data**: one row per school in `school_data`, saved automatically a moment after every change. Green badge bottom-left shows "Saved to Supabase <time>".
+- **Logins**: school admin, owner, teachers, parents and students are all Supabase Auth users. Passwords are never stored in school data (the server strips them). Portal accounts are created by the `esmos-users` Edge Function when the admin sets a password in Portal Logins.
+- **Images**: logo and background are uploaded to the public Storage bucket `esmos-images/<school-code>/...`; only the link is saved in school data.
+- **Backups**: automatic copy while working (every 6 h), daily copy (cron 21:30 UTC), safety copy before a big delete. Settings > Backup: Back up now, Download JSON, Restore.
+- **Demo**: "Try live demo" and demo schools run in the browser only. The server never saves or backs up demo data.
 
-## Demo logins
-Open the site, tap "Try live demo", choose a portal. The demo credentials are pre-filled on each login screen.
+First time: open `index.html?setup=YOUR-ONE-TIME-CODE#owner-login`, press "Create owner account" with graphicdynamix.co@gmail.com, then Add school (enter the school admin's email). The admin opens the school's login page, chooses Admin, and creates a password.
 
-## Notes
-- Data is stored in the browser (local mode), so it stays on each device.
-- Fonts load from Google Fonts, so an internet connection is needed for the exact look.
-- Classes are managed by the admin in Settings & Security > Classes (add, rename, reorder, delete). The list is stored with the school data and feeds every class dropdown, filter and report.
+The owner account can only be created with the one-time setup code (stored hashed in the `setup_codes` table, single use, expires). Never commit the code to GitHub. Passwords must be at least 8 characters.
