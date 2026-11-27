@@ -79,7 +79,7 @@ const PNAME=(r,u)=>r=='parent'?String(u||'').replace(/\D/g,'').slice(-10):String
 const lgKey=(k,o)=>PWK(LGROLE[k],k=='emp'?o.user:k=='par'?o.phone:o.adm),PWDONE={};
 async function TKR(){if(TOK&&TOK.expires_at&&TOK.expires_at*1000<Date.now()+60000&&TOK.refresh_token){try{setTok(await sbf('/auth/v1/token?grant_type=refresh_token',{refresh_token:TOK.refresh_token},true))}catch(e){setTok(null)}}}
 async function efn(b,noauth){if(!noauth)await TKR();const r=await fetch(SB.url+'/functions/v1/esmos-users',{method:'POST',headers:{apikey:SB.key,'Content-Type':'application/json',Authorization:'Bearer '+((!noauth&&TOK&&TOK.access_token)||SB.key)},body:JSON.stringify(b)});const j=await r.json().catch(()=>null);if(!r.ok||(j&&j.error))throw new Error((j&&j.error)||'Request failed');return j}
-function SYNCUI(t,bad){if(LOC)return;let e=document.getElementById('syncb');if(!e){e=document.createElement('div');e.id='syncb';e.style.cssText='position:fixed;left:12px;bottom:12px;z-index:99999;padding:7px 12px;border-radius:999px;font:600 12px system-ui,sans-serif;color:#fff;box-shadow:0 2px 10px rgba(0,0,0,.25);pointer-events:none';document.body.appendChild(e)}e.style.background=bad?'#dc2626':t.indexOf('Saving')==0?'#d97706':'#16a34a';e.textContent=t}
+function SYNCUI(t,bad){if(LOC)return;let e=document.getElementById('syncb');if(!bad&&!/^Backup/.test(t)){if(e)e.style.display='none';return}if(!e){e=document.createElement('div');e.id='syncb';e.style.cssText='position:fixed;left:12px;bottom:92px;z-index:99999;padding:7px 12px;border-radius:999px;font:600 12px system-ui,sans-serif;color:#fff;box-shadow:0 2px 10px rgba(0,0,0,.25);pointer-events:none';document.body.appendChild(e)}e.style.display='';e.style.background=bad?'#dc2626':t.indexOf('Saving')==0?'#d97706':'#16a34a';e.textContent=t}
 async function PWSYNC(){if(LOC||!CAN||SES().role!='admin')return;const us=[],seen={};const add=(role,user,pw)=>{pw=String(pw||'');if(!user||!pw||LGDEF.indexOf(pw)>-1)return;const k=PWK(role,user);if(seen[k]||PWDONE[k]===pw)return;seen[k]=1;us.push({role,user:String(user),pass:pw,k})};
 (S.staff||[]).forEach(s=>add('employee',s.user,s.pass));(S.students||[]).forEach(s=>{add('student',s.adm,s.spass);add('parent',s.phone,s.ppass)});if(!us.length)return;
 const r=await efn({action:'set_passwords',code:DT,users:us.map(x=>({role:x.role,user:x.user,pass:x.pass}))});S.pwset=S.pwset||{};let bad=0,msg='';
@@ -116,7 +116,7 @@ if(CST.status!='active'&&!OWQ()){try{sessionStorage.removeItem('dyn_t');sessionS
 p.hidden=true;return false}
 function BOOTC(){rpc('school_status',{p_code:DT}).then(async st=>{CST=st||{status:'none'};if(CST.name)S.set.name=CST.name;if(SES().role=='admin'&&TOK&&(CST.status=='active'||OWQ())){try{const d=await rpc('school_load',{p_code:DT});S=d||BLANK(CST.name);CAN=true;ensure()}catch(e){setSES(null)}}else setSES(null);CREADY=true;draw()}).catch(()=>{CST={status:'none'};CREADY=true;draw()})}
 const UEQ=(a,b)=>{const t=x=>String(x==null?'':x).trim().toLowerCase();if(t(a)&&t(a)==t(b))return true;const x=PNAME('employee',a);return!!x&&x==PNAME('employee',b)};
-function ATTMERGE(mine,base,srv){let n=0;['att','satt','eatt','emeta'].forEach(k=>{const m=(mine&&mine[k])||{},b=(base&&base[k])||{};Object.keys(m).forEach(d=>{const md=m[d]||{},bd=b[d]||{};Object.keys(md).forEach(id=>{if(JSON.stringify(md[id])!==JSON.stringify(bd[id])){srv[k]=srv[k]||{};srv[k][d]=srv[k][d]||{};srv[k][d][id]=md[id];n++}})})});const am=(mine&&mine.al)||{},ab=(base&&base.al)||{};Object.keys(am).forEach(x=>{if(!(x in ab)){srv.al=srv.al||{};if(!(x in srv.al)){srv.al[x]=am[x];n++}}});return n}
+function ATTMERGE(mine,base,srv){let n=0;['att','satt','eatt','emeta','attm'].forEach(k=>{const m=(mine&&mine[k])||{},b=(base&&base[k])||{};Object.keys(m).forEach(d=>{const md=m[d]||{},bd=b[d]||{};Object.keys(md).forEach(id=>{if(JSON.stringify(md[id])!==JSON.stringify(bd[id])){srv[k]=srv[k]||{};srv[k][d]=srv[k][d]||{};srv[k][d][id]=md[id];n++}})})});const am=(mine&&mine.al)||{},ab=(base&&base.al)||{};Object.keys(am).forEach(x=>{if(!(x in ab)){srv.al=srv.al||{};if(!(x in srv.al)){srv.al[x]=am[x];n++}}});return n}
 async function CLOGIN(r,u,p,up){const er=document.getElementById('er');er.textContent='Please wait...';try{let k;
 if(r=='admin'){if(up)await efn({action:'admin_signup',code:DT,email:u,password:p},1);await sbAuth('in',u,p);const st=await rpc('school_claim',{p_code:DT});const d=await rpc('school_load',{p_code:DT});S=d||BLANK(st.name);CAN=true;k={role:'admin',name:'Administrator'}}
 else{try{await sbAuth('in',PMAIL(DT,r,u),p)}catch(e){throw new Error('Wrong username or password. Please try again.')}const d=await rpc('school_load',{p_code:DT});if(!d)throw new Error('This school has no data yet. Please ask your school admin.');S=d;CAN=(r=='employee');ensure();const L=x=>String(x||'').toLowerCase();
@@ -1653,6 +1653,12 @@ new MutationObserver(function(){if(!q)q=requestAnimationFrame(function(){q=0;try
 try{scan()}catch(e){}
 })(typeof window!=='undefined'?window:this);
 ;
+/* ESMOS: who marked the student attendance (saved in S.attm, goes to Supabase with the school data) */
+function ATXBY(id){try{const u=SES()||{},ad=(u.role||'admin')=='admin';let n='Admin',r='Admin';if(!ad){const t=(S.staff||[]).find(x=>x.id==u.id);n=(t&&t.name)||u.name||'Teacher';r=(t&&t.role)||'Teacher'}S.attm=S.attm||{};S.attm[A.d]=S.attm[A.d]||{};S.attm[A.d][id]={n:n,r:r,t:new Date().toLocaleTimeString('en',{hour:'2-digit',minute:'2-digit'})}}catch(e){}}
+function ATXWHO(id){return((S.attm||{})[A.d]||{})[id]||null}
+function ATXCHIP(id,short){const w=ATXWHO(id);if(!w)return'';return'<span class="at-by'+(w.r=='Admin'?' ad':'')+'" title="'+esc(w.n+' at '+w.t)+'"><i>'+esc(String(w.n).trim().charAt(0).toUpperCase()||'?')+'</i>'+esc(w.n)+(short?'':' &middot; '+esc(w.t))+'</span>'}
+function ATXTAKEN(L){const day=(S.att||{})[A.d]||{},g={};let un=0;L.forEach(s=>{if(!day[s.id])return;const w=ATXWHO(s.id);if(!w){un++;return}const k=w.n+'|'+w.r;(g[k]=g[k]||{n:w.n,r:w.r,c:0,t:w.t}).c++;g[k].t=w.t});const a=Object.keys(g).map(k=>g[k]);if(!a.length&&!un)return'<div class="at-tk none"><b>Not taken yet</b><small>Nobody has marked attendance for this class on this date.</small></div>';return'<div class="at-tk"><div class="at-tkh">Attendance taken by</div>'+a.map(x=>'<div class="at-tkc"><span class="at-tka'+(x.r=='Admin'?' ad':'')+'">'+esc(String(x.n).trim().charAt(0).toUpperCase()||'?')+'</span><div><b>'+esc(x.n)+'</b><small>'+esc(x.r)+' &middot; '+x.c+' student'+(x.c==1?'':'s')+' &middot; '+esc(x.t)+'</small></div></div>').join('')+(un?'<div class="at-tkc"><span class="at-tka old">?</span><div><b>Earlier records</b><small>'+un+' student'+(un==1?'':'s')+' &middot; taker not recorded</small></div></div>':'')+'</div>'}
+function ATXCLSBY(c){const day=(S.att||{})[A.d]||{},nm={};(S.students||[]).filter(s=>s.cls==c&&s.status=='Active'&&day[s.id]).forEach(s=>{const w=ATXWHO(s.id);if(w)nm[w.n]=w.r});const k=Object.keys(nm);return k.length?k.map(n=>'<span class="at-by'+(nm[n]=='Admin'?' ad':'')+'"><i>'+esc(String(n).trim().charAt(0).toUpperCase()||'?')+'</i>'+esc(n)+'</span>').join(' '):'<span class="mu">-</span>'}
 /* ESMOS: Employee attendance (self check-in with automatic date/time, admin review, edit and filters) */
 (function(){
 if(window.__ESMOS_EATT)return;window.__ESMOS_EATT=1;
@@ -1772,14 +1778,14 @@ function adminCW(){
   sum=CL.map(function(c){var R=cwData(c,mo),t={n:R.length,P:0,A:0,L:0,T:0,td:{P:0,A:0}};
     R.forEach(function(r){t.P+=r.P;t.A+=r.A;t.L+=r.L;t.T+=r.T;if(r.td=='P'||r.td=='T')t.td.P++;if(r.td=='A')t.td.A++});
     t.all=t.P+t.A+t.L+t.T;t.pc=t.all?Math.round((t.P+t.T)/t.all*100):0;return{c:c,t:t}}),
-  rows=sum.map(function(x){var t=x.t;return'<tr style="cursor:pointer" data-a="cwpick" data-k="'+x.c+'"><td><b>'+x.c+'</b></td><td>'+t.n+'</td><td>'+t.td.P+'</td><td>'+t.td.A+'</td><td>'+t.P+'</td><td>'+t.A+'</td><td>'+t.L+'</td><td>'+t.T+'</td><td style="min-width:150px">'+(t.all?cwBar(t.pc):'<span class="mu">No data</span>')+'</td><td class="ac"><button class="bt sm blue" data-a="cwpick" data-k="'+x.c+'">View students</button></td></tr>'}).join(''),
+  rows=sum.map(function(x){var t=x.t;return'<tr style="cursor:pointer" data-a="cwpick" data-k="'+x.c+'"><td><b>'+x.c+'</b></td><td>'+t.n+'</td><td>'+t.td.P+'</td><td>'+t.td.A+'</td><td>'+ATXCLSBY(x.c)+'</td><td>'+t.P+'</td><td>'+t.A+'</td><td>'+t.L+'</td><td>'+t.T+'</td><td style="min-width:150px">'+(t.all?cwBar(t.pc):'<span class="mu">No data</span>')+'</td><td class="ac"><button class="bt sm blue" data-a="cwpick" data-k="'+x.c+'">View students</button></td></tr>'}).join(''),
   top='<div class="card cwa" style="margin-bottom:18px"><div class="cwa-h"><h3>Class-wise attendance</h3><div class="cwa-f"><label>Month<input type="month" value="'+mo+'" data-c="cwm"></label><label>Class<select data-c="cwc"><option value="">All classes</option>'+CL.map(function(c){return'<option'+(c==sel?' selected':'')+'>'+c+'</option>'}).join('')+'</select></label></div></div>'+
-  '<div class="tw"><table><thead><tr><th>Class</th><th>Students</th><th>Present today</th><th>Absent today</th><th>Present (month)</th><th>Absent</th><th>Leave</th><th>Late</th><th>Attendance %</th><th></th></tr></thead><tbody>'+rows+'</tbody></table></div><p class="mu" style="margin-top:8px">Tap a class to see every student. Month figures are for '+mo+'. "Today" means '+A.d+'.</p></div>';
+  '<div class="tw"><table><thead><tr><th>Class</th><th>Students</th><th>Present today</th><th>Absent today</th><th>Taken by</th><th>Present (month)</th><th>Absent</th><th>Leave</th><th>Late</th><th>Attendance %</th><th></th></tr></thead><tbody>'+rows+'</tbody></table></div><p class="mu" style="margin-top:8px">Tap a class to see every student. Month figures are for '+mo+'. "Today" means '+A.d+'.</p></div>';
   if(!sel)return top;
   var R=cwData(sel,mo).sort(function(a,b){return a.pc-b.pc||String(a.s.name).localeCompare(b.s.name)}),
   low=R.filter(function(r){return r.t&&r.pc<75}).length;
-  return top+'<div class="card cwa cwa-s"><div class="tb"><h3>'+esc(sel)+' - students ('+mo+')</h3><span class="mu" style="margin-left:auto">'+low+' below 75%</span></div><div class="tw"><table><thead><tr><th>Adm No</th><th>Student</th><th>Today</th><th>Present</th><th>Absent</th><th>Leave</th><th>Late</th><th>Attendance %</th></tr></thead><tbody>'+
-  (R.map(function(r){return'<tr><td>'+esc(r.s.adm)+'</td><td>'+esc(r.s.name)+'</td><td>'+cwTag(r.td)+'</td><td>'+r.P+'</td><td>'+r.A+'</td><td>'+r.L+'</td><td>'+r.T+'</td><td style="min-width:150px">'+(r.t?cwBar(r.pc):'<span class="mu">No data</span>')+'</td></tr>'}).join('')||'<tr><td colspan="8" class="em">No active students in this class.</td></tr>')+'</tbody></table></div></div>';
+  return top+'<div class="card cwa cwa-s"><div class="tb"><h3>'+esc(sel)+' - students ('+mo+')</h3><button type="button" class="bt sm gh" data-a="cwpick" data-k="" style="margin-left:auto">&larr; All classes</button><span class="mu" style="margin-left:8px">'+low+' below 75%</span></div><div class="tw"><table><thead><tr><th>Adm No</th><th>Student</th><th>Today</th><th>Marked by</th><th>Present</th><th>Absent</th><th>Leave</th><th>Late</th><th>Attendance %</th></tr></thead><tbody>'+
+  (R.map(function(r){return'<tr><td>'+esc(r.s.adm)+'</td><td>'+esc(r.s.name)+'</td><td>'+cwTag(r.td)+'</td><td>'+(ATXCHIP(r.s.id)||'<span class="mu">-</span>')+'</td><td>'+r.P+'</td><td>'+r.A+'</td><td>'+r.L+'</td><td>'+r.T+'</td><td style="min-width:150px">'+(r.t?cwBar(r.pc):'<span class="mu">No data</span>')+'</td></tr>'}).join('')||'<tr><td colspan="9" class="em">No active students in this class.</td></tr>')+'</tbody></table></div></div>';
 }
 PG.attendance=function(){
   var u=SES();
@@ -1790,9 +1796,10 @@ PG.attendance=function(){
   return tabs+(FL.atab=='emp'?adminEmp():FL.atab=='cw'?adminCW():_attP());
 };
 window.adminCW=adminCW;
-H.cwpick=function(k){FL.cwc=k;draw()};
+function cwGo(){setTimeout(function(){try{var e=document.querySelector('.cwa-s')||document.querySelector('.cwa');if(e){e.style.scrollMarginTop='84px';e.scrollIntoView({behavior:'smooth',block:'start'})}}catch(x){}},60)}
+H.cwpick=function(k){FL.cwc=k;draw();cwGo()};
 CH.cwm=function(v){FL.cwm=v||mm();draw()};
-CH.cwc=function(v){FL.cwc=v;draw()};
+CH.cwc=function(v){FL.cwc=v;draw();cwGo()};
 H.atab=function(k){FL.atab=k;draw()};
 H.emk=function(k,id){
   var cur=(EA()[A.d]||{})[k];
@@ -2292,7 +2299,7 @@ function atxSteps(){const a=atxStu(),L=CL.filter(c=>a.some(s=>s.cls==c));return 
 function atxSort(a,b){return String(a.sec||'').localeCompare(String(b.sec||''))||((parseInt(a.roll)||9999)-(parseInt(b.roll)||9999))||String(a.name).localeCompare(String(b.name))}
 function atxRow(kind,id,name,sub,st){
 const pal=['#3b82f6','#10b981','#f59e0b','#8b5cf6','#ec4899','#06b6d4'],col=pal[(parseInt(id)||0)%6];
-return`<div class="at-row${st?' s'+st:''}"><span class="at-av" style="background:${col}">${esc(String(name).trim().charAt(0).toUpperCase()||'?')}</span><div class="at-m"><b>${esc(name)}</b><small>${sub}</small></div><div class="at-seg">${ATXS.map(x=>`<button type="button" class="b${x[0]}${st==x[0]?' on':''}" data-atm="${kind}|${id}|${x[0]}" aria-label="${x[1]}" aria-pressed="${st==x[0]}">${x[0]}</button>`).join('')}</div></div>`}
+return`<div class="at-row${st?' s'+st:''}"><span class="at-av" style="background:${col}">${esc(String(name).trim().charAt(0).toUpperCase()||'?')}</span><div class="at-m"><b>${esc(name)}</b><small>${sub}</small>${kind=='s'&&st?ATXCHIP(id,1):''}</div><div class="at-seg">${ATXS.map(x=>`<button type="button" class="b${x[0]}${st==x[0]?' on':''}" data-atm="${kind}|${id}|${x[0]}" aria-label="${x[1]}" aria-pressed="${st==x[0]}">${x[0]}</button>`).join('')}</div></div>`}
 function atxTiles(L,day){const n=x=>L.filter(s=>day[s.id]==x).length;return`<div class="at-kp"><div class="kP"><b>${n('P')}</b><span>Present</span></div><div class="kA"><b>${n('A')}</b><span>Absent</span></div><div class="kT"><b>${n('T')}</b><span>Late</span></div><div class="kL"><b>${n('L')}</b><span>Leave</span></div></div>`}
 function atxLegend(){return'<div class="at-lg"><span class="lP">P Present</span><span class="lA">A Absent</span><span class="lL">L Leave</span><span class="lT">T Late</span></div>'}
 function atxStuHtml(){
@@ -2307,7 +2314,7 @@ const chips=steps.map(c=>{const Lc=all.filter(s=>s.cls==c),m=Lc.filter(s=>day[s.
 let rows='';secs.forEach(sc=>{const part=L.filter(s=>String(s.sec||'')==sc);if(secs.length>1)rows+=`<div class="at-sh">${sc?'Section '+esc(sc):'No section'}</div>`;rows+=part.map(s=>atxRow('s',s.id,s.name,'Roll '+esc(s.roll||'-')+' &middot; Adm '+esc(s.adm||'-'),day[s.id])).join('')});
 return`<div class="at-chips">${chips}</div><div class="at-nav"><button type="button" class="bt sm gh" data-atnav="-1"${idx<=0?' disabled':''}>&larr; Previous</button><span>Step ${idx+1} of ${steps.length}</span><button type="button" class="bt sm gh" data-atnav="1"${idx>=steps.length-1?' disabled':''}>Next &rarr;</button></div>
 <div class="at-hd"><span class="at-ic">${esc(CLAB(A.c))}</span><div class="at-t"><b>${esc(A.c)}</b><small>${L.length} student${L.length==1?'':'s'} &middot; ${marked} marked</small></div><button type="button" class="bt sm gh" data-atall="1"${L.length?'':' disabled'}>Mark all present</button></div>
-<div class="at-pb"><i style="width:${pct}%"></i></div>${atxTiles(L,day)}${atxLegend()}
+<div class="at-pb"><i style="width:${pct}%"></i></div>${atxTiles(L,day)}${ATXTAKEN(L)}${atxLegend()}
 ${L.length?`<div class="at-list">${rows}</div><div class="at-act"><button type="button" class="bt" data-atsave="s">${ic('send')}Save and alert parents</button>${idx<steps.length-1?'<button type="button" class="bt gh" data-atnav="1">Next class &rarr;</button>':''}</div>`:`<p class="em at-em">No active students in ${esc(A.c)}.</p>`}`}
 function atxMonthPct(id){const mo=A.d.slice(0,7);let p=0,t=0;Object.keys(S.satt||{}).filter(d=>d.slice(0,7)==mo).forEach(d=>{const v=S.satt[d][id];if(v){t++;if(v=='P'||v=='T')p++}});return t?Math.round(p/t*100)+'%':'-'}
 function atxTeaHtml(){
@@ -2329,11 +2336,11 @@ PG.attendance=function(){setTimeout(atxCenter,30);return'<div id="atw">'+atxBody
 document.addEventListener('click',e=>{
 const t=e.target.closest&&e.target.closest('[data-atm],[data-attab],[data-atcls],[data-atnav],[data-atall],[data-atsave],[data-attoday]');if(!t||!document.getElementById('atw'))return;
 const d=t.dataset;
-if(d.atm){const p=d.atm.split('|');(p[0]=='t'?atxTDay():atxDay())[p[1]]=p[2];save();atxUpd(true);return}
+if(d.atm){const p=d.atm.split('|');(p[0]=='t'?atxTDay():atxDay())[p[1]]=p[2];if(p[0]!='t')ATXBY(p[1]);save();atxUpd(true);return}
 if(d.attab){ATX.tab=d.attab;ATX.q='';atxRender();return}
 if(d.atcls){A.c=d.atcls;atxUpd(false);return}
 if(d.atnav){const s=atxSteps(),i=s.indexOf(A.c)+(+d.atnav);if(i>=0&&i<s.length){A.c=s[i];atxUpd(false);window.scrollTo&&scrollTo({top:Math.max(0,(document.querySelector('.at')||document.body).getBoundingClientRect().top+scrollY-12),behavior:'smooth'})}return}
-if(d.atall){if(ATX.tab=='stu'){const day=atxDay();atxStu().filter(s=>s.cls==A.c).forEach(s=>day[s.id]='P')}else{const day=atxTDay(),q=ATX.q.trim().toLowerCase();S.staff.filter(s=>s.status=='Active'&&(!q||[s.name,s.role,s.subject].join(' ').toLowerCase().includes(q))).forEach(s=>day[s.id]='P')}save();atxUpd(true);return}
+if(d.atall){if(ATX.tab=='stu'){const day=atxDay();atxStu().filter(s=>s.cls==A.c).forEach(s=>{day[s.id]='P';ATXBY(s.id)})}else{const day=atxTDay(),q=ATX.q.trim().toLowerCase();S.staff.filter(s=>s.status=='Active'&&(!q||[s.name,s.role,s.subject].join(' ').toLowerCase().includes(q))).forEach(s=>day[s.id]='P')}save();atxUpd(true);return}
 if(d.atsave){if(d.atsave=='s')atxSaveS();else{lg('Teacher attendance saved');save();toast('Teacher attendance saved')}return}
 if(d.attoday){A.d=today();atxRender()}});
 document.addEventListener('input',e=>{if(e.target.id=='atq'){ATX.q=e.target.value;atxUpd(false)}});
@@ -3027,3 +3034,21 @@ function feeAuto(){
   try{save()}catch(e){}
 }
 (function(){const _d=draw;draw=function(){try{feeAuto()}catch(e){}return _d.apply(this,arguments)}})();
+
+/* ESMOS: show / hide password (eye) on every password box */
+(function(){
+var ON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>',
+OFF='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.9 17.9A10.7 10.7 0 0 1 12 19C5.6 19 2 12 2 12a18.5 18.5 0 0 1 5.1-5.9M9.9 5.2A9.7 9.7 0 0 1 12 5c6.4 0 10 7 10 7a18.6 18.6 0 0 1-2.2 3.2M1 1l22 22M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>';
+function enh(i){
+  if(i.dataset.eye||!i.parentNode)return;i.dataset.eye='1';
+  var cs=getComputedStyle(i),w=document.createElement('span');w.className='pw-w';
+  w.style.margin=cs.margin;i.style.margin='0';
+  i.parentNode.insertBefore(w,i);w.appendChild(i);
+  var b=document.createElement('button');b.type='button';b.className='pw-e';b.setAttribute('aria-label','Show password');b.innerHTML=ON;
+  b.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();var show=i.type=='password';i.type=show?'text':'password';b.innerHTML=show?OFF:ON;b.classList.toggle('on',show);b.setAttribute('aria-label',show?'Hide password':'Show password');try{i.focus()}catch(x){}});
+  w.appendChild(b);
+}
+function scan(){try{document.querySelectorAll('input[type=password]:not([data-eye])').forEach(enh)}catch(e){}}
+var q=0;new MutationObserver(function(){if(q)return;q=requestAnimationFrame(function(){q=0;scan()})}).observe(document.body,{childList:true,subtree:true});
+scan();
+})();
