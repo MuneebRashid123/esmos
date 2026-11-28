@@ -13,3 +13,6 @@ Backend: Supabase project **esmos** (ap-south-1). URL and anon key are set at th
 First time: open `index.html?setup=YOUR-ONE-TIME-CODE#owner-login`, press "Create owner account" with graphicdynamix.co@gmail.com, then Add school (enter the school admin's email). The admin opens the school's login page, chooses Admin, and creates a password.
 
 The owner account can only be created with the one-time setup code (stored hashed in the `setup_codes` table, single use, expires). Never commit the code to GitHub. Passwords must be at least 8 characters.
+
+
+**Visible logins (v27)**: when the admin sets or generates a password, an encrypted copy is stored in `portal_credentials` (pgp_sym_encrypt, key in `app_secrets`; readable only by that school's admin through `cred_load`). Portal Logins shows username + password for every student, parent and teacher, sorted by class, with Class-wise sheet (print) and CSV export. Passwords set before v27 are hashed in Supabase Auth and cannot be recovered: use "Show hidden: new password for N" to give them a new visible one.
